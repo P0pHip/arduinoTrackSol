@@ -159,9 +159,38 @@ void loop() {
     }
     motorEO.stop();
     Serial.println("cycle retour a zéro terminer");
+  } 
+
+  else if (analogRead(cptLumD)<= analogRead(cptLumG))
+  {
+    Serial.println("3 time");
+    for(byte h=0; h<1; h++) // h = 60 represente 60 min
+    { 
+      delay(30000UL);  //ceci motre une pause de 30sec 
+    }
+    if (analogRead(cptLumD)<analogRead(cptLumG))
+    {
+      captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+      Serial.println ("je suis le soleil");
+      while (analogRead(cptLumD)<=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
+      {
+        motorEO.back(); // est vers ouest    
+        captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+        captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
+        Serial.print("valeur FDC MV: ");
+        Serial.println (captfdcMV);
+        Serial.print("Valeur FDC MR: ");
+        Serial.println (captfdcMR);
+        
+        if (captfdcMV == 0 ||captfdcMR == 0){
+          Serial.println("capt Activé Break");
+          break;
+        } 
+      }
+      motorEO.stop(); 
+      Serial.println("cycle je suis le soleil terminer");          
+    }
   }
-
-
 
   else if (analogRead(cptLumH)>= analogRead(cptLumB))
   {
@@ -175,7 +204,7 @@ void loop() {
     {
       captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
       Serial.println ("je me met a l'horizontale");
-      while (analogRead(cptLumH)<=analogRead(cptLumB)) // ||captfdcIH == 1||captfdcIV == 1 problème car je veux que si un des cpateur ou la formule est vrai stop while
+      while (analogRead(cptLumH)>=analogRead(cptLumB)) // ||captfdcIH == 1||captfdcIV == 1 problème car je veux que si un des cpateur ou la formule est vrai stop while
       {
         
         configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
@@ -197,39 +226,6 @@ void loop() {
     }
   }
 
-  else if (analogRead(cptLumD)<= analogRead(cptLumG))
-  {
-    Serial.println("3 time");
-    for(byte h=0; h<1; h++) // h = 60 represente 60 min
-    { 
-      delay(30000UL);  //ceci motre une pause de 30sec 
-    }
-    if (analogRead(cptLumD)<analogRead(cptLumG))
-    {
-      captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
-      Serial.println ("je suis le soleil");
-      while (analogRead(cptLumD)>=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
-      {
-        motorEO.back(); // est vers ouest    
-        captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
-        captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
-        Serial.print("valeur FDC MV: ");
-        Serial.println (captfdcMV);
-        Serial.print("Valeur FDC MR: ");
-        Serial.println (captfdcMR);
-        
-        if (captfdcMV == 0 ||captfdcMR == 0){
-          Serial.println("capt Activé Break");
-          break;
-        } 
-      }
-      motorEO.stop(); 
-      Serial.println("cycle je suis le soleil terminer");          
-    }
-  }
-
- 
-
   else if (analogRead(cptLumH)<= analogRead(cptLumB))
   {
     Serial.println("deuxième time");
@@ -241,7 +237,7 @@ void loop() {
     {
       captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
       Serial.println ("je me met a la verticale ");
-      while (analogRead(cptLumH) >= analogRead(cptLumB))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
+      while (analogRead(cptLumH) <= analogRead(cptLumB))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
       {
         
         configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
