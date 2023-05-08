@@ -178,7 +178,7 @@ void loop() {
       while (!(analogRead(cptLumH)>= analogRead(cptLumB))||captfdcIH == 1)
       {
         
-        configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
+        configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
         changeVitesseMoteurPontMoteur(vitesseMoteur); 
         captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
         captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
@@ -225,7 +225,7 @@ void loop() {
       while (!(analogRead(cptLumH) <= analogRead(cptLumB))||captfdcIV == 1)
       {
         
-        configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+        configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
         changeVitesseMoteurPontMoteur(vitesseMoteur);// front ou back     
         captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
         captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
