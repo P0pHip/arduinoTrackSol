@@ -175,15 +175,20 @@ void loop() {
     {
       captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
       Serial.println ("je me met a l'horizontale");
-      while (!(analogRead(cptLumH)>= analogRead(cptLumB))||captfdcIH == 1)
+      while ((analogRead(cptLumH)<=analogRead(cptLumB))||captfdcIH == 1||captfdcIV == 1)
       {
         
-        configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
+        configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
         changeVitesseMoteurPontMoteur(vitesseMoteur); 
         captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
         captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
+        Serial.print("valeur FDC IH: ");
+        Serial.println (captfdcIH);
+        Serial.print("Valeur FDC IV: ");
+        Serial.println (captfdcIV);
       }   
      changeVitesseMoteurPontMoteur(0); // remise a zero de la vitesse moteur donc arrêt moteur
+     Serial.println("cycle mise a l'horizontale terminer");
     }
   }
 
@@ -198,10 +203,11 @@ void loop() {
     {
       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
       Serial.println ("je suis le soleil");
-      while (!(analogRead(cptLumD) <= analogRead(cptLumG))||captfdcMV == 1)
+      while ((analogRead(cptLumD)>=analogRead(cptLumG))||captfdcMV == 1 ||captfdcMR == 1)
       {
         motorEO.back(); // est vers ouest    
         captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+        captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
       }
       motorEO.stop();           
     }
@@ -222,10 +228,10 @@ void loop() {
     {
       captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
       Serial.println ("je me met a la verticale ");
-      while (!(analogRead(cptLumH) <= analogRead(cptLumB))||captfdcIV == 1)
+      while ((analogRead(cptLumH) >= analogRead(cptLumB))||captfdcIV == 1|| captfdcIH == 1)
       {
         
-        configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+        configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
         changeVitesseMoteurPontMoteur(vitesseMoteur);// front ou back     
         captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
         captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
