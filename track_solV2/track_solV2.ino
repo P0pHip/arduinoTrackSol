@@ -81,7 +81,7 @@ void setup() {
   
   motorEO.enable(); //mise en place des variables qui pouront changer les valeurs de vitesse
   
-  motorEO.pwm = 45;  
+  motorEO.pwm = 60;  
   //TODO Potentiellement à redéfinir !!!
 
 
@@ -216,7 +216,7 @@ void loop() {
         Serial.print("Valeur FDC IV: ");
         Serial.println (captfdcIV);
         
-        if (captfdcIH == 0||captfdcIV == 0){
+        if (captfdcIH == 0){
           Serial.println("capt Activé Break");
           break;
         }        
@@ -248,7 +248,7 @@ void loop() {
         Serial.println (captfdcIH);
         Serial.print("Valeur FDC IV: ");
         Serial.println (captfdcIV);
-        if (captfdcIH == 0||captfdcIV == 0){
+        if (captfdcIV == 0){
           Serial.println("capt Activé Break");
           break;
         }
