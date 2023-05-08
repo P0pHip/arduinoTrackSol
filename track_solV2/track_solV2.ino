@@ -137,6 +137,7 @@ void loop() {
   Serial.print("Valeur FDC MR: ");
   Serial.println (captfdcMR);
 
+  
   while(captfdcIV ==0  && captfdcIH == 0){
     configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
     changeVitesseMoteurPontMoteur(vitesseMoteur);  // ou back
@@ -150,20 +151,19 @@ void loop() {
   if (analogRead(cptLumB)<= 100 && analogRead(cptLumH)<= 100 && analogRead(cptLumG)<=100 && analogRead(cptLumD))
   {
     Serial.println ("je me remet a zéro");
+    
     while(captfdcMR == 1)
     {
       motorEO.front(); //ouest vers est        
       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
     }
-    if(captfdcMR == 0)
-    {
-        motorEO.stop();
-    }
+    motorEO.stop();
+   
   }
 
   
 
-  if (analogRead(cptLumH)>= analogRead(cptLumB))
+  else if (analogRead(cptLumH)>= analogRead(cptLumB))
   {
     
     Serial.println("premier time");
@@ -175,7 +175,7 @@ void loop() {
     {
       captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
       Serial.println ("je me met a l'horizontale");
-      while (!(analogRead(cptLumH)>= analogRead(cptLumB))||captfdcIH == 0||captfdcIV == 0)
+      while (!(analogRead(cptLumH)>= analogRead(cptLumB))||captfdcIH == 1)
       {
         
         configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
@@ -187,7 +187,7 @@ void loop() {
     }
   }
 
-  if (analogRead(cptLumD)<= analogRead(cptLumG))
+  else if (analogRead(cptLumD)<= analogRead(cptLumG))
   {
     Serial.println("3 time");
     for(byte h=0; h<1; h++) // h = 60 represente 60 min
@@ -198,7 +198,7 @@ void loop() {
     {
       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
       Serial.println ("je suis le soleil");
-      while (!(analogRead(cptLumD) >= analogRead(cptLumG))||captfdcMV == 0)
+      while (!(analogRead(cptLumD) <= analogRead(cptLumG))||captfdcMV == 1)
       {
         motorEO.back(); // est vers ouest    
         captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
@@ -211,7 +211,7 @@ void loop() {
 
   
 
-  if (analogRead(cptLumH)<= analogRead(cptLumB))
+  else if (analogRead(cptLumH)<= analogRead(cptLumB))
   {
     Serial.println("deuxième time");
     for(byte h=0; h<1; h++) // h = 60 represente 60 min
@@ -222,7 +222,7 @@ void loop() {
     {
       captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
       Serial.println ("je me met a la verticale ");
-      while (!(analogRead(cptLumH) <= analogRead(cptLumB))||captfdcIH == 0||captfdcIV == 0)
+      while (!(analogRead(cptLumH) <= analogRead(cptLumB))||captfdcIV == 1)
       {
         
         configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
