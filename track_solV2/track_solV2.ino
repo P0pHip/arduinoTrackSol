@@ -81,7 +81,7 @@ void setup() {
   
   motorEO.enable(); //mise en place des variables qui pouront changer les valeurs de vitesse
   
-  motorEO.pwm = 60;  
+  motorEO.pwm = 80;  
   //TODO Potentiellement à redéfinir !!!
 
 
@@ -152,7 +152,7 @@ void loop() {
   {
     Serial.println ("je me remet a zéro");
     
-    while(captfdcMR == 1)
+    while(captfdcMV == 1)
     {
       motorEO.front(); //ouest vers est        
       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
@@ -182,7 +182,7 @@ void loop() {
         Serial.print("Valeur FDC MR: ");
         Serial.println (captfdcMR);
         
-        if (captfdcMV == 0 ||captfdcMR == 0){
+        if (captfdcMR == 0){
           Serial.println("capt Activé Break");
           break;
         } 
