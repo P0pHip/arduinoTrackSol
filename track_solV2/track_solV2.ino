@@ -148,7 +148,7 @@ void loop() {
     changeVitesseMoteurPontMoteur(vitesseMoteur);  // ou back
   }
 
-  if (analogRead(cptLumB)<= 100 && analogRead(cptLumH)<= 100 && analogRead(cptLumG)<=100 && analogRead(cptLumD))
+  if (analogRead(cptLumB)<= 130 && analogRead(cptLumH)<= 130 && analogRead(cptLumG)<=130 && analogRead(cptLumD))
   {
     Serial.println ("je me remet a zéro");
     
