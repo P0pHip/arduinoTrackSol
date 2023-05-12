@@ -163,7 +163,7 @@ void loop() {
 
   else if (analogRead(cptLumD)<= analogRead(cptLumG))
   {
-    Serial.println("3 time");
+    Serial.println("Soleil time");
     for(byte h=0; h<1; h++) // h = 60 represente 60 min
     { 
       delay(30000UL);  //ceci motre une pause de 30sec 
@@ -171,6 +171,7 @@ void loop() {
     if (analogRead(cptLumD)<analogRead(cptLumG))
     {
       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+      captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
       Serial.println ("je suis le soleil");
       while (analogRead(cptLumD)<=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
       {
@@ -191,10 +192,41 @@ void loop() {
     }
   }
 
+  else if (analogRead(cptLumD)>= analogRead(cptLumG))
+  {
+    Serial.println("EST time");
+    for(byte h=0; h<1; h++) // h = 60 represente 60 min
+    { 
+      delay(30000UL);  //ceci motre une pause de 30sec 
+    }
+    if (analogRead(cptLumD)>analogRead(cptLumG))
+    {
+      captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+      captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
+      Serial.println ("je vais à l'est");
+      while (analogRead(cptLumD)>=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
+      {
+        if (captfdcMV == 0){
+          Serial.println("capt Activé Break");
+          break;
+        } 
+        motorEO.back(); // est vers ouest    
+        captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+        captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
+        Serial.print("valeur FDC MV: ");
+        Serial.println (captfdcMV);
+        Serial.print("Valeur FDC MR: ");
+        Serial.println (captfdcMR);        
+      }
+      motorEO.stop(); 
+      Serial.println("cycle je suis EST terminer");          
+    }
+  }
+
   else if (analogRead(cptLumH)>= analogRead(cptLumB))
   {
     
-    Serial.println("premier time");
+    Serial.println("Horizon time");
     for(byte h=0; h<1; h++) // h = 60 represente 60 min
     { 
       delay(30000UL);  //ceci motre une pause de 30 sec
@@ -202,6 +234,7 @@ void loop() {
     if (analogRead(cptLumH)>analogRead(cptLumB))
     {
       captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
+      captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
       Serial.println ("je me met a l'horizontale");
       while (analogRead(cptLumH)>=analogRead(cptLumB)) // ||captfdcIH == 1||captfdcIV == 1 problème car je veux que si un des cpateur ou la formule est vrai stop while
       {
@@ -225,13 +258,14 @@ void loop() {
 
   else if (analogRead(cptLumH)<= analogRead(cptLumB))
   {
-    Serial.println("deuxième time");
+    Serial.println("Vertical time");
     for(byte h=0; h<1; h++) // h = 60 represente 60 min
     { 
       delay(30000UL);  //ceci motre une pause de 30 sec 
     }
     if (analogRead(cptLumH)<analogRead(cptLumB))
-    {
+    {      
+      captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
       captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
       Serial.println ("je me met a la verticale ");
       while (analogRead(cptLumH) <= analogRead(cptLumB))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
