@@ -14,20 +14,20 @@
 #define borneLENB       39       // MOTEUR INCLINAISON
 */
 
-#define RpwmEO    9     // BTS1
-#define LpwmEO    10
-#define LenEO     11
-#define RenEO     12
+#define RpwmEO    10     // BTS1
+#define LpwmEO    11
+#define LenEO     12
+#define RenEO     13
 
-#define ENAIH    3     // BTS2
-#define IN1IH    4
-#define IN2IH    5
+#define ENAIH    6     // BTS2
+#define IN1IH    7
+#define IN2IH    8
 
 //TODO Potentiellement à redéfinir !!!
-#define FdcIH           24       // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D4 de l'arduino
-#define FdcIV           25       // On associe le Capteur de l'inclinaison vers la verticale à la pin D3 de l'arduino
-#define FdcMV           26       // On associe le Capteur du moteur vers l'avant à la pin D2 de l'arduino
-#define FdcMR           27       // On associe le Capteur du moteur vers l'arrière à la pin D1 de l'arduino
+#define FdcIH           5       // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D4 de l'arduino
+#define FdcIV           4       // On associe le Capteur de l'inclinaison vers la verticale à la pin D3 de l'arduino
+#define FdcMV           3       // On associe le Capteur du moteur vers l'avant à la pin D2 de l'arduino
+#define FdcMR           2       // On associe le Capteur du moteur vers l'arrière à la pin D1 de l'arduino
 //TODO Potentiellement à redéfinir !!!
 
 //TODO Potentiellement à redéfinir !!!
@@ -35,7 +35,7 @@
 #define cptLumH         1      // On associe le Capteur de luminisoté situé en haut à la pin A2 de l'arduino  NORD BLANC
 #define cptLumD         2      // On associe le Capteur de luminisoté situé en bas à droite au pin A3 de l'arduino EST  NOIR
 #define cptLumG         4      // On associe le Capteur de luminisoté situé en bas à gauche au pin A4 de l'arduino  OUEST  MARRON
-#define cptAnemo        7      // On associe le Capteur vent au pin A7 de l'arduino
+#define cptAnemo        5      // On associe le Capteur vent au pin A7 de l'arduino
 
 //*************************//
 // Constantes du programme //
