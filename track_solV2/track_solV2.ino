@@ -59,7 +59,7 @@ int seuilAnemo = 150;
 // Variables du programme //
 //************************//
 #define vitesseMoteur   205  
-#define vitMotEO        80
+#define vitMotEO        35
 const char MARCHE_AVANT   = 'V';            // Défini une constante pour la "marche avant" (peu importe la valeur)
 const char MARCHE_ARRIERE = 'R';            // Défini une constante pour la "marche arrière" (peu importe la valeur)
  
@@ -155,7 +155,7 @@ void loop() {
     
     while(captfdcMV == 1)
     {
-      motorEO.back(); //ouest vers est        
+      motorEO.back();
       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
     }
     motorEO.stop();
