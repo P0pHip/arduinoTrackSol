@@ -59,6 +59,7 @@ int seuilAnemo = 150;
 // Variables du programme //
 //************************//
 #define vitesseMoteur   205  
+#define vitMotEO        80
 const char MARCHE_AVANT   = 'V';            // Défini une constante pour la "marche avant" (peu importe la valeur)
 const char MARCHE_ARRIERE = 'R';            // Défini une constante pour la "marche arrière" (peu importe la valeur)
  
@@ -81,7 +82,7 @@ void setup() {
   
   motorEO.enable(); //mise en place des variables qui pouront changer les valeurs de vitesse
   
-  motorEO.pwm = 80;  
+  motorEO.pwm = vitMotEO;  
   //TODO Potentiellement à redéfinir !!!
 
 
@@ -154,7 +155,7 @@ void loop() {
     
     while(captfdcMV == 1)
     {
-      motorEO.front(); //ouest vers est        
+      motorEO.back(); //ouest vers est        
       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
     }
     motorEO.stop();
@@ -175,17 +176,15 @@ void loop() {
       Serial.println ("je suis le soleil");
       while (analogRead(cptLumD)<=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
       {
+        
         if (captfdcMR == 0){
           Serial.println("capt Activé Break");
           break;
         } 
-        motorEO.back(); // est vers ouest    
+        motorEO.front(); // est vers ouest   
         captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
         captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
-        Serial.print("valeur FDC MV: ");
-        Serial.println (captfdcMV);
-        Serial.print("Valeur FDC MR: ");
-        Serial.println (captfdcMR);        
+        
       }
       motorEO.stop(); 
       Serial.println("cycle je suis le soleil terminer");          
