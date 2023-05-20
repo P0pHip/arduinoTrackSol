@@ -59,7 +59,7 @@ int seuilAnemo = 150;
 // Variables du programme //
 //************************//
 #define vitesseMoteur   205  
-#define vitMotEO        35
+#define vitMotEO        65
 const char MARCHE_AVANT   = 'V';            // Défini une constante pour la "marche avant" (peu importe la valeur)
 const char MARCHE_ARRIERE = 'R';            // Défini une constante pour la "marche arrière" (peu importe la valeur)
  
