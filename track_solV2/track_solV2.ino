@@ -60,6 +60,8 @@ int seuilAnemo = 150;
 //************************//
 #define vitesseMoteur   205  
 #define vitMotEO        65
+#define timeBoucle 2
+
 const char MARCHE_AVANT   = 'V';            // Défini une constante pour la "marche avant" (peu importe la valeur)
 const char MARCHE_ARRIERE = 'R';            // Défini une constante pour la "marche arrière" (peu importe la valeur)
  
@@ -165,29 +167,51 @@ void loop() {
   if (analogRead(cptLumD)<= analogRead(cptLumG))
   {
     Serial.println("Soleil time");
-    for(byte h=0; h<1; h++) // h = 60 represente 60 min
+    for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
     { 
-      delay(30000UL);  //ceci motre une pause de 30sec 
+      delay(60000UL);  //ceci motre une pause de 60sec 
     }
     if (analogRead(cptLumD)<analogRead(cptLumG))
     {
-      captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
       captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
       Serial.println ("je suis le soleil");
       while (analogRead(cptLumD)<=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
-      {
-        
+      {        
         if (captfdcMR == 0){
           Serial.println("capt Activé Break");
           break;
         } 
         motorEO.front(); // est vers ouest   
-        captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
-        captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
-        
+        captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur        
       }
       motorEO.stop(); 
       Serial.println("cycle je suis le soleil terminer");          
+    }
+  }
+
+  if (analogRead(cptLumD)>= analogRead(cptLumG))
+  {
+    Serial.println("Retour time");
+    for(byte h=0; h< timeBoucle ; h++) // h = 60 represente 60 min
+    { 
+      delay(60000UL);  //ceci motre une pause de 30sec 
+    }
+    if (analogRead(cptLumD)>analogRead(cptLumG))
+    {
+      captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur      
+      Serial.println ("je retourne un petit peu a l'EST");
+      while (analogRead(cptLumD)>=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
+      {
+        
+        if (captfdcMV == 0){
+          Serial.println("capt Activé Break");
+          break;
+        } 
+        motorEO.front(); // est vers ouest   
+        captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur        
+      }
+      motorEO.stop(); 
+      Serial.println("cycle retour a l'EST terminer");          
     }
   }
 
@@ -197,14 +221,13 @@ void loop() {
   {
     
     Serial.println("Horizon time");
-    for(byte h=0; h<1; h++) // h = 60 represente 60 min
+    for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
     { 
-      delay(30000UL);  //ceci motre une pause de 30 sec
+      delay(60000UL);  //ceci motre une pause de 30 sec
     }
     if (analogRead(cptLumH)>analogRead(cptLumB))
     {
       captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
-      captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
       Serial.println ("je me met a l'horizontale");
       while (analogRead(cptLumH)>=analogRead(cptLumB)) // ||captfdcIH == 1||captfdcIV == 1 problème car je veux que si un des cpateur ou la formule est vrai stop while
       {
@@ -214,12 +237,7 @@ void loop() {
         }
         configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
         changeVitesseMoteurPontMoteur(vitesseMoteur); 
-        captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
-        captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
-        Serial.print("valeur FDC IH: ");
-        Serial.println (captfdcIH);
-        Serial.print("Valeur FDC IV: ");
-        Serial.println (captfdcIV);                
+        captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur             
       }   
      changeVitesseMoteurPontMoteur(0); // remise a zero de la vitesse moteur donc arrêt moteur
      Serial.println("cycle mise a l'horizontale terminer");
@@ -229,13 +247,12 @@ void loop() {
   if (analogRead(cptLumH)<= analogRead(cptLumB))
   {
     Serial.println("Vertical time");
-    for(byte h=0; h<1; h++) // h = 60 represente 60 min
+    for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
     { 
-      delay(30000UL);  //ceci motre une pause de 30 sec 
+      delay(60000UL);  //ceci motre une pause de 30 sec 
     }
     if (analogRead(cptLumH)<analogRead(cptLumB))
     {      
-      captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
       captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
       Serial.println ("je me met a la verticale ");
       while (analogRead(cptLumH) <= analogRead(cptLumB))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
@@ -245,13 +262,8 @@ void loop() {
           break;
         }
         configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
-        changeVitesseMoteurPontMoteur(vitesseMoteur);// front ou back     
-        captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
-        captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
-        Serial.print("valeur FDC IH: ");
-        Serial.println (captfdcIH);
-        Serial.print("Valeur FDC IV: ");
-        Serial.println (captfdcIV);        
+        changeVitesseMoteurPontMoteur(vitesseMoteur);// front ou back       
+        captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur               
       }   
      changeVitesseMoteurPontMoteur(0);// remise a zero de la vitesse moteur donc arrêt moteur
      Serial.println("cycle mise a la verticale terminer");
