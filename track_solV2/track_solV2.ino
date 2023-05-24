@@ -206,8 +206,7 @@ void loop() {
     } 
 
     if (analogRead(cptLumH)>= analogRead(cptLumB))
-    {
-    
+    {    
       Serial.println("Horizon time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
@@ -261,16 +260,15 @@ void loop() {
     motorEO.stop();
  }       
    
-     Serial.println ("je me remet a zéro");
+  Serial.println ("je me remet a zéro");
     
-     while(captfdcMV == 1)
-     {
-       motorEO.back();
-       captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
-     }
-     motorEO.stop();
-     Serial.println("cycle retour a zéro terminer");
-    
+  while(captfdcMV == 1)
+  {
+    motorEO.back();
+    captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+  }
+  motorEO.stop();
+  Serial.println("cycle retour a zéro terminer");    
 }  
 
 
