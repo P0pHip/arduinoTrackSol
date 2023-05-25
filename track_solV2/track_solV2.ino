@@ -59,8 +59,8 @@ int captAnemo;
 // Variables du programme //
 //************************//
 #define vitesseMoteur   205  
-#define vitMotEO        65
-#define timeBoucle      2
+#define vitMotEO        75
+#define timeBoucle      1
 #define seuilLum        130
 #define seuilAnemo      150
 
@@ -197,7 +197,7 @@ void loop() {
             Serial.println("capt Activé Break");
             break;
           } 
-          motorEO.front(); // est vers ouest   
+          motorEO.back(); // est vers ouest   
           captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur        
         }
         motorEO.stop(); 
@@ -268,6 +268,7 @@ void loop() {
     captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
   }
   motorEO.stop();
+  changeVitesseMoteurPontMoteur(0);
   Serial.println("cycle retour a zéro terminer");    
 }  
 
