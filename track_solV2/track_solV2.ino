@@ -1,3 +1,4 @@
+
 #include <BTS7960.h>
 
 //*******************************************************************************//
@@ -143,6 +144,36 @@ void loop() {
   Serial.println (captfdcMR);
 
   while(analogRead(cptLumB)>= seuilLum || analogRead(cptLumH)>= seuilLum || analogRead(cptLumG)>=seuilLum || analogRead(cptLumD)>=seuilLum){
+    
+    captLumH = analogRead(cptLumH);
+    captLumB = analogRead(cptLumB);
+    captLumG = analogRead(cptLumG);
+    captLumD = analogRead(cptLumD);
+    captAnemo = analogRead(cptAnemo);
+    captfdcIV = digitalRead(FdcIV);
+    captfdcIH = digitalRead(FdcIH);
+    captfdcMV = digitalRead(FdcMV);
+    captfdcMR = digitalRead(FdcMR);
+  
+    Serial.print("valeur Haut: ");
+    Serial.println (captLumH);
+    Serial.print("Valeur Bas: ");
+    Serial.println (captLumB);
+    Serial.print("Valeur Gauche: ");
+    Serial.println (captLumG);
+    Serial.print("Valeur Droite: ");
+    Serial.println (captLumD);
+    Serial.print("Valeur anemo: ");
+    Serial.println(captAnemo);
+  
+    Serial.print("valeur FDC IH: ");
+    Serial.println (captfdcIH);
+    Serial.print("Valeur FDC IV: ");
+    Serial.println (captfdcIV);
+    Serial.print("Valeur FDC MV: ");
+    Serial.println (captfdcMV);
+    Serial.print("Valeur FDC MR: ");
+    Serial.println (captfdcMR);
     
     while(captfdcIV ==0  && captfdcIH == 0){
       configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
