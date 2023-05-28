@@ -184,6 +184,20 @@ void loop() {
       configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
       changeVitesseMoteurPontMoteur(vitesseMoteur);  // ou back
     }
+
+    while(captAnemo > seuilAnemo)
+    {
+      captfdcIH = digitalRead(FdcIH);
+      if (captfdcIH == 0){
+            changeVitesseMoteurPontMoteur(0);
+            Serial.println("capt Activé Break");
+            break;
+          }
+      configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+      changeVitesseMoteurPontMoteur(vitesseMoteur); 
+      captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur             
+    }
+    changeVitesseMoteurPontMoteur(0);
     
     if (analogRead(cptLumD)<= analogRead(cptLumG))
     {
@@ -297,6 +311,16 @@ void loop() {
   {
     motorEO.back();
     captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
+  }
+  motorEO.stop();
+  changeVitesseMoteurPontMoteur(0);
+  
+  while(captfdcIH == 1)
+  {
+    Serial.println("mise a plat");
+    configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+    changeVitesseMoteurPontMoteur(vitesseMoteur); 
+    captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur             
   }
   motorEO.stop();
   changeVitesseMoteurPontMoteur(0);
