@@ -185,19 +185,24 @@ void loop() {
       changeVitesseMoteurPontMoteur(vitesseMoteur);  // ou back
     }
 
-    while(captAnemo > seuilAnemo)
+    if(captAnemo > seuilAnemo)
     {
       captfdcIH = digitalRead(FdcIH);
-      if (captfdcIH == 0){
+      Serial.println ("Il ya du vent");
+      while (captAnemo >= seuilAnemo){
+        if (captfdcIH == 0){
             changeVitesseMoteurPontMoteur(0);
             Serial.println("capt Activé Break");
             break;
           }
-      configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
-      changeVitesseMoteurPontMoteur(vitesseMoteur); 
-      captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur             
+        configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+        changeVitesseMoteurPontMoteur(vitesseMoteur); 
+        captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur               
+      }
+      changeVitesseMoteurPontMoteur(0);
+      Serial.println("cycle il ya du vent terminer");   
     }
-    changeVitesseMoteurPontMoteur(0);
+   
     
     if (analogRead(cptLumD)<= analogRead(cptLumG))
     {
