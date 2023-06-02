@@ -157,18 +157,8 @@ void loop() {
     Serial.print("Valeur FDC MV: ");
     Serial.println (captfdcMV);
     Serial.print("Valeur FDC MR: ");
-    Serial.println (captfdcMR);
+    Serial.println (captfdcMR);    
     
-    while(captfdcIV ==0  && captfdcIH == 0){
-      configurerSensDeRotationPontMoteur('V'); // avant 
-      changeVitesseMoteurPontMoteur(vitesseMoteur);  
-    }
-
-    while(captfdcMR ==0  && captfdcMV == 0){
-      configurerSensDeRotationPontMoteur('R'); // arrière
-      changeVitesseMoteurPontMoteur(vitesseMoteur);  
-    }
-
     if(captAnemo > seuilAnemo)
     {
       captfdcIH = digitalRead(FdcIH);
