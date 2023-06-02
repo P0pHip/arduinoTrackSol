@@ -1,40 +1,29 @@
-
-#include <BTS7960.h>
+//**********************//
+// Appel des Librairies //
+//**********************//
+#include <BTS7960.h> 
 
 //*******************************************************************************//
 // Association des entrées du L298N, aux sorties utilisées sur notre Arduino Uno //
 //*******************************************************************************//
-/*
-#define borneRENA       31       // MOTEUR ROTATION EST_OUEST
-#define borneLENA       30       // On associe la borne "ENA" du L298N à la pin D10 de l'arduino
-#define borneIN1A       11       // On associe la borne "IN1" du L298N à la pin D9 de l'arduino
-#define borneIN2A       10       // On associe la borne "IN2" du L298N à la pin D8 de l'arduino
-#define borneIN1B        8       // On associe la borne "IN3" du L298N à la pin D7 de l'arduino
-#define borneIN2B        9       // On associe la borne "IN4" du L298N à la pin D6 de l'arduino
-#define borneRENB       38       // On associe la borne "ENB" du L298N à la pin D11 de l'arduino
-#define borneLENB       39       // MOTEUR INCLINAISON
-*/
 
-#define RpwmEO    9     // BTS1
+#define RpwmEO    9     // Moteur Soleil
 #define LpwmEO    10
 #define LenEO     11
 #define RenEO     12
 
-#define ENAIH    3     // BTS2
+#define ENAIH    3     // Moteur Inclinaison
 #define IN1IH    4
 #define IN2IH    5
 
-//TODO Potentiellement à redéfinir !!!
-#define FdcIH           24       // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D4 de l'arduino
-#define FdcIV           25       // On associe le Capteur de l'inclinaison vers la verticale à la pin D3 de l'arduino
-#define FdcMV           26       // On associe le Capteur du moteur vers l'avant à la pin D2 de l'arduino
-#define FdcMR           27       // On associe le Capteur du moteur vers l'arrière à la pin D1 de l'arduino
-//TODO Potentiellement à redéfinir !!!
+#define FdcIH           24       // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D24 de l'arduino
+#define FdcIV           25       // On associe le Capteur de l'inclinaison vers la verticale à la pin D25 de l'arduino
+#define FdcMV           26       // On associe le Capteur du moteur vers l'avant à la pin D26 de l'arduino
+#define FdcMR           27       // On associe le Capteur du moteur vers l'arrière à la pin D27 de l'arduino
 
-//TODO Potentiellement à redéfinir !!!
-#define cptLumB         3      // On associe le Capteur de luminisoté situé en bas à la pin A1 de l'arduino SUD JAUNE
+#define cptLumB         3      // On associe le Capteur de luminisoté situé en bas à la pin A3 de l'arduino SUD JAUNE
 #define cptLumH         1      // On associe le Capteur de luminisoté situé en haut à la pin A2 de l'arduino  NORD BLANC
-#define cptLumD         2      // On associe le Capteur de luminisoté situé en bas à droite au pin A3 de l'arduino EST  NOIR
+#define cptLumD         2      // On associe le Capteur de luminisoté situé en bas à droite au pin A2 de l'arduino EST  NOIR
 #define cptLumG         4      // On associe le Capteur de luminisoté situé en bas à gauche au pin A4 de l'arduino  OUEST  MARRON
 #define cptAnemo        7      // On associe le Capteur vent au pin A7 de l'arduino
 
@@ -42,19 +31,16 @@
 // Constantes du programme //
 //*************************//
 BTS7960 motorEO(LenEO, RenEO, LpwmEO, RpwmEO);  //EST-OUEST
-//BTS7960 motorB(borneLENB, borneRENB, borneIN2B, borneIN1B); //INCLINAISON
  
 int captfdcIH; //declaration de la variable 0 ou 1 soit ouvert ou fermée
 int captfdcIV; //declaration de la variable 0 ou 1 soit ouvert ou fermée
 int captfdcMV; //declaration de la variable 0 ou 1 soit ouvert ou fermée
 int captfdcMR; //declaration de la variable 0 ou 1 soit ouvert ou fermée
-int captLumH;
-int captLumB;
-int captLumG;
-int captLumD;
-int captAnemo;
-//TODO Potentiellement à redéfinir !!!
-
+int captLumH;  // valeur entre 0 et 1023
+int captLumB;  // valeur entre 0 et 1023
+int captLumG;  // valeur entre 0 et 1023
+int captLumD;  // valeur entre 0 et 1023
+int captAnemo; // valeur entre 0 et 1023
 
 //************************//
 // Variables du programme //
@@ -79,19 +65,15 @@ void setup() {
   Serial.println( "test du setup" );
   // put your setup code here, to run once:
   
-  motorEO.begin();   // setup des pins du motor EST-OUEST
-  //motorB.begin();   // setup des pins du moteur INCLINAISON
-  pinMode(ENAIH, OUTPUT);
+  motorEO.begin();        // setup des pins du motor EST-OUEST    
+  pinMode(ENAIH, OUTPUT); // setup des pins du moteur INCLINAISON
   pinMode(IN1IH, OUTPUT);
   pinMode(IN2IH, OUTPUT);
   
-  motorEO.enable(); //mise en place des variables qui pouront changer les valeurs de vitesse
+  motorEO.enable();       //mise en place des variables qui pouront changer les valeurs de vitesse
   
   motorEO.pwm = vitMotEO;  
-  //TODO Potentiellement à redéfinir !!!
 
-
-  
   pinMode(FdcIH,     INPUT);
   pinMode(FdcIV,     INPUT);
   pinMode(FdcMV,     INPUT);
@@ -100,9 +82,8 @@ void setup() {
   pinMode(cptLumD,   INPUT);
   pinMode(cptLumG,   INPUT);
   pinMode(cptLumB,   INPUT);
-  pinMode(cptAnemo,  INPUT);
-  
-  //TODO Potentiellement à redéfinir !!!
+  pinMode(cptAnemo,  INPUT);  
+ 
 }
 
 //**************************//
@@ -113,7 +94,8 @@ void loop() {
   // put your main code here, to run repeatedly:
   Serial.println ("loop");
   delay(5000UL); //5sec
-  captLumH = analogRead(cptLumH);
+
+  captLumH = analogRead(cptLumH); //lecture des variables
   captLumB = analogRead(cptLumB);
   captLumG = analogRead(cptLumG);
   captLumD = analogRead(cptLumD);
@@ -123,7 +105,7 @@ void loop() {
   captfdcMV = digitalRead(FdcMV);
   captfdcMR = digitalRead(FdcMR);
   
-  Serial.print("valeur Haut: ");
+  Serial.print("valeur Haut: "); // affichage des valeurs pour le debugages
   Serial.println (captLumH);
   Serial.print("Valeur Bas: ");
   Serial.println (captLumB);
@@ -143,10 +125,12 @@ void loop() {
   Serial.print("Valeur FDC MR: ");
   Serial.println (captfdcMR);
 
+  //loop d'exécution du programme quand la luminosité est supérieur au seuil
+
   while(analogRead(cptLumB)>= seuilLum || analogRead(cptLumH)>= seuilLum || analogRead(cptLumG)>=seuilLum || analogRead(cptLumD)>=seuilLum){
     
     captLumH = analogRead(cptLumH);
-    captLumB = analogRead(cptLumB);
+    captLumB = analogRead(cptLumB); //lecture des valeurs
     captLumG = analogRead(cptLumG);
     captLumD = analogRead(cptLumD);
     captAnemo = analogRead(cptAnemo);
@@ -156,7 +140,7 @@ void loop() {
     captfdcMR = digitalRead(FdcMR);
   
     Serial.print("valeur Haut: ");
-    Serial.println (captLumH);
+    Serial.println (captLumH);      //affichage des valeurs
     Serial.print("Valeur Bas: ");
     Serial.println (captLumB);
     Serial.print("Valeur Gauche: ");
@@ -176,13 +160,13 @@ void loop() {
     Serial.println (captfdcMR);
     
     while(captfdcIV ==0  && captfdcIH == 0){
-      configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
-      changeVitesseMoteurPontMoteur(vitesseMoteur);  // ou back
+      configurerSensDeRotationPontMoteur('V'); // avant 
+      changeVitesseMoteurPontMoteur(vitesseMoteur);  
     }
 
     while(captfdcMR ==0  && captfdcMV == 0){
-      configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
-      changeVitesseMoteurPontMoteur(vitesseMoteur);  // ou back
+      configurerSensDeRotationPontMoteur('R'); // arrière
+      changeVitesseMoteurPontMoteur(vitesseMoteur);  
     }
 
     if(captAnemo > seuilAnemo)
@@ -195,7 +179,7 @@ void loop() {
             Serial.println("capt Activé Break");
             break;
           }
-        configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+        configurerSensDeRotationPontMoteur('R'); //arrière
         changeVitesseMoteurPontMoteur(vitesseMoteur); 
         captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur               
       }
@@ -215,7 +199,7 @@ void loop() {
       {
         captfdcMR = digitalRead(FdcMR); // lecture du signal du capteur
         Serial.println ("je suis le soleil");
-        while (analogRead(cptLumD)<=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
+        while (analogRead(cptLumD)<=analogRead(cptLumG))
         {        
           if (captfdcMR == 0){
             Serial.println("capt Activé Break");
@@ -240,7 +224,7 @@ void loop() {
       {
         captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur      
         Serial.println ("je retourne un petit peu a l'EST");
-        while (analogRead(cptLumD)>=analogRead(cptLumG))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
+        while (analogRead(cptLumD)>=analogRead(cptLumG))
         {
         
           if (captfdcMV == 0){
@@ -266,13 +250,13 @@ void loop() {
       {
         captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur
         Serial.println ("je me met a l'horizontale");
-        while (analogRead(cptLumH)>=analogRead(cptLumB)) // ||captfdcIH == 1||captfdcIV == 1 problème car je veux que si un des cpateur ou la formule est vrai stop while
+        while (analogRead(cptLumH)>=analogRead(cptLumB)) 
         {
           if (captfdcIH == 0){
             Serial.println("capt Activé Break");
             break;
           }
-          configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+          configurerSensDeRotationPontMoteur('R'); //arrière
           changeVitesseMoteurPontMoteur(vitesseMoteur); 
           captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur             
         }   
@@ -292,14 +276,14 @@ void loop() {
       {      
         captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur
         Serial.println ("je me met a la verticale ");
-        while (analogRead(cptLumH) <= analogRead(cptLumB))   // problème car je veux que si un des cpateur ou la formule est vrai stop while
+        while (analogRead(cptLumH) <= analogRead(cptLumB))
         {
           if (captfdcIV == 0){
             Serial.println("capt Activé Break");
             break;
           }
-          configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
-          changeVitesseMoteurPontMoteur(vitesseMoteur);// front ou back       
+          configurerSensDeRotationPontMoteur('V'); // avant
+          changeVitesseMoteurPontMoteur(vitesseMoteur);      
           captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur               
         }   
         changeVitesseMoteurPontMoteur(0);// remise a zero de la vitesse moteur donc arrêt moteur
@@ -323,7 +307,7 @@ void loop() {
   while(captfdcIH == 1)
   {
     Serial.println("mise a plat");
-    configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+    configurerSensDeRotationPontMoteur('R'); // arrière 
     changeVitesseMoteurPontMoteur(vitesseMoteur); 
     captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur             
   }
