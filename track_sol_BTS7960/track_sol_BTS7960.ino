@@ -12,9 +12,10 @@
 #define LenEO     11
 #define RenEO     12
 
-#define ENAIH    3     // Moteur Inclinaison
-#define IN1IH    4
-#define IN2IH    5
+#define RpwmIH    2     // Moteur Inclinaison
+#define LpwmIH    3
+#define LenIH     4
+#define RenIH     5
 
 #define FdcIH           24       // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D24 de l'arduino
 #define FdcIV           25       // On associe le Capteur de l'inclinaison vers la verticale à la pin D25 de l'arduino
@@ -31,7 +32,8 @@
 // Constantes du programme //
 //*************************//
 BTS7960 motorEO(LenEO, RenEO, LpwmEO, RpwmEO);  //EST-OUEST
- 
+BTS7960 motorIH(LenIH, RenIH, LpwmIH, RpwmIH);  //Inclinaison
+
 int captfdcIH; //declaration de la variable 0 ou 1 soit ouvert ou fermée
 int captfdcIV; //declaration de la variable 0 ou 1 soit ouvert ou fermée
 int captfdcMV; //declaration de la variable 0 ou 1 soit ouvert ou fermée
@@ -45,15 +47,12 @@ int captAnemo; // valeur entre 0 et 1023
 //************************//
 // Variables du programme //
 //************************//
-#define vitesseMoteur   205  
+#define vitMotIH        205  
 #define vitMotEO        75
 #define timeBoucle      1
 #define seuilLum        130
 #define seuilAnemo      150
 
-const char MARCHE_AVANT   = 'V';            // Défini une constante pour la "marche avant" (peu importe la valeur)
-const char MARCHE_ARRIERE = 'R';            // Défini une constante pour la "marche arrière" (peu importe la valeur)
- 
 //*******//
 // SETUP //
 //*******//
@@ -66,13 +65,13 @@ void setup() {
   // put your setup code here, to run once:
   
   motorEO.begin();        // setup des pins du motor EST-OUEST    
-  pinMode(ENAIH, OUTPUT); // setup des pins du moteur INCLINAISON
-  pinMode(IN1IH, OUTPUT);
-  pinMode(IN2IH, OUTPUT);
+  motorIH.begin();        // setup des pins du moteur INCLINAISON 
   
   motorEO.enable();       //mise en place des variables qui pouront changer les valeurs de vitesse
-  
-  motorEO.pwm = vitMotEO;  
+  motorIH.enable();
+
+  motorEO.pwm = vitMotEO;  //mise en place de la vitesse des moteurs
+  motorIH.pwm = vitMotIH;
 
   pinMode(FdcIH,     INPUT);
   pinMode(FdcIV,     INPUT);
@@ -165,15 +164,14 @@ void loop() {
       Serial.println ("Il ya du vent");
       while (captAnemo >= seuilAnemo){
         if (captfdcIH == 0){
-            changeVitesseMoteurPontMoteur(0);
+            motorIH.stop();
             Serial.println("capt Activé Break");
             break;
           }
-        configurerSensDeRotationPontMoteur('R'); //arrière
-        changeVitesseMoteurPontMoteur(vitesseMoteur); 
+        motorIH.back();
         captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur               
       }
-      changeVitesseMoteurPontMoteur(0);
+      motorIH.stop();
       Serial.println("cycle il ya du vent terminer");   
     }
    
@@ -246,11 +244,10 @@ void loop() {
             Serial.println("capt Activé Break");
             break;
           }
-          configurerSensDeRotationPontMoteur('R'); //arrière
-          changeVitesseMoteurPontMoteur(vitesseMoteur); 
+          motorIH.back();
           captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur             
         }   
-        changeVitesseMoteurPontMoteur(0); // remise a zero de la vitesse moteur donc arrêt moteur
+        motorIH.stop();
         Serial.println("cycle mise a l'horizontale terminer");
       }
     }
@@ -272,15 +269,14 @@ void loop() {
             Serial.println("capt Activé Break");
             break;
           }
-          configurerSensDeRotationPontMoteur('V'); // avant
-          changeVitesseMoteurPontMoteur(vitesseMoteur);      
+          motorIH.front();     
           captfdcIV = digitalRead(FdcIV); // lecture du signal du capteur               
         }   
-        changeVitesseMoteurPontMoteur(0);// remise a zero de la vitesse moteur donc arrêt moteur
+        motorIH.stop();
         Serial.println("cycle mise a la verticale terminer");
       }
     }
-    changeVitesseMoteurPontMoteur(0); 
+    motorIH.stop(); 
     motorEO.stop();
  }       
    
@@ -292,38 +288,15 @@ void loop() {
     captfdcMV = digitalRead(FdcMV); // lecture du signal du capteur
   }
   motorEO.stop();
-  changeVitesseMoteurPontMoteur(0);
+  motorIH.stop();
   
   while(captfdcIH == 1)
   {
     Serial.println("mise a plat");
-    configurerSensDeRotationPontMoteur('R'); // arrière 
-    changeVitesseMoteurPontMoteur(vitesseMoteur); 
+    motorIH.back(); 
     captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur             
   }
   motorEO.stop();
-  changeVitesseMoteurPontMoteur(0);
+  motorIH.stop();
   Serial.println("cycle retour a zéro terminer");    
-}  
-
-
-void configurerSensDeRotationPontMoteur(char sensDeRotation) {
-
-  if(sensDeRotation == MARCHE_AVANT) {
-    // Configuration du L298N en "marche avant", pour le moteur connecté au pont A. Selon sa table de vérité, il faut que :
-    digitalWrite(IN1IH, HIGH);                 // L'entrée IN1 doit être au niveau haut
-    digitalWrite(IN2IH, LOW);                  // L'entrée IN2 doit être au niveau bas    
-  }
-  
-  if(sensDeRotation == MARCHE_ARRIERE) {
-    // Configuration du L298N en "marche arrière", pour le moteur câblé sur le pont A. Selon sa table de vérité, il faut que :
-    digitalWrite(IN1IH, LOW);                  // L'entrée IN1 doit être au niveau bas
-    digitalWrite(IN2IH, HIGH);                 // L'entrée IN2 doit être au niveau haut
-  }
-}
-
-void changeVitesseMoteurPontMoteur(int nouvelleVitesse) {
-  
-  // Génère un signal PWM permanent, de rapport cyclique égal à "nouvelleVitesse" (valeur comprise entre 0 et 255)
-  analogWrite(ENAIH, nouvelleVitesse);
 }
