@@ -45,8 +45,8 @@ int captAnemo; // valeur entre 0 et 1023
 //************************//
 // Variables du programme //
 //************************//
-#define vitesseMoteur   205  
-#define vitMotEO        75
+#define vitesseMoteur   511  
+#define vitMotEO        90
 #define timeBoucle      1
 #define seuilLum        130
 #define seuilAnemo      150
@@ -260,7 +260,7 @@ void loop() {
       Serial.println("Vertical time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 30 sec 
+        delay(60000UL);  //ceci motre une pause de 60 sec 
       }
       if (analogRead(cptLumH)<analogRead(cptLumB))
       {      

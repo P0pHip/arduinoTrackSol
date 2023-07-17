@@ -13,8 +13,8 @@
 #define IN2IH    5
 
 
-#define vitesseMoteur   170 
-#define vitMotEO        40
+#define vitesseMoteur   511 
+#define vitMotEO        90
 const char MARCHE_AVANT   = 'V';            // Défini une constante pour la "marche avant" (peu importe la valeur)
 const char MARCHE_ARRIERE = 'R';            // Défini une constante pour la "marche arrière" (peu importe la valeur)
  
@@ -51,12 +51,12 @@ void loop() {
   Serial.println("Moteur soleil");
   delay(5000UL); //5sec
   Serial.println("sensAvant moteur");
-  motorEO.back();     
+  motorEO.front();     
   delay(5000UL); //5sec
   motorEO.stop();
   delay(2000UL); // 2sec
   Serial.println("sensArrière moteur");
-  motorEO.front();
+  motorEO.back();
   delay(5000UL); //5sec
   motorEO.stop();
   delay(2000UL); // 2sec
@@ -64,13 +64,13 @@ void loop() {
   
   Serial.println("Moteur INCLINAISON");
   delay(1000UL); //5sec
-  configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
+  configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
   changeVitesseMoteurPontMoteur(vitesseMoteur); 
   delay(5000UL); //5sec
   changeVitesseMoteurPontMoteur(0); 
   delay(2000UL); //2sec
   Serial.println("sensArrière moteur");
-  configurerSensDeRotationPontMoteur('V'); // avant ou arrière // a modifier peut etre
+  configurerSensDeRotationPontMoteur('R'); // avant ou arrière // a modifier peut etre
   changeVitesseMoteurPontMoteur(vitesseMoteur); 
   delay(5000UL); //5sec
   changeVitesseMoteurPontMoteur(0); 
