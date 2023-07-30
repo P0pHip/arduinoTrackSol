@@ -163,15 +163,18 @@ void loop() {
     {
       captfdcIH = digitalRead(FdcIH);
       Serial.println ("Il ya du vent");
-      while (captAnemo >= seuilAnemo){
-        if (captfdcIH == 0){
-            changeVitesseMoteurPontMoteur(0);
-            Serial.println("capt Activé Break");
-            break;
-          }
+      
+      while (captfdcIH == 1){          
         configurerSensDeRotationPontMoteur('R'); //arrière
         changeVitesseMoteurPontMoteur(vitesseMoteur); 
-        captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur               
+        captfdcIH = digitalRead(FdcIH); // lecture du signal du capteur               
+      }
+      changeVitesseMoteurPontMoteur(0);
+      Serial.println("capt Activé Break");
+      Serial.println("delay de 5 min pour éviter les coups de vent");
+      for(byte h=0; h<5; h++) // h = 60 represente 60 min
+      { 
+        delay(60000UL);  //ceci motre une pause de 60sec 
       }
       changeVitesseMoteurPontMoteur(0);
       Serial.println("cycle il ya du vent terminer");   
