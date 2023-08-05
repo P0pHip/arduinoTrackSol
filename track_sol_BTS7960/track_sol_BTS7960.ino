@@ -47,8 +47,8 @@ int captAnemo; // valeur entre 0 et 1023
 //************************//
 // Variables du programme //
 //************************//
-#define vitMotIH        205  
-#define vitMotEO        75
+#define vitMotIH        205  // a toi de voir
+#define vitMotEO        90
 #define timeBoucle      1
 #define seuilLum        130
 #define seuilAnemo      150
@@ -162,14 +162,17 @@ void loop() {
     {
       captfdcIH = digitalRead(FdcIH);
       Serial.println ("Il ya du vent");
-      while (captAnemo >= seuilAnemo){
-        if (captfdcIH == 0){
-            motorIH.stop();
-            Serial.println("capt Activé Break");
-            break;
-          }
+      
+      while (captfdcIH == 1){        
         motorIH.back();
         captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur               
+      }
+      motorIH.stop();
+      Serial.println("capt Activé Break");
+      Serial.println("delay de 5 min pour éviter les coups de vent");
+      for(byte h=0; h<5; h++) // h = 60 represente 60 min
+      { 
+        delay(60000UL);  //ceci motre une pause de 60sec 
       }
       motorIH.stop();
       Serial.println("cycle il ya du vent terminer");   
