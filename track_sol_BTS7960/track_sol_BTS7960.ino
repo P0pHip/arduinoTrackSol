@@ -17,28 +17,28 @@
 #define LenIH     4
 #define RenIH     5
 
-#define FdcIH           24       // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D24 de l'arduino
-#define FdcIV           25       // On associe le Capteur de l'inclinaison vers la verticale à la pin D25 de l'arduino
-#define FdcMV           26       // On associe le Capteur du moteur vers l'avant à la pin D26 de l'arduino
+#define FdcIH           24     // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D24 de l'arduino
+#define FdcIV           25     // On associe le Capteur de l'inclinaison vers la verticale à la pin D25 de l'arduino
+#define FdcMV           26     // On associe le Capteur du moteur vers l'avant à la pin D26 de l'arduino
 
-#define FdcMR           27       // On associe le Capteur du moteur vers l'arrière à la pin D27 de l'arduino
+#define FdcMR           27     // On associe le Capteur du moteur vers l'arrière à la pin D27 de l'arduino
 
-#define cptLumB         3      // On associe le Capteur de luminisoté situé en bas à la pin A3 de l'arduino SUD JAUNE
-#define cptLumH         1      // On associe le Capteur de luminisoté situé en haut à la pin A2 de l'arduino  NORD BLANC
-#define cptLumD         2      // On associe le Capteur de luminisoté situé en bas à droite au pin A2 de l'arduino EST  NOIR
-#define cptLumG         4      // On associe le Capteur de luminisoté situé en bas à gauche au pin A4 de l'arduino  OUEST  MARRON
-#define cptAnemo        7      // On associe le Capteur vent au pin A7 de l'arduino
+#define cptLumB         A3      // On associe le Capteur de luminisoté situé en bas à la pin A3 de l'arduino SUD JAUNE
+#define cptLumH         A1      // On associe le Capteur de luminisoté situé en haut à la pin A2 de l'arduino  NORD BLANC
+#define cptLumD         A2      // On associe le Capteur de luminisoté situé en bas à droite au pin A2 de l'arduino EST  NOIR
+#define cptLumG         A4      // On associe le Capteur de luminisoté situé en bas à gauche au pin A4 de l'arduino  OUEST  MARRON
+#define cptAnemo        A7      // On associe le Capteur vent au pin A7 de l'arduino
 
 //*************************//
 // Constantes du programme //
 //*************************//
-BTS7960 motorEO(LenEO, RenEO, LpwmEO, RpwmEO);  //EST-OUEST
-BTS7960 motorIH(LenIH, RenIH, LpwmIH, RpwmIH);  //Inclinaison
+BTS7960 motorEO(LenEO, RenEO, LpwmEO, RpwmEO);  // EST-OUEST
+BTS7960 motorIH(LenIH, RenIH, LpwmIH, RpwmIH);  // Inclinaison
 
-int captfdcIH; //declaration de la variable 0 ou 1 soit ouvert ou fermée
-int captfdcIV; //declaration de la variable 0 ou 1 soit ouvert ou fermée
-int captfdcMV; //declaration de la variable 0 ou 1 soit ouvert ou fermée
-int captfdcMR; //declaration de la variable 0 ou 1 soit ouvert ou fermée
+int captfdcIH; // declaration de la variable 0 ou 1 soit ouvert ou fermée
+int captfdcIV; // declaration de la variable 0 ou 1 soit ouvert ou fermée
+int captfdcMV; // declaration de la variable 0 ou 1 soit ouvert ou fermée
+int captfdcMR; // declaration de la variable 0 ou 1 soit ouvert ou fermée
 int captLumH;  // valeur entre 0 et 1023
 int captLumB;  // valeur entre 0 et 1023
 int captLumG;  // valeur entre 0 et 1023
@@ -59,7 +59,7 @@ int captAnemo; // valeur entre 0 et 1023
 //*******//
 
 void setup() {
- // Configuration de toutes les pins de l'Arduino en "sortie" et "entrée"
+  // Configuration de toutes les pins de l'Arduino en "sortie" et "entrée"
   
   Serial.begin(9600);            // Mise en place de bibliothèque série à 9600 bps 
   Serial.println( "test du setup" );
@@ -68,21 +68,16 @@ void setup() {
   motorEO.begin();        // setup des pins du motor EST-OUEST    
   motorIH.begin();        // setup des pins du moteur INCLINAISON 
   
-  motorEO.enable();       //mise en place des variables qui pouront changer les valeurs de vitesse
-  motorIH.enable();
+  motorEO.enable();       // mise en place des variables qui pouront changer les valeurs de vitesse
+  motorIH.enable();       // mise en place des variables qui pouront changer les valeurs de vitesse
 
-  motorEO.pwm = vitMotEO;  //mise en place de la vitesse des moteurs
+  motorEO.pwm = vitMotEO;  // mise en place de la vitesse des moteurs
   motorIH.pwm = vitMotIH;
 
-  pinMode(FdcIH,     INPUT);
-  pinMode(FdcIV,     INPUT);
-  pinMode(FdcMV,     INPUT);
-  pinMode(FdcMR,     INPUT);
-  pinMode(cptLumH,   INPUT);
-  pinMode(cptLumD,   INPUT);
-  pinMode(cptLumG,   INPUT);
-  pinMode(cptLumB,   INPUT);
-  pinMode(cptAnemo,  INPUT);  
+  pinMode(FdcIH, INPUT);
+  pinMode(FdcIV, INPUT);
+  pinMode(FdcMV, INPUT);
+  pinMode(FdcMR, INPUT);   
  
 }
 
@@ -158,28 +153,6 @@ void loop() {
     Serial.println (captfdcMV);
     Serial.print("Valeur FDC MR: ");
     Serial.println (captfdcMR);    
-
-    /*
-    if(captAnemo > seuilAnemo)
-    {
-      captfdcIH = digitalRead(FdcIH);
-      Serial.println ("Il ya du vent");
-      
-      while (captfdcIH == 1){        
-        motorIH.back();
-        captAnemo = digitalRead(cptAnemo); // lecture du signal du capteur               
-      }
-      motorIH.stop();
-      Serial.println("capt Activé Break");
-      Serial.println("delay de 5 min pour éviter les coups de vent");
-      for(byte h=0; h<5; h++) // h = 60 represente 60 min
-      { 
-        delay(60000UL);  //ceci motre une pause de 60sec 
-      }
-      motorIH.stop();
-      Serial.println("cycle il ya du vent terminer");   
-    }
-   */
     
     if (analogRead(cptLumD)<= analogRead(cptLumG))
     {
