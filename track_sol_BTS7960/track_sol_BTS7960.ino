@@ -48,10 +48,10 @@ int captAnemo; // valeur entre 0 et 1023
 //************************//
 // Variables du programme //
 //************************//
-#define vitMotIH        205  // a toi de voir
-#define vitMotEO        90
+#define vitMotIH        255  // a toi de voir
+#define vitMotEO        80
 #define timeBoucle      1
-#define seuilLum        130
+#define seuilLum        150
 #define seuilAnemo      150
 
 //*******//
