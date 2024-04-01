@@ -172,7 +172,7 @@ void loop() {
       changeVitesseMoteurPontMoteur(0);
       Serial.println("capt Activé Break");
       Serial.println("delay de 5 min pour éviter les coups de vent");
-      for(byte h=0; h<5; h++) // h = 60 represente 60 min
+      for(byte h=0; h<2; h++) // h = 60 represente 60 min
       { 
         delay(60000UL);  //ceci motre une pause de 60sec 
       }
@@ -186,7 +186,7 @@ void loop() {
       Serial.println("Soleil time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 60sec 
+        delay(40000UL);  //ceci motre une pause de 60sec 
       }
       if (analogRead(cptLumD)<analogRead(cptLumG))
       {
@@ -211,7 +211,7 @@ void loop() {
       Serial.println("Retour time");
       for(byte h=0; h< timeBoucle ; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 30sec 
+        delay(40000UL);  //ceci motre une pause de 30sec 
       }
       if (analogRead(cptLumD)>analogRead(cptLumG))
       {
@@ -237,7 +237,7 @@ void loop() {
       Serial.println("Horizon time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 30 sec
+        delay(40000UL);  //ceci motre une pause de 30 sec
       }
       if (analogRead(cptLumH)>analogRead(cptLumB))
       {
@@ -263,7 +263,7 @@ void loop() {
       Serial.println("Vertical time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 60 sec 
+        delay(40000UL);  //ceci motre une pause de 60 sec 
       }
       if (analogRead(cptLumH)<analogRead(cptLumB))
       {      

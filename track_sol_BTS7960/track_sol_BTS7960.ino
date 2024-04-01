@@ -51,7 +51,7 @@ int captAnemo; // valeur entre 0 et 1023
 #define vitMotIH        255  // a toi de voir
 #define vitMotEO        80
 #define timeBoucle      1
-#define seuilLum        150
+#define seuilLum        250
 #define seuilAnemo      150
 
 //*******//
@@ -159,7 +159,7 @@ void loop() {
       Serial.println("Soleil time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 60sec 
+        delay(40000UL);  //ceci motre une pause de 60sec 
       }
       if (analogRead(cptLumD)<analogRead(cptLumG))
       {
@@ -184,7 +184,7 @@ void loop() {
       Serial.println("Retour time");
       for(byte h=0; h< timeBoucle ; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 30sec 
+        delay(40000UL);  //ceci motre une pause de 30sec 
       }
       if (analogRead(cptLumD)>analogRead(cptLumG))
       {
@@ -210,7 +210,7 @@ void loop() {
       Serial.println("Horizon time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 30 sec
+        delay(40000UL);  //ceci motre une pause de 30 sec
       }
       if (analogRead(cptLumH)>analogRead(cptLumB))
       {
@@ -235,7 +235,7 @@ void loop() {
       Serial.println("Vertical time");
       for(byte h=0; h<timeBoucle; h++) // h = 60 represente 60 min
       { 
-        delay(60000UL);  //ceci motre une pause de 30 sec 
+        delay(40000UL);  //ceci motre une pause de 30 sec 
       }
       if (analogRead(cptLumH)<analogRead(cptLumB))
       {      
