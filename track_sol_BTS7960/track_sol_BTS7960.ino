@@ -51,7 +51,7 @@ int captAnemo; // valeur entre 0 et 1023
 #define vitMotIH        255  // a toi de voir
 #define vitMotEO        80
 #define timeBoucle      1
-#define seuilLum        250
+#define seuilLum        200
 #define seuilAnemo      150
 
 //*******//
