@@ -20,7 +20,6 @@
 #define FdcIH           24     // On associe le Capteur de l'inclinaison vers l'Horizontale à la pin D24 de l'arduino
 #define FdcIV           25     // On associe le Capteur de l'inclinaison vers la verticale à la pin D25 de l'arduino
 #define FdcMV           26     // On associe le Capteur du moteur vers l'avant à la pin D26 de l'arduino
-
 #define FdcMR           27     // On associe le Capteur du moteur vers l'arrière à la pin D27 de l'arduino
 
 #define cptLumB         A3      // On associe le Capteur de luminisoté situé en bas à la pin A3 de l'arduino SUD JAUNE
@@ -122,7 +121,8 @@ void loop() {
 
   //loop d'exécution du programme quand la luminosité est supérieur au seuil
 
-  while(analogRead(cptLumB)>= seuilLum || analogRead(cptLumH)>= seuilLum || analogRead(cptLumG)>=seuilLum || analogRead(cptLumD)>=seuilLum){
+  while(analogRead(cptLumB)>= seuilLum || analogRead(cptLumH)>= seuilLum || analogRead(cptLumG)>=seuilLum || analogRead(cptLumD)>=seuilLum)
+  {
     
     captLumH = analogRead(cptLumH);
     captLumB = analogRead(cptLumB); //lecture des valeurs
