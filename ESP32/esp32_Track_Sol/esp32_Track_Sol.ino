@@ -16,7 +16,7 @@
 #define RpwmEO    15     // Moteur Soleil
 #define LpwmEO    2
 #define LenEO     0
-#define RenEO     16
+#define RenEO     4
 
 #define RpwmIH    17     // Moteur Inclinaison
 #define LpwmIH    5
