@@ -43,7 +43,7 @@ BTS7960 motorIH(LenIH, RenIH, LpwmIH, RpwmIH);  // Inclinaison
 // Variables du programme //
 //************************//
 #define vitMotIH        255  // a toi de voir
-#define vitMotEO        80
+#define vitMotEO        255
 #define timeBoucle      1 // nombre de paquet de 30 sec
 #define seuilLum        200
 
@@ -60,7 +60,7 @@ void tcaSelect(uint8_t i) {
 }
 
 void tcaSetup(){
-  for(int i =0; i<3; i++){
+  for(int i =0; i<4; i++){
     tcaSelect(i);
     switch (i){
       case 0:
