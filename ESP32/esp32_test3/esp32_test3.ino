@@ -216,20 +216,23 @@ void stopAllMotors() {
 }
 
 void resetTrackSun() {
-  Serial.println("je me remet a zéro");
-
-  // Move motorEO back until FdcEst is LOW
-  while (digitalRead(FdcEst) == HIGH) {
-    motorEO.back();
-  }
-  motorEO.stop();
+  Serial.println("je me remet a zéro");  
   
   // Move motorIH back until FdcIH is LOW
   Serial.println("mise a plat");
   while (digitalRead(FdcIH) == HIGH) {
     motorIH.back();
-  }
+  }  
   motorIH.stop();
+  delay(2000);
+
+  // Move motorEO back until FdcEst is LOW
+  Serial.println("retour à l'est");
+  while (digitalRead(FdcEst) == HIGH) {
+    motorEO.back();
+  }
+  motorEO.stop();
+  delay(2000);
   
   // Ensure all motors are stopped
   stopAllMotors();
