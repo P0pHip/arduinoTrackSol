@@ -122,7 +122,9 @@ void loop() {
     Serial.println("MotorInclinaison Step");
     trackSun(motorIH, captfdcIH, captfdcIV, luxNord, luxSud);
   }else{
-    resetTrackSun();
+    //resetTrackSun();
+    overhaul();
+    eastReturn();
   }
 
   //resetTrackSun();
@@ -238,4 +240,24 @@ void resetTrackSun() {
   stopAllMotors();
   
   Serial.println("cycle retour a zéro terminer");
+}
+
+void overhaul() {
+  Serial.println("mise a plat");
+  while (digitalRead(FdcIH) == HIGH) {
+    motorIH.back();
+    delay(100);
+  }  
+  motorIH.stop();
+  delay(2000);
+}
+
+void eastReturn(){
+  Serial.println("retour à l'est");
+  while (digitalRead(FdcEst) == HIGH) {
+    motorEO.back();
+    delay(100);
+  }
+  motorEO.stop();
+  delay(2000);
 }
