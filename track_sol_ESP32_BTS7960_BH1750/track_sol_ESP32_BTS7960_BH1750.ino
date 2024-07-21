@@ -125,6 +125,7 @@ void loop() {
     //resetTrackSun();
     overhaul();
     eastReturn();
+    stopAllMotors();
   }
 
   //resetTrackSun();
