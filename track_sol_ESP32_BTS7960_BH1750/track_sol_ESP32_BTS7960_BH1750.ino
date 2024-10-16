@@ -50,7 +50,7 @@ int captfdcOU; // declaration de la variable 0 ou 1 soit ouvert ou fermée
 //************************//
 #define vitMotIH        255  // a toi de voir
 #define vitMotEO        255
-#define timeBoucle      1 // nombre de paquet de 30 sec
+#define timeBoucle      2 // nombre de paquet de 30 sec
 #define seuilLum        300
 
 
@@ -113,12 +113,12 @@ void loop() {
     // Ici, vous pouvez implémenter votre algorithme pour le suivi solaire
     // Utilisez les fonctions des moteurs BTS7960 (motorEO et motorIH) pour déplacer les moteurs en conséquence
     // Assurez-vous de prendre en compte les capteurs de fin de course (FDC) pour la sécurité
-    delay(10000);
+    delay(30000);
     // Exemple d'utilisation :
     Serial.println("MotorSun step");
     trackSun(motorEO, captfdcES, captfdcOU, luxEst, luxOuest);
 
-    delay(10000);
+    delay(30000);
     Serial.println("MotorInclinaison Step");
     trackSun(motorIH, captfdcIH, captfdcIV, luxNord, luxSud);
   }else{
