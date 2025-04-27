@@ -48,7 +48,7 @@ int captfdcOU; // declaration de la variable 0 ou 1 soit ouvert ou fermée
 //************************//
 // Variables du programme //
 //************************//
-#define vitMotIH        255  // a toi de voir
+#define vitMotIH        80  // a toi de voir
 #define vitMotEO        255
 #define timeboucle      20000 // nombre de millisecondes
 #define seuilLum        300
@@ -63,7 +63,7 @@ void tcaSelect(uint8_t i) {
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Wire.begin();
   Serial.println( "test du setup" );
 
