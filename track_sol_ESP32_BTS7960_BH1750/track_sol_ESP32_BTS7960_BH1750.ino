@@ -48,8 +48,8 @@ int captfdcOU; // declaration de la variable 0 ou 1 soit ouvert ou fermée
 //************************//
 // Variables du programme //
 //************************//
-#define vitMotIH        80  // a toi de voir
-#define vitMotEO        255
+#define vitMotIH        80  // a toi de voir 255 SUR UN PROJET
+#define vitMotEO        255 // 80 SUR UN PROJET
 #define timeboucle      20000 // nombre de millisecondes
 #define seuilLum        300
 

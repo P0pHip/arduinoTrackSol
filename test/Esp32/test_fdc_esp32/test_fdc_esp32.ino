@@ -6,10 +6,10 @@
 //***********************************************************************//
 // Association des entrées des fins de course, aux sorties utilisées sur l'ESP32 //
 //***********************************************************************//
-#define FdcIH           34     // Capteur de l'inclinaison vers l'Horizontale
-#define FdcVert         35     // Capteur de l'inclinaison vers la verticale
-#define FdcEst          32     // Capteur du moteur vers l'avant
-#define FdcOuest        33     // Capteur du moteur vers l'arrière
+#define FdcIH           25     // Capteur de l'inclinaison vers l'Horizontale
+#define FdcIV           26     // Capteur de l'inclinaison vers la verticale
+#define FdcEst          27     // Capteur du moteur vers l'avant
+#define FdcOuest        14     // Capteur du moteur vers l'arrière
 
 void setup() {
   
@@ -17,7 +17,7 @@ void setup() {
   Serial.print("setup");
   // Initialisation des pins des fins de courses comme entrées
   pinMode(FdcIH,    INPUT);
-  pinMode(FdcVert,  INPUT);
+  pinMode(FdcIV,  INPUT);
   pinMode(FdcEst,   INPUT);
   pinMode(FdcOuest, INPUT);
 }
@@ -25,7 +25,7 @@ void setup() {
 void loop() {
   // Lecture des états des fins de courses
   int stateFdcIH = digitalRead(FdcIH);
-  int stateFdcVert = digitalRead(FdcVert);
+  int stateFdcIV = digitalRead(FdcIV);
   int stateFdcEst = digitalRead(FdcEst);
   int stateFdcOuest = digitalRead(FdcOuest);
 
@@ -34,7 +34,7 @@ void loop() {
   Serial.println(stateFdcIH);
   
   Serial.print("État FdcIV (Vertical): ");
-  Serial.println(stateFdcVert);
+  Serial.println(stateFdcIV);
   
   Serial.print("État FdcEst (Avant): ");
   Serial.println(stateFdcEst);
