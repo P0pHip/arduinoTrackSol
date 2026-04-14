@@ -15,7 +15,7 @@ void miseAPlat();
 // Ramène la rotation vers l'Est (jusqu'au FDC_EST)
 void retourEst();
 
-// Séquence de mise en sécurité : arrêt + plat + Est
+// Séquence de mise en sécurité : arrêt + plat
 void mettreEnSecurite();
 
 // Un step de tracking sur un axe.

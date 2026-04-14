@@ -40,9 +40,10 @@
 //   DÉFINITION DES VARIABLES D'ÉTAT PARTAGÉES
 //   (déclarées extern dans state.h — un seul endroit de définition)
 // =====================================================================
-bool   modeAuto    = true;
-bool   alerteVent  = false;
-String cmdMoteur   = "STOP";
+bool   modeAuto         = true;
+bool   alerteVent       = false;
+bool   enPositionRepos  = false;
+String cmdMoteur        = "STOP";
 unsigned long tDernierCmd = 0;
 String journal     = "";
 
@@ -131,6 +132,7 @@ void loop() {
     if (luxOuest > maxLux) maxLux = luxOuest;
 
     if (maxLux >= SEUIL_LUM) {
+      enPositionRepos = false;   // le soleil est là, la prochaine nuit relancera le retour
       ajouterLog("--- Tracking step ---");
       trackSun(motorEO, fdcES, fdcOU, luxEst,  luxOuest);  // axe Est-Ouest
 
@@ -138,10 +140,13 @@ void loop() {
         trackSun(motorIH, fdcIH, fdcIV, luxNord, luxSud);  // axe Inclinaison
       }
     } else {
-      // Nuit ou ciel très couvert → position de repos
-      ajouterLog("Lum < seuil. Position repos.");
-      miseAPlat();
-      retourEst();
+      // Nuit ou ciel très couvert → position de repos (une seule fois jusqu'au prochain tracking)
+      if (!enPositionRepos) {
+        ajouterLog("Lum < seuil. Position repos.");
+        miseAPlat();
+        retourEst();
+        enPositionRepos = true;
+      }
     }
   }
 }

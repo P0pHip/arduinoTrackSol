@@ -37,8 +37,9 @@
 
 // ── Capteur de vent (MAÎTRE uniquement) ──────────────────────────────
 #if IS_MASTER
-  #define WIND_PIN        34    // Pin ADC1 analogique (0 – 4095 sur ESP32)
-  #define WIND_THRESHOLD  25
+  #define WIND_PIN            34    // Pin ADC1 analogique (0 – 4095 sur ESP32)
+  #define WIND_SAMPLE_MS     1000   // durée de mesure par lecture (ms) — 1s = mesure propre
+  #define WIND_THRESHOLD_KMH   50   // vitesse maxi avant alerte (km/h) — 1 tr/s = 2.4 km/h
 #endif
 
 // ── Multiplexeur I²C ─────────────────────────────────────────────────
