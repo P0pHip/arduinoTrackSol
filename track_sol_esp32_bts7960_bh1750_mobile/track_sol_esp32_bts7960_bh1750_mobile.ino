@@ -1,3 +1,4 @@
+
 /*
  * Tracker Solaire ESP32 – Version avec interface web embarquée
  *
@@ -25,6 +26,8 @@
  */
 
 #include <Wire.h>
+#include <WiFi.h>
+#include <WebServer.h>
 #include "config.h"
 #include "state.h"
 #include "logger.h"
