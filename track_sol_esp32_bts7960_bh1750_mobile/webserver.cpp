@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "sensors.h"
 #include "motors.h"
+#include "settings.h"
 #include "html_page.h"
 #include "webserver.h"
 
@@ -44,7 +45,11 @@ static void handleData() {
 #if IS_MASTER
   json += "\"ventVal\":"   + String(valeurVent) + ",";
 #endif
-  json += "\"journal\":\""  + echapperJson(journal) + "\"";
+  json += "\"journal\":\""  + echapperJson(journal) + "\",";
+  json += "\"vitEO\":"     + String(vitMotEO)  + ",";
+  json += "\"vitIH\":"     + String(vitMotIH)  + ",";
+  json += "\"seuilLum\":"  + String(seuilLum)  + ",";
+  json += "\"seuilVent\":" + String(seuilVent);
   json += "}";
 
   server.sendHeader("Cache-Control", "no-cache");
@@ -120,6 +125,40 @@ static void handleResetAlerteVent() {
 }
 
 // =====================================================================
+//   ROUTE  POST /admin/login?pin=XXXXXXXX
+//   Vérifie le PIN admin. Répond {"ok":true} ou {"ok":false}.
+// =====================================================================
+static void handleAdminLogin() {
+  if (!server.hasArg("pin")) { server.send(400, "text/plain", "arg manquant"); return; }
+  bool ok = (server.arg("pin") == ADMIN_PIN);
+  server.send(200, "application/json", ok ? "{\"ok\":true}" : "{\"ok\":false}");
+}
+
+// =====================================================================
+//   ROUTE  POST /admin/config?pin=XX&vitEO=X&vitIH=X&seuilLum=X&seuilVent=X
+//   Vérifie le PIN, met à jour les paramètres en RAM et les sauvegarde en NVS.
+// =====================================================================
+static void handleAdminConfig() {
+  if (!server.hasArg("pin") || server.arg("pin") != ADMIN_PIN) {
+    server.send(403, "text/plain", "PIN incorrect");
+    return;
+  }
+
+  if (server.hasArg("vitEO"))    vitMotEO  = constrain(server.arg("vitEO").toInt(),    0, 255);
+  if (server.hasArg("vitIH"))    vitMotIH  = constrain(server.arg("vitIH").toInt(),    0, 255);
+  if (server.hasArg("seuilLum")) seuilLum  = constrain(server.arg("seuilLum").toInt(), 0, 100000);
+  if (server.hasArg("seuilVent")) seuilVent = constrain(server.arg("seuilVent").toInt(), 0, 300);
+
+  applyMotorSettings();
+  saveSettings();
+
+  ajouterLog("Admin: vitEO=" + String(vitMotEO) + " vitIH=" + String(vitMotIH)
+             + " lumSeuil=" + String(seuilLum) + " ventSeuil=" + String(seuilVent));
+
+  server.send(200, "text/plain", "OK");
+}
+
+// =====================================================================
 //   INTERFACE PUBLIQUE
 // =====================================================================
 void setupServeur() {
@@ -129,6 +168,8 @@ void setupServeur() {
   server.on("/moteur",            HTTP_POST, handleMoteur);
   server.on("/alerte_vent",       HTTP_POST, handleAlerteVent);
   server.on("/reset_alerte_vent", HTTP_POST, handleResetAlerteVent);
+  server.on("/admin/login",       HTTP_POST, handleAdminLogin);
+  server.on("/admin/config",      HTTP_POST, handleAdminConfig);
   server.begin();
 }
 

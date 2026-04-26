@@ -131,6 +131,66 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
       font-size: 0.72em; font-family: 'Consolas', monospace;
     }
     .log-ligne { padding: 1px 0; color: #c9d1d9; }
+
+    /* ── Bouton Admin ────────────────────────────────── */
+    .btn-admin-open {
+      display: block; width: 100%; padding: 10px;
+      background: #21262d; border: 1px solid #30363d;
+      border-radius: 10px; color: #8b949e;
+      font-size: 0.88em; cursor: pointer;
+      text-align: center; margin-bottom: 12px;
+      transition: background .2s, color .2s;
+    }
+    .btn-admin-open:active { background: #30363d; color: #e6edf3; }
+
+    /* ── Modal Admin ─────────────────────────────────── */
+    .admin-overlay {
+      display: none; position: fixed; inset: 0;
+      background: #000000bb; z-index: 100;
+      align-items: center; justify-content: center;
+    }
+    .admin-overlay.visible { display: flex; }
+    .admin-modal {
+      background: #161b22; border: 1px solid #30363d;
+      border-radius: 12px; padding: 22px;
+      width: 92%; max-width: 360px;
+    }
+    .admin-modal-title {
+      text-align: center; font-weight: bold;
+      font-size: 1.05em; margin-bottom: 16px;
+    }
+    .admin-pin-input {
+      width: 100%; padding: 12px; margin: 4px 0 6px;
+      background: #0d1117; border: 1px solid #30363d;
+      border-radius: 8px; color: #e6edf3;
+      font-size: 1.4em; text-align: center; letter-spacing: 6px;
+      outline: none;
+    }
+    .admin-pin-input:focus { border-color: #f9a825; }
+    .admin-err { color: #f47067; font-size: 0.8em; text-align: center; min-height: 18px; }
+    .admin-label {
+      display: block; font-size: 0.76em;
+      color: #8b949e; margin-top: 10px; margin-bottom: 3px;
+    }
+    .admin-field {
+      width: 100%; padding: 9px 10px;
+      background: #0d1117; border: 1px solid #30363d;
+      border-radius: 8px; color: #e6edf3; font-size: 1em;
+      outline: none;
+    }
+    .admin-field:focus { border-color: #f9a825; }
+    .admin-save-msg { font-size: 0.82em; text-align: center; min-height: 20px; margin-top: 8px; }
+    .admin-row { display: flex; gap: 8px; margin-top: 14px; }
+    .btn-admin-cancel {
+      flex: 1; padding: 11px; border-radius: 8px;
+      border: 1px solid #30363d; background: #21262d;
+      color: #e6edf3; cursor: pointer; font-size: 0.9em;
+    }
+    .btn-admin-ok {
+      flex: 2; padding: 11px; border-radius: 8px;
+      border: none; background: #f9a825;
+      color: #000; cursor: pointer; font-size: 0.9em; font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -218,11 +278,60 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
   <div id="log-zone"></div>
 </div>
 
+<!-- BOUTON ADMIN -->
+<button class="btn-admin-open" onclick="ouvrirAdmin()">&#128274; Admin</button>
+
+<!-- MODAL ADMIN -->
+<div class="admin-overlay" id="admin-overlay" onclick="if(event.target===this)fermerAdmin()">
+  <div class="admin-modal">
+
+    <!-- Étape 1 : saisie du PIN -->
+    <div id="admin-pin-step">
+      <div class="admin-modal-title" style="color:#f9a825;">&#128272; Acc&egrave;s Administrateur</div>
+      <input class="admin-pin-input" type="password" id="admin-pin-input"
+             maxlength="8" inputmode="numeric" pattern="[0-9]*"
+             placeholder="&#9679; &#9679; &#9679; &#9679; &#9679; &#9679; &#9679; &#9679;"
+             onkeydown="if(event.key==='Enter')verifierPin()">
+      <div class="admin-err" id="admin-pin-err"></div>
+      <div class="admin-row">
+        <button class="btn-admin-cancel" onclick="fermerAdmin()">Annuler</button>
+        <button class="btn-admin-ok"     onclick="verifierPin()">D&eacute;verrouiller</button>
+      </div>
+    </div>
+
+    <!-- Étape 2 : formulaire de configuration -->
+    <div id="admin-config-step" style="display:none;">
+      <div class="admin-modal-title" style="color:#56d364;">&#9881;&#65039; Configuration</div>
+
+      <label class="admin-label">Vitesse moteur Est-Ouest (0 &ndash; 255)</label>
+      <input class="admin-field" type="number" id="cfg-viteo" min="0" max="255">
+
+      <label class="admin-label">Vitesse moteur Inclinaison (0 &ndash; 255)</label>
+      <input class="admin-field" type="number" id="cfg-vih"   min="0" max="255">
+
+      <label class="admin-label">Seuil luminosit&eacute; (lux)</label>
+      <input class="admin-field" type="number" id="cfg-lum"   min="0" max="100000">
+
+      <label class="admin-label">Seuil vent (km/h)</label>
+      <input class="admin-field" type="number" id="cfg-vent"  min="0" max="300">
+
+      <div class="admin-save-msg" id="admin-save-msg"></div>
+      <div class="admin-row">
+        <button class="btn-admin-cancel" onclick="fermerAdmin()">&#128274; Fermer</button>
+        <button class="btn-admin-ok"     onclick="sauvegarderConfig()">&#128190; Sauvegarder</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
 // ── État local ───────────────────────────────────────────────────────
 let modeAutoLocal  = true;
 let timerMoteur    = null;
 let dernierJournal = "";
+let dernierData    = null;   // dernière réponse /data, pour pré-remplir le formulaire admin
+let adminPin       = "";
 
 // ── Bascule Auto / Manuel ────────────────────────────────────────────
 function basculerMode(cb) {
@@ -273,8 +382,79 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// ── Admin : ouverture / fermeture du modal ───────────────────────────
+function ouvrirAdmin() {
+  document.getElementById('admin-overlay').classList.add('visible');
+  document.getElementById('admin-pin-step').style.display   = 'block';
+  document.getElementById('admin-config-step').style.display = 'none';
+  document.getElementById('admin-pin-input').value = '';
+  document.getElementById('admin-pin-err').textContent = '';
+  setTimeout(() => document.getElementById('admin-pin-input').focus(), 50);
+}
+
+function fermerAdmin() {
+  document.getElementById('admin-overlay').classList.remove('visible');
+  adminPin = '';
+}
+
+// ── Admin : vérification du PIN ──────────────────────────────────────
+async function verifierPin() {
+  const pin = document.getElementById('admin-pin-input').value;
+  const err = document.getElementById('admin-pin-err');
+  if (!/^[0-9]{8}$/.test(pin)) {
+    err.textContent = 'Le PIN doit contenir exactement 8 chiffres';
+    return;
+  }
+  try {
+    const r = await fetch('/admin/login?pin=' + encodeURIComponent(pin), { method: 'POST' });
+    const d = await r.json();
+    if (d.ok) {
+      adminPin = pin;
+      document.getElementById('admin-pin-step').style.display    = 'none';
+      document.getElementById('admin-config-step').style.display = 'block';
+      if (dernierData) {
+        document.getElementById('cfg-viteo').value = dernierData.vitEO;
+        document.getElementById('cfg-vih').value   = dernierData.vitIH;
+        document.getElementById('cfg-lum').value   = dernierData.seuilLum;
+        document.getElementById('cfg-vent').value  = dernierData.seuilVent;
+      }
+    } else {
+      err.textContent = '\u274C PIN incorrect';
+    }
+  } catch(_) {
+    err.textContent = '\u26A0 Erreur r\u00e9seau';
+  }
+}
+
+// ── Admin : sauvegarde de la configuration ───────────────────────────
+async function sauvegarderConfig() {
+  const params = new URLSearchParams({
+    pin:       adminPin,
+    vitEO:     document.getElementById('cfg-viteo').value,
+    vitIH:     document.getElementById('cfg-vih').value,
+    seuilLum:  document.getElementById('cfg-lum').value,
+    seuilVent: document.getElementById('cfg-vent').value
+  });
+  const msg = document.getElementById('admin-save-msg');
+  try {
+    const r = await fetch('/admin/config?' + params.toString(), { method: 'POST' });
+    if (r.ok) {
+      msg.style.color = '#56d364';
+      msg.textContent = '\u2713 Param\u00e8tres sauvegard\u00e9s !';
+    } else {
+      msg.style.color = '#f47067';
+      msg.textContent = '\u2717 Erreur lors de la sauvegarde';
+    }
+  } catch(_) {
+    msg.style.color = '#f47067';
+    msg.textContent = '\u26A0 Erreur r\u00e9seau';
+  }
+  setTimeout(() => { msg.textContent = ''; }, 3000);
+}
+
 // ── Mise à jour de l'interface ───────────────────────────────────────
 function majInterface(d) {
+  dernierData = d;
   // Luminosité
   document.getElementById('lux-n').textContent = d.luxN.toFixed(1);
   document.getElementById('lux-s').textContent = d.luxS.toFixed(1);

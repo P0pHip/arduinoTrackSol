@@ -7,6 +7,7 @@
 #include "state.h"
 #include "logger.h"
 #include "motors.h"
+#include "settings.h"
 #include "wind.h"
 
 int valeurVent = 0;
@@ -14,7 +15,7 @@ int valeurVent = 0;
 void setupVent() {
   pinMode(WIND_PIN, INPUT);
   ajouterLog("[MAITRE] Capteur de vent actif, pin=" + String(WIND_PIN)
-             + ", seuil=" + String(WIND_THRESHOLD_KMH) + " km/h"
+             + ", seuil=" + String(seuilVent) + " km/h"
              + ", fenetre=" + String(WIND_SAMPLE_MS) + "ms");
 }
 
@@ -51,14 +52,14 @@ static int mesurerVitesse() {
 void verifierVent() {
   valeurVent = mesurerVitesse();   // km/h
 
-  if (valeurVent > WIND_THRESHOLD_KMH && !alerteVent) {
+  if (valeurVent > seuilVent && !alerteVent) {
     alerteVent = true;
     ajouterLog("ALERTE VENT ! " + String(valeurVent)
-               + " km/h > seuil=" + String(WIND_THRESHOLD_KMH) + " km/h");
+               + " km/h > seuil=" + String(seuilVent) + " km/h");
     mettreEnSecurite();
     notifierEsclave(true);
 
-  } else if (valeurVent <= WIND_THRESHOLD_KMH && alerteVent) {
+  } else if (valeurVent <= seuilVent && alerteVent) {
     alerteVent = false;
     modeAuto   = true;
     ajouterLog("Vent retombe (" + String(valeurVent) + " km/h). Reprise auto.");

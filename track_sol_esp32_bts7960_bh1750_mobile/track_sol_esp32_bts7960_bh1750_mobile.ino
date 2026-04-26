@@ -29,6 +29,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include "config.h"
+#include "settings.h"
 #include "state.h"
 #include "logger.h"
 #include "sensors.h"
@@ -59,6 +60,7 @@ void setup() {
   Serial.begin(115200);
   Wire.begin();
 
+  loadSettings();
   setupMoteurs();
   setupCapteurs();
 
@@ -131,7 +133,7 @@ void loop() {
     if (luxEst   > maxLux) maxLux = luxEst;
     if (luxOuest > maxLux) maxLux = luxOuest;
 
-    if (maxLux >= SEUIL_LUM) {
+    if (maxLux >= seuilLum) {
       enPositionRepos = false;   // le soleil est là, la prochaine nuit relancera le retour
       ajouterLog("--- Tracking step ---");
       trackSun(motorEO, fdcES, fdcOU, luxEst,  luxOuest);  // axe Est-Ouest

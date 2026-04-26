@@ -6,6 +6,7 @@
 #include "sensors.h"
 #include "webserver.h"  // uniquement pour tickServeur()
 #include "motors.h"
+#include "settings.h"
 
 // ── Définition des objets moteurs ─────────────────────────────────────
 BTS7960 motorEO(LenEO, RenEO, LpwmEO, RpwmEO);
@@ -13,8 +14,14 @@ BTS7960 motorIH(LenIH, RenIH, LpwmIH, RpwmIH);
 
 // ── Initialisation ────────────────────────────────────────────────────
 void setupMoteurs() {
-  motorEO.begin(); motorEO.enable(); motorEO.pwm = VIT_MOT_EO;
-  motorIH.begin(); motorIH.enable(); motorIH.pwm = VIT_MOT_IH;
+  motorEO.begin(); motorEO.enable(); motorEO.pwm = vitMotEO;
+  motorIH.begin(); motorIH.enable(); motorIH.pwm = vitMotIH;
+}
+
+// ── Applique les vitesses runtime aux objets moteurs ─────────────────
+void applyMotorSettings() {
+  motorEO.pwm = vitMotEO;
+  motorIH.pwm = vitMotIH;
 }
 
 // ── Arrêt d'urgence ───────────────────────────────────────────────────
