@@ -41,7 +41,7 @@
 //   DÉFINITION DES VARIABLES D'ÉTAT PARTAGÉES
 //   (déclarées extern dans state.h — un seul endroit de définition)
 // =====================================================================
-bool   modeAuto         = true;
+bool   modeAuto         = false;  // Démarrage en MANUEL — évite tout tracking auto après un reboot
 bool   alerteVent       = false;
 bool   enPositionRepos  = false;
 String cmdMoteur        = "STOP";
