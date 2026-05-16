@@ -60,6 +60,15 @@ void setup() {
   Serial.begin(115200);
   Wire.begin();
 
+  // GPIO15 (RpwmEO) et GPIO5 (LpwmIH) sont des strapping pins ESP32 avec
+  // pull-up interne → HIGH au boot → moteurs partent avant begin().
+  // GPIO17 (RpwmIH) et GPIO2 (LpwmEO) flottent ou sont pull-down : risque
+  // plus faible mais on force les 4 PWM à LOW par sécurité.
+  pinMode(RpwmEO, OUTPUT); digitalWrite(RpwmEO, LOW);
+  pinMode(LpwmEO, OUTPUT); digitalWrite(LpwmEO, LOW);
+  pinMode(RpwmIH, OUTPUT); digitalWrite(RpwmIH, LOW);
+  pinMode(LpwmIH, OUTPUT); digitalWrite(LpwmIH, LOW);
+
   loadSettings();
   setupMoteurs();
   setupCapteurs();
@@ -91,6 +100,7 @@ void setup() {
 
   setupServeur();
   lireCapteurs();
+  arreterMoteurs();  // filet de sécurité final avant le loop
 
   Serial.println("Demarrage termine.");
 }

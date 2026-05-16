@@ -16,6 +16,10 @@ BTS7960 motorIH(LenIH, RenIH, LpwmIH, RpwmIH);
 void setupMoteurs() {
   motorEO.begin(); motorEO.enable(); motorEO.pwm = vitMotEO;
   motorIH.begin(); motorIH.enable(); motorIH.pwm = vitMotIH;
+  // Stop explicite : GPIO15 (RpwmEO) a un pull-up au boot sur ESP32,
+  // ce qui peut démarrer le moteur EO avant que begin() prenne la main.
+  motorEO.stop();
+  motorIH.stop();
 }
 
 // ── Applique les vitesses runtime aux objets moteurs ─────────────────
