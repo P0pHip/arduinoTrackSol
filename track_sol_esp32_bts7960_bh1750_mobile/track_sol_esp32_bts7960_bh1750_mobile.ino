@@ -44,6 +44,7 @@
 bool   modeAuto         = false;  // Démarrage en MANUEL — évite tout tracking auto après un reboot
 bool   alerteVent       = false;
 bool   enPositionRepos  = false;
+bool   autoStartPending = true;   // passage AUTO différé après DELAY_AUTO_START_MS
 String cmdMoteur        = "STOP";
 unsigned long tDernierCmd = 0;
 String journal     = "";
@@ -125,6 +126,13 @@ void loop() {
     tDernierVent = t;
   }
 #endif
+
+  // ── Passage AUTO différé au démarrage ─────────────────────────────
+  if (autoStartPending && !alerteVent && t >= DELAY_AUTO_START_MS) {
+    autoStartPending = false;
+    modeAuto         = true;
+    ajouterLog("Demarrage : passage AUTO apres " + String(DELAY_AUTO_START_MS / 60000UL) + " min.");
+  }
 
   // ── Sécurité moteur manuel : arrêt si plus de commande depuis TIMEOUT
   if (!modeAuto && cmdMoteur != "STOP") {

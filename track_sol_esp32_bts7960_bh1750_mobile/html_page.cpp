@@ -201,7 +201,7 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
 <div class="card">
   <div class="card-title">Mode de fonctionnement</div>
   <div class="mode-row">
-    <div class="mode-badge" id="mode-badge">AUTO</div>
+    <div class="mode-badge manuel" id="mode-badge">MANUEL</div>
     <label class="switch" title="Basculer Auto / Manuel">
       <input type="checkbox" id="mode-toggle" onchange="basculerMode(this)">
       <span class="slider"></span>
@@ -330,7 +330,7 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
 
 <script>
 // ── État local ───────────────────────────────────────────────────────
-let modeAutoLocal  = true;
+let modeAutoLocal  = false;
 let timerMoteur    = null;
 let dernierJournal = "";
 let dernierData    = null;   // dernière réponse /data, pour pré-remplir le formulaire admin
@@ -369,6 +369,8 @@ function envoyerCmd(cmd) {
 
 // Attacher les events aux boutons (souris + tactile)
 document.addEventListener('DOMContentLoaded', function () {
+  majAffichageMode(false);   // état initial cohérent (MANUEL) avant le premier poll
+
   const btns = {
     'btn-eo-f': 'EO_F',
     'btn-eo-b': 'EO_B',

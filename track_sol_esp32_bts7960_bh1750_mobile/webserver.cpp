@@ -65,6 +65,7 @@ static void handleMode() {
   if (!server.hasArg("auto")) { server.send(400, "text/plain", "arg manquant"); return; }
 
   bool nouveau = (server.arg("auto") == "1");
+  autoStartPending = false;   // l'utilisateur prend la main, annuler le passage auto différé
   if (nouveau != modeAuto) {
     modeAuto = nouveau;
     if (!modeAuto) arreterMoteurs();

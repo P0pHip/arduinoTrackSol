@@ -52,10 +52,11 @@
 #define SEUIL_LUM  300
 
 // ── Intervalles de temps (millisecondes) ─────────────────────────────
-#define INTERVAL_CAPTEURS    2000UL
-#define INTERVAL_TRACKING   90000UL
-#define INTERVAL_VENT         500UL
-#define TIMEOUT_MOTEUR_MAN    600UL
+#define INTERVAL_CAPTEURS      2000UL
+#define INTERVAL_TRACKING     90000UL
+#define INTERVAL_VENT           500UL
+#define TIMEOUT_MOTEUR_MAN      600UL
+#define DELAY_AUTO_START_MS  120000UL   // délai avant passage auto en AUTO au démarrage (2 min)
 
 // ── Journal ───────────────────────────────────────────────────────────
 #define JOURNAL_MAX_LIGNES  25
