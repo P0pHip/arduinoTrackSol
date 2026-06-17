@@ -71,9 +71,10 @@ void verifierVent() {
                  + " km/h). Attente stabilisation " + String(delaiRepriseMin) + " min...");
     } else if (millis() - tVentCalme >= (unsigned long)delaiRepriseMin * 60000UL) {
       alerteVent = false;
-      modeAuto   = true;
+      modeAuto   = modeAutoAvantAlerte;   // restaure le mode d'avant l'alerte
       tVentCalme = 0;
-      ajouterLog("Vent stable depuis " + String(delaiRepriseMin) + " min. Reprise auto.");
+      ajouterLog("Vent stable depuis " + String(delaiRepriseMin) + " min. Reprise mode "
+                 + String(modeAuto ? "AUTO" : "MANUEL") + ".");
       notifierEsclave(false);
     }
   }

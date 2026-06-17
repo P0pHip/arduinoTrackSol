@@ -120,8 +120,9 @@ static void handleAlerteVent() {
 static void handleResetAlerteVent() {
   if (alerteVent) {
     alerteVent = false;
-    modeAuto   = true;
-    ajouterLog("Alerte vent levee (info du maitre). Reprise auto.");
+    modeAuto   = modeAutoAvantAlerte;   // restaure le mode d'avant l'alerte
+    ajouterLog("Alerte vent levee (info du maitre). Reprise mode "
+               + String(modeAuto ? "AUTO" : "MANUEL") + ".");
   }
   server.send(200, "text/plain", "OK");
 }

@@ -63,7 +63,8 @@ void retourEst() {
 // Séquence complète : forcer le mode manuel, arrêter, plat, Est
 void mettreEnSecurite() {
   ajouterLog("Mise en securite : arret + plat.");
-  modeAuto = false;
+  modeAutoAvantAlerte = modeAuto;   // mémorise le mode pour restauration après alerte
+  modeAuto            = false;
   arreterMoteurs();
   miseAPlat();
   ajouterLog("Position securite atteinte.");
