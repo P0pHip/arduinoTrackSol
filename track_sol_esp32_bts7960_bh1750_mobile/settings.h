@@ -9,10 +9,11 @@
 //   Sauvegardées en NVS via saveSettings() à chaque modification admin.
 // =====================================================================
 
-extern int vitMotEO;   // vitesse PWM moteur Est-Ouest  (0 – 255)
-extern int vitMotIH;   // vitesse PWM moteur Inclinaison (0 – 255)
-extern int seuilLum;   // seuil de luminosité pour le tracking (lux)
-extern int seuilVent;  // seuil vitesse vent avant alerte (km/h)
+extern int vitMotEO;         // vitesse PWM moteur Est-Ouest  (0 – 255)
+extern int vitMotIH;         // vitesse PWM moteur Inclinaison (0 – 255)
+extern int seuilLum;         // seuil de luminosité pour le tracking (lux)
+extern int seuilVent;        // seuil vitesse vent avant alerte (km/h)
+extern int delaiRepriseMin;  // durée min de vent calme avant reprise auto (minutes)
 
 // Charge les valeurs depuis la NVS ; à appeler une seule fois dans setup().
 void loadSettings();

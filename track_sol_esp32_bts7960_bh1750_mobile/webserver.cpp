@@ -48,8 +48,9 @@ static void handleData() {
   json += "\"journal\":\""  + echapperJson(journal) + "\",";
   json += "\"vitEO\":"     + String(vitMotEO)  + ",";
   json += "\"vitIH\":"     + String(vitMotIH)  + ",";
-  json += "\"seuilLum\":"  + String(seuilLum)  + ",";
-  json += "\"seuilVent\":" + String(seuilVent);
+  json += "\"seuilLum\":"        + String(seuilLum)        + ",";
+  json += "\"seuilVent\":"       + String(seuilVent)       + ",";
+  json += "\"delaiRepriseMin\":" + String(delaiRepriseMin);
   json += "}";
 
   server.sendHeader("Cache-Control", "no-cache");
@@ -144,16 +145,18 @@ static void handleAdminConfig() {
     return;
   }
 
-  if (server.hasArg("vitEO"))    vitMotEO  = constrain(server.arg("vitEO").toInt(),    0, 255);
-  if (server.hasArg("vitIH"))    vitMotIH  = constrain(server.arg("vitIH").toInt(),    0, 255);
-  if (server.hasArg("seuilLum")) seuilLum  = constrain(server.arg("seuilLum").toInt(), 0, 100000);
-  if (server.hasArg("seuilVent")) seuilVent = constrain(server.arg("seuilVent").toInt(), 0, 300);
+  if (server.hasArg("vitEO"))         vitMotEO        = constrain(server.arg("vitEO").toInt(),         0, 255);
+  if (server.hasArg("vitIH"))         vitMotIH        = constrain(server.arg("vitIH").toInt(),         0, 255);
+  if (server.hasArg("seuilLum"))      seuilLum        = constrain(server.arg("seuilLum").toInt(),      0, 100000);
+  if (server.hasArg("seuilVent"))     seuilVent       = constrain(server.arg("seuilVent").toInt(),     0, 300);
+  if (server.hasArg("delaiReprise"))  delaiRepriseMin = constrain(server.arg("delaiReprise").toInt(),  1, 999);
 
   applyMotorSettings();
   saveSettings();
 
   ajouterLog("Admin: vitEO=" + String(vitMotEO) + " vitIH=" + String(vitMotIH)
-             + " lumSeuil=" + String(seuilLum) + " ventSeuil=" + String(seuilVent));
+             + " lumSeuil=" + String(seuilLum) + " ventSeuil=" + String(seuilVent)
+             + " delaiReprise=" + String(delaiRepriseMin) + "min");
 
   server.send(200, "text/plain", "OK");
 }

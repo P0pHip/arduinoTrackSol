@@ -36,6 +36,7 @@
 #define WIND_THRESHOLD_KMH  50
 #define WIND_PIN          34
 #define WIND_SAMPLE_MS  1000
+#define WIND_CALM_DELAY_MS 300000UL // durée min de vent calme avant reprise (ms)
 
 // ── Code PIN admin (8 chiffres) ───────────────────────────────────────
 #define ADMIN_PIN  "00000000"

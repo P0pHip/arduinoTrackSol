@@ -315,6 +315,9 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
       <label class="admin-label">Seuil vent (km/h)</label>
       <input class="admin-field" type="number" id="cfg-vent"  min="0" max="300">
 
+      <label class="admin-label">D&eacute;lai de reprise apr&egrave;s alerte vent (minutes)</label>
+      <input class="admin-field" type="number" id="cfg-delai-reprise" min="1" max="999">
+
       <div class="admin-save-msg" id="admin-save-msg"></div>
       <div class="admin-row">
         <button class="btn-admin-cancel" onclick="fermerAdmin()">&#128274; Fermer</button>
@@ -413,10 +416,11 @@ async function verifierPin() {
       document.getElementById('admin-pin-step').style.display    = 'none';
       document.getElementById('admin-config-step').style.display = 'block';
       if (dernierData) {
-        document.getElementById('cfg-viteo').value = dernierData.vitEO;
-        document.getElementById('cfg-vih').value   = dernierData.vitIH;
-        document.getElementById('cfg-lum').value   = dernierData.seuilLum;
-        document.getElementById('cfg-vent').value  = dernierData.seuilVent;
+        document.getElementById('cfg-viteo').value          = dernierData.vitEO;
+        document.getElementById('cfg-vih').value             = dernierData.vitIH;
+        document.getElementById('cfg-lum').value             = dernierData.seuilLum;
+        document.getElementById('cfg-vent').value            = dernierData.seuilVent;
+        document.getElementById('cfg-delai-reprise').value   = dernierData.delaiRepriseMin;
       }
     } else {
       err.textContent = '\u274C PIN incorrect';
@@ -429,11 +433,12 @@ async function verifierPin() {
 // ── Admin : sauvegarde de la configuration ───────────────────────────
 async function sauvegarderConfig() {
   const params = new URLSearchParams({
-    pin:       adminPin,
-    vitEO:     document.getElementById('cfg-viteo').value,
-    vitIH:     document.getElementById('cfg-vih').value,
-    seuilLum:  document.getElementById('cfg-lum').value,
-    seuilVent: document.getElementById('cfg-vent').value
+    pin:          adminPin,
+    vitEO:        document.getElementById('cfg-viteo').value,
+    vitIH:        document.getElementById('cfg-vih').value,
+    seuilLum:     document.getElementById('cfg-lum').value,
+    seuilVent:    document.getElementById('cfg-vent').value,
+    delaiReprise: document.getElementById('cfg-delai-reprise').value
   });
   const msg = document.getElementById('admin-save-msg');
   try {

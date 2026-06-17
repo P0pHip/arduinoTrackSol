@@ -52,18 +52,30 @@ static int mesurerVitesse() {
 void verifierVent() {
   valeurVent = mesurerVitesse();   // km/h
 
-  if (valeurVent > seuilVent && !alerteVent) {
-    alerteVent = true;
-    ajouterLog("ALERTE VENT ! " + String(valeurVent)
-               + " km/h > seuil=" + String(seuilVent) + " km/h");
-    mettreEnSecurite();
-    notifierEsclave(true);
+  static unsigned long tVentCalme = 0;
 
-  } else if (valeurVent <= seuilVent && alerteVent) {
-    alerteVent = false;
-    modeAuto   = true;
-    ajouterLog("Vent retombe (" + String(valeurVent) + " km/h). Reprise auto.");
-    notifierEsclave(false);
+  if (valeurVent > seuilVent) {
+    tVentCalme = 0;               // toute rafale remet le compteur à zéro
+    if (!alerteVent) {
+      alerteVent = true;
+      ajouterLog("ALERTE VENT ! " + String(valeurVent)
+                 + " km/h > seuil=" + String(seuilVent) + " km/h");
+      notifierEsclave(true);      // esclave prévenu AVANT que le maître bouge
+      mettreEnSecurite();
+    }
+
+  } else if (alerteVent) {
+    if (tVentCalme == 0) {
+      tVentCalme = millis();
+      ajouterLog("Vent retombe (" + String(valeurVent)
+                 + " km/h). Attente stabilisation " + String(delaiRepriseMin) + " min...");
+    } else if (millis() - tVentCalme >= (unsigned long)delaiRepriseMin * 60000UL) {
+      alerteVent = false;
+      modeAuto   = true;
+      tVentCalme = 0;
+      ajouterLog("Vent stable depuis " + String(delaiRepriseMin) + " min. Reprise auto.");
+      notifierEsclave(false);
+    }
   }
 }
 

@@ -34,6 +34,7 @@
 
 // ── Capteur de vent (seuil partagé — défaut settings.cpp) ────────────
 #define WIND_THRESHOLD_KMH  50
+#define WIND_CALM_DELAY_MS  300000UL  // délai stabilisation vent (géré par le maître)
 
 // ── Code PIN admin (8 chiffres) ───────────────────────────────────────
 #define ADMIN_PIN  "00000000"

@@ -8,19 +8,21 @@
 //   Écrasées par loadSettings() si des valeurs NVS existent.
 // =====================================================================
 
-int vitMotEO  = VIT_MOT_EO;
-int vitMotIH  = VIT_MOT_IH;
-int seuilLum  = SEUIL_LUM;
-int seuilVent = WIND_THRESHOLD_KMH;
+int vitMotEO        = VIT_MOT_EO;
+int vitMotIH        = VIT_MOT_IH;
+int seuilLum        = SEUIL_LUM;
+int seuilVent       = WIND_THRESHOLD_KMH;
+int delaiRepriseMin = (int)(WIND_CALM_DELAY_MS / 60000UL);
 
 // ── Chargement depuis la NVS ─────────────────────────────────────────
 void loadSettings() {
   Preferences prefs;
   prefs.begin("tracker", true);  // lecture seule
-  vitMotEO  = prefs.getInt("vitMotEO",  VIT_MOT_EO);
-  vitMotIH  = prefs.getInt("vitMotIH",  VIT_MOT_IH);
-  seuilLum  = prefs.getInt("seuilLum",  SEUIL_LUM);
-  seuilVent = prefs.getInt("seuilVent", WIND_THRESHOLD_KMH);
+  vitMotEO        = prefs.getInt("vitMotEO",        VIT_MOT_EO);
+  vitMotIH        = prefs.getInt("vitMotIH",        VIT_MOT_IH);
+  seuilLum        = prefs.getInt("seuilLum",        SEUIL_LUM);
+  seuilVent       = prefs.getInt("seuilVent",       WIND_THRESHOLD_KMH);
+  delaiRepriseMin = prefs.getInt("delaiReprise",    (int)(WIND_CALM_DELAY_MS / 60000UL));
   prefs.end();
 }
 
@@ -28,9 +30,10 @@ void loadSettings() {
 void saveSettings() {
   Preferences prefs;
   prefs.begin("tracker", false);  // lecture-écriture
-  prefs.putInt("vitMotEO",  vitMotEO);
-  prefs.putInt("vitMotIH",  vitMotIH);
-  prefs.putInt("seuilLum",  seuilLum);
-  prefs.putInt("seuilVent", seuilVent);
+  prefs.putInt("vitMotEO",     vitMotEO);
+  prefs.putInt("vitMotIH",     vitMotIH);
+  prefs.putInt("seuilLum",     seuilLum);
+  prefs.putInt("seuilVent",    seuilVent);
+  prefs.putInt("delaiReprise", delaiRepriseMin);
   prefs.end();
 }
