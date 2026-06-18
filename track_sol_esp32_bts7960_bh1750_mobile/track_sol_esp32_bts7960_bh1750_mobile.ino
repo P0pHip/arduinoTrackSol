@@ -34,7 +34,7 @@
 #include "logger.h"
 #include "sensors.h"
 #include "motors.h"
-#include "webserver.h"
+#include "webserver_routes.h"
 #include "wind.h"
 
 // =====================================================================

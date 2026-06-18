@@ -8,7 +8,7 @@
 #include "motors.h"
 #include "settings.h"
 #include "html_page.h"
-#include "webserver.h"
+#include "webserver_routes.h"
 
 #if IS_MASTER
   #include "wind.h"   // pour valeurVent dans handleData()
