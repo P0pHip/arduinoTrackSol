@@ -14,3 +14,6 @@
 #if !defined(IS_MASTER)
   #error "Aucune config incluse — decommenter UNE ligne dans config.h"
 #endif
+
+// ── Version firmware (incrémenter à chaque build pour vérifier les MAJ OTA) ──
+#define FW_VERSION  "2026.06.21"

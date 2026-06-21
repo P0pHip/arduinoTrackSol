@@ -18,3 +18,5 @@ extern String cmdMoteur;          // commande moteur courante (mode manuel)
 extern unsigned long tDernierCmd; // timestamp de la dernière commande moteur
 
 extern String journal;      // buffer des derniers messages de log
+
+extern bool otaEnCours;     // true = MAJ OTA en cours — coupe moteurs et bloque le tracking

@@ -191,6 +191,7 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
       border: none; background: #f9a825;
       color: #000; cursor: pointer; font-size: 0.9em; font-weight: bold;
     }
+    .fw-foot { text-align:center; color:#8b949e; font-size:0.7em; margin:4px 0 12px; }
   </style>
 </head>
 <body>
@@ -281,6 +282,8 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
 <!-- BOUTON ADMIN -->
 <button class="btn-admin-open" onclick="ouvrirAdmin()">&#128274; Admin</button>
 
+<div class="fw-foot" id="fw-foot">firmware &#8212;</div>
+
 <!-- MODAL ADMIN -->
 <div class="admin-overlay" id="admin-overlay" onclick="if(event.target===this)fermerAdmin()">
   <div class="admin-modal">
@@ -317,6 +320,10 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
 
       <label class="admin-label">D&eacute;lai de reprise apr&egrave;s alerte vent (minutes)</label>
       <input class="admin-field" type="number" id="cfg-delai-reprise" min="1" max="999">
+
+      <label class="admin-label">Mise &agrave; jour firmware (OTA)</label>
+      <a class="btn-admin-cancel" style="display:block;text-align:center;text-decoration:none;margin-top:4px;"
+         href="/update" target="_blank" rel="noopener">&#128228; Ouvrir la page OTA</a>
 
       <div class="admin-save-msg" id="admin-save-msg"></div>
       <div class="admin-row">
@@ -462,6 +469,7 @@ async function sauvegarderConfig() {
 // ── Mise à jour de l'interface ───────────────────────────────────────
 function majInterface(d) {
   dernierData = d;
+  if (d.fwVersion) document.getElementById('fw-foot').textContent = 'firmware ' + d.fwVersion;
   // Luminosité
   document.getElementById('lux-n').textContent = d.luxN.toFixed(1);
   document.getElementById('lux-s').textContent = d.luxS.toFixed(1);
