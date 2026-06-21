@@ -28,15 +28,35 @@ sur le réseau WiFi local, en compilant dans **CLion** avec le plugin
    qui permettra de vérifier que la MAJ a pris.
 3. **Sélectionner la carte** `esp32:esp32:esp32da`, partition `default`
    (déjà compatible OTA, ne rien changer).
-4. **Build** (bouton Build du plugin, ou
-   `arduino-cli compile --fqbn esp32:esp32:esp32da --output-dir build track_sol_esp32_bts7960_bh1750_mobile`).
-   Récupérer le fichier `…ino.bin` (chemin affiché dans la console de build, ou
-   dans `build/`).
+4. **Build** (bouton Build du plugin, ou la commande ci-dessous qui compile
+   puis ne garde que le `.bin` utile à l'OTA, en supprimant le bootloader,
+   les partitions, l'image fusionnée, et les fichiers de debug `.elf`/`.map`) :
+
+   En **PowerShell** (Windows) :
+   ```powershell
+   arduino-cli compile --fqbn esp32:esp32:esp32da --output-dir build --verbose track_sol_esp32_bts7960_bh1750_mobile
+   if ($?) { Remove-Item build\*.bootloader.bin, build\*.partitions.bin, build\*.merged.bin, build\*.elf, build\*.map -ErrorAction SilentlyContinue }
+   ```
+
+   En **Bash** (Git Bash / WSL / macOS / Linux) :
+   ```bash
+   arduino-cli compile --fqbn esp32:esp32:esp32da --output-dir build --verbose track_sol_esp32_bts7960_bh1750_mobile \
+     && rm -f build/*.bootloader.bin build/*.partitions.bin build/*.merged.bin build/*.elf build/*.map
+   ```
+
+   (`--verbose`/`-v` affiche le détail des commandes de compilation — utile en
+   cas d'erreur pour voir précisément où ça bloque.)
+   Il ne reste alors dans `build/` que
+   **`track_sol_esp32_bts7960_bh1750_mobile.ino.bin`** — c'est le firmware
+   applicatif, le seul fichier nécessaire pour l'OTA. Les fichiers supprimés
+   (`....bootloader.bin`, `....partitions.bin`, `....merged.bin`) ne servent
+   que pour un flash USB complet à blanc.
 5. **Uploader via le navigateur** :
    - Ouvrir `http://<IP_DE_LA_CARTE>/update`.
    - S'authentifier : identifiant `admin`, mot de passe = votre `ADMIN_PIN`.
-   - Sélectionner le fichier `…ino.bin`, type **Firmware** → l'upload démarre,
-     barre de progression, puis redémarrage automatique.
+   - Sélectionner **`track_sol_esp32_bts7960_bh1750_mobile.ino.bin`**, type
+     **Firmware** → l'upload démarre, barre de progression, puis redémarrage
+     automatique.
 6. **Vérifier** : la page d'accueil doit afficher la nouvelle `FW_VERSION` en pied
    de page.
 7. **Répéter pour l'autre tracker** :
