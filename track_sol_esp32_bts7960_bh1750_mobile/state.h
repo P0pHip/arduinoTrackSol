@@ -17,6 +17,9 @@ extern bool   modeAutoAvantAlerte;   // mode sauvegardé avant mise en sécurit�
 extern String cmdMoteur;          // commande moteur courante (mode manuel)
 extern unsigned long tDernierCmd; // timestamp de la dernière commande moteur
 
+// Action automatique en cours, pour affichage web (REPOS/TRACKING/PLAT/EST/SECURITE)
+extern String actionCourante;
+
 extern String journal;      // buffer des derniers messages de log
 
 extern bool otaEnCours;     // true = MAJ OTA en cours — coupe moteurs et bloque le tracking

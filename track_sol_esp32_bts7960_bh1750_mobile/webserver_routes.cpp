@@ -44,6 +44,7 @@ static void handleData() {
   json += "\"fdcOU\":"     + String(fdcOU)       + ",";
   json += "\"modeAuto\":"  + String(modeAuto   ? "true" : "false") + ",";
   json += "\"alerteVent\":" + String(alerteVent ? "true" : "false") + ",";
+  json += "\"action\":\""  + actionCourante + "\",";
 #if IS_MASTER
   json += "\"ventVal\":"   + String(valeurVent) + ",";
 #endif

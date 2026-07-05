@@ -65,9 +65,11 @@ void mettreEnSecurite() {
   ajouterLog("Mise en securite : arret + plat.");
   modeAutoAvantAlerte = modeAuto;   // mémorise le mode pour restauration après alerte
   modeAuto            = false;
+  actionCourante       = "SECURITE";
   arreterMoteurs();
   miseAPlat();
   ajouterLog("Position securite atteinte.");
+  actionCourante = "REPOS";
 }
 
 // ── Tracking solaire ──────────────────────────────────────────────────

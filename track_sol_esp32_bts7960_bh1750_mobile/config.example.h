@@ -16,4 +16,4 @@
 #endif
 
 // ── Version firmware (incrémenter à chaque build pour vérifier les MAJ OTA) ──
-#define FW_VERSION  "2026.06.21"
+#define FW_VERSION  "2026.07.05"

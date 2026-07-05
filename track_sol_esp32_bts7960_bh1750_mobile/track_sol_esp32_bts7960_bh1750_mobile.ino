@@ -51,6 +51,7 @@ bool   otaEnCours           = false;  // MAJ OTA en cours — coupe moteurs et b
 String cmdMoteur        = "STOP";
 unsigned long tDernierCmd = 0;
 String journal     = "";
+String actionCourante    = "REPOS";
 
 // ── Timers internes au loop ───────────────────────────────────────────
 static unsigned long tDerniersCapteurs = 0;
@@ -158,17 +159,22 @@ void loop() {
     if (maxLux >= seuilLum) {
       enPositionRepos = false;   // le soleil est là, la prochaine nuit relancera le retour
       ajouterLog("--- Tracking step ---");
+      actionCourante = "TRACKING";
       trackSun(motorEO, fdcES, fdcOU, luxEst,  luxOuest);  // axe Est-Ouest
 
       if (modeAuto && !alerteVent) {
         trackSun(motorIH, fdcIH, fdcIV, luxNord, luxSud);  // axe Inclinaison
       }
+      actionCourante = "REPOS";
     } else {
       // Nuit ou ciel très couvert → position de repos (une seule fois jusqu'au prochain tracking)
       if (!enPositionRepos) {
         ajouterLog("Lum < seuil. Position repos.");
+        actionCourante = "PLAT";
         miseAPlat();
+        actionCourante = "EST";
         retourEst();
+        actionCourante = "REPOS";
         enPositionRepos = true;
       }
     }
