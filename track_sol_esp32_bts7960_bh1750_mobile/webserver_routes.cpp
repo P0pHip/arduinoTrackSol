@@ -9,6 +9,7 @@
 #include "settings.h"
 #include "html_page.h"
 #include "webserver_routes.h"
+#include <ElegantOTA.h>
 
 #if IS_MASTER
   #include "wind.h"   // pour valeurVent dans handleData()
@@ -32,6 +33,7 @@ static void handleRoot() {
 // =====================================================================
 static void handleData() {
   String json = "{";
+  json += "\"fwVersion\":\"" FW_VERSION "\",";
   json += "\"luxN\":"      + String(luxNord,  1) + ",";
   json += "\"luxS\":"      + String(luxSud,   1) + ",";
   json += "\"luxE\":"      + String(luxEst,   1) + ",";
@@ -42,6 +44,7 @@ static void handleData() {
   json += "\"fdcOU\":"     + String(fdcOU)       + ",";
   json += "\"modeAuto\":"  + String(modeAuto   ? "true" : "false") + ",";
   json += "\"alerteVent\":" + String(alerteVent ? "true" : "false") + ",";
+  json += "\"action\":\""  + actionCourante + "\",";
 #if IS_MASTER
   json += "\"ventVal\":"   + String(valeurVent) + ",";
 #endif
@@ -80,7 +83,7 @@ static void handleMode() {
 //   Ignorée en mode auto ou pendant une alerte vent.
 // =====================================================================
 static void handleMoteur() {
-  if (modeAuto || alerteVent) {
+  if (modeAuto || alerteVent || otaEnCours) {
     server.send(403, "text/plain", "indisponible");
     return;
   }
@@ -164,6 +167,29 @@ static void handleAdminConfig() {
 }
 
 // =====================================================================
+//   CALLBACKS OTA (ElegantOTA)
+//   Sécurité : couper les moteurs et bloquer le tracking pendant le flash.
+// =====================================================================
+static void onOTAStart() {
+  arreterMoteurs();
+  otaEnCours = true;
+  ajouterLog("OTA: debut MAJ, moteurs coupes");
+}
+
+static void onOTAProgress(size_t current, size_t final) {
+  Serial.printf("OTA: %u / %u octets\n", (unsigned)current, (unsigned)final);
+}
+
+static void onOTAEnd(bool success) {
+  if (success) {
+    ajouterLog("OTA: succes, redemarrage...");
+  } else {
+    otaEnCours = false;
+    ajouterLog("OTA: ECHEC de la MAJ");
+  }
+}
+
+// =====================================================================
 //   INTERFACE PUBLIQUE
 // =====================================================================
 void setupServeur() {
@@ -175,9 +201,18 @@ void setupServeur() {
   server.on("/reset_alerte_vent", HTTP_POST, handleResetAlerteVent);
   server.on("/admin/login",       HTTP_POST, handleAdminLogin);
   server.on("/admin/config",      HTTP_POST, handleAdminConfig);
+
+  // ── OTA (ElegantOTA) — page protégée /update ───────────────────────
+  ElegantOTA.setAuth("admin", ADMIN_PIN);
+  ElegantOTA.begin(&server);            // enregistre les routes /update
+  ElegantOTA.onStart(onOTAStart);
+  ElegantOTA.onProgress(onOTAProgress);
+  ElegantOTA.onEnd(onOTAEnd);
+
   server.begin();
 }
 
 void tickServeur() {
   server.handleClient();
+  ElegantOTA.loop();
 }

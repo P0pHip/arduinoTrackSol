@@ -66,6 +66,19 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
     input:checked + .slider { background: #56d364; }
     input:checked + .slider::before { transform: translateX(28px); }
 
+    /* ── Action en cours ─────────────────────────────── */
+    .action-badge {
+      display: block; width: 100%; text-align: center;
+      font-size: 1em; font-weight: bold;
+      padding: 8px 12px; border-radius: 8px;
+      transition: background .3s, color .3s;
+    }
+    .action-repos     { background: #21262d;   color: #8b949e; }
+    .action-tracking  { background: #1f6b2e22; border: 1px solid #56d36466; color: #56d364; }
+    .action-plat,
+    .action-est       { background: #1f3a6b22; border: 1px solid #58a6ff66; color: #58a6ff; }
+    .action-securite  { background: #6b1f1f44; border: 1px solid #f4706766; color: #f47067; animation: clignoter 1s infinite; }
+
     /* ── Vent ────────────────────────────────────────── */
     .vent-ok {
       background: #1f6b2e22; border: 1px solid #56d36466;
@@ -191,6 +204,7 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
       border: none; background: #f9a825;
       color: #000; cursor: pointer; font-size: 0.9em; font-weight: bold;
     }
+    .fw-foot { text-align:center; color:#8b949e; font-size:0.7em; margin:4px 0 12px; }
   </style>
 </head>
 <body>
@@ -207,6 +221,12 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
       <span class="slider"></span>
     </label>
   </div>
+</div>
+
+<!-- ACTION EN COURS -->
+<div class="card">
+  <div class="card-title">Action en cours</div>
+  <div class="action-badge action-repos" id="action-badge">Repos</div>
 </div>
 
 <!-- VENT -->
@@ -281,6 +301,8 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
 <!-- BOUTON ADMIN -->
 <button class="btn-admin-open" onclick="ouvrirAdmin()">&#128274; Admin</button>
 
+<div class="fw-foot" id="fw-foot">firmware &#8212;</div>
+
 <!-- MODAL ADMIN -->
 <div class="admin-overlay" id="admin-overlay" onclick="if(event.target===this)fermerAdmin()">
   <div class="admin-modal">
@@ -318,6 +340,10 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
       <label class="admin-label">D&eacute;lai de reprise apr&egrave;s alerte vent (minutes)</label>
       <input class="admin-field" type="number" id="cfg-delai-reprise" min="1" max="999">
 
+      <label class="admin-label">Mise &agrave; jour firmware (OTA)</label>
+      <a class="btn-admin-cancel" style="display:block;text-align:center;text-decoration:none;margin-top:4px;"
+         href="/update" target="_blank" rel="noopener">&#128228; Ouvrir la page OTA</a>
+
       <div class="admin-save-msg" id="admin-save-msg"></div>
       <div class="admin-row">
         <button class="btn-admin-cancel" onclick="fermerAdmin()">&#128274; Fermer</button>
@@ -335,6 +361,15 @@ let timerMoteur    = null;
 let dernierJournal = "";
 let dernierData    = null;   // dernière réponse /data, pour pré-remplir le formulaire admin
 let adminPin       = "";
+
+// ── Action en cours : code serveur -> { texte, classe CSS } ─────────
+const ACTIONS = {
+  REPOS:    { texte: 'Repos',                                     classe: 'action-repos'    },
+  TRACKING: { texte: '☀ Suivi solaire',                      classe: 'action-tracking' },
+  PLAT:     { texte: '⬇ Mise à plat',                   classe: 'action-plat'     },
+  EST:      { texte: '⬅ Retour vers l\'Est',                 classe: 'action-est'      },
+  SECURITE: { texte: '⚠ Mise en sécurité (vent)',   classe: 'action-securite' }
+};
 
 // ── Bascule Auto / Manuel ────────────────────────────────────────────
 function basculerMode(cb) {
@@ -462,11 +497,18 @@ async function sauvegarderConfig() {
 // ── Mise à jour de l'interface ───────────────────────────────────────
 function majInterface(d) {
   dernierData = d;
+  if (d.fwVersion) document.getElementById('fw-foot').textContent = 'firmware ' + d.fwVersion;
   // Luminosité
   document.getElementById('lux-n').textContent = d.luxN.toFixed(1);
   document.getElementById('lux-s').textContent = d.luxS.toFixed(1);
   document.getElementById('lux-e').textContent = d.luxE.toFixed(1);
   document.getElementById('lux-o').textContent = d.luxO.toFixed(1);
+
+  // Action en cours
+  const act = ACTIONS[d.action] || ACTIONS.REPOS;
+  const badgeAction = document.getElementById('action-badge');
+  badgeAction.textContent = act.texte;
+  badgeAction.className   = 'action-badge ' + act.classe;
 
   // Fins de course (LOW = déclenché = rouge)
   [['fdc-ih', d.fdcIH], ['fdc-iv', d.fdcIV], ['fdc-es', d.fdcES], ['fdc-ou', d.fdcOU]]

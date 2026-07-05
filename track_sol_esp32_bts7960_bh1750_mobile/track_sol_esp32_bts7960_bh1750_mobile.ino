@@ -13,9 +13,10 @@
  *   html_page.h/.cpp — page HTML stockée en flash
  *
  * BIBLIOTHÈQUES REQUISES (Gestionnaire de bibliothèques Arduino IDE) :
- *   - BTS7960  : https://github.com/1337encrypted/BTS7960_Motordriver
- *   - BH1750   : https://github.com/claws/BH1750
- *   - WiFi, WebServer, HTTPClient : incluses dans le core ESP32
+ *   - BTS7960    : https://github.com/1337encrypted/BTS7960_Motordriver
+ *   - BH1750     : https://github.com/claws/BH1750
+ *   - ElegantOTA : https://github.com/ayushsharma82/ElegantOTA (MAJ OTA, mode synchrone)
+ *   - WiFi, WebServer, HTTPClient, Update : inclus dans le core ESP32
  *
  * AVANT DE FLASHER :
  *   1. Ouvrir config.h
@@ -46,9 +47,11 @@ bool   alerteVent           = false;
 bool   enPositionRepos      = false;
 bool   autoStartPending     = true;   // passage AUTO différé après DELAY_AUTO_START_MS
 bool   modeAutoAvantAlerte  = false;  // mode sauvegardé avant mise en sécurité vent
+bool   otaEnCours           = false;  // MAJ OTA en cours — coupe moteurs et bloque le tracking
 String cmdMoteur        = "STOP";
 unsigned long tDernierCmd = 0;
 String journal     = "";
+String actionCourante    = "REPOS";
 
 // ── Timers internes au loop ───────────────────────────────────────────
 static unsigned long tDerniersCapteurs = 0;
@@ -72,6 +75,7 @@ void setup() {
   pinMode(LpwmIH, OUTPUT); digitalWrite(LpwmIH, LOW);
 
   loadSettings();
+  ajouterLog("Firmware " FW_VERSION);
   setupMoteurs();
   setupCapteurs();
 
@@ -144,7 +148,7 @@ void loop() {
   }
 
   // ── Tracking automatique ───────────────────────────────────────────
-  if (modeAuto && !alerteVent && (t - tDerniersTracking > INTERVAL_TRACKING)) {
+  if (modeAuto && !alerteVent && !otaEnCours && (t - tDerniersTracking > INTERVAL_TRACKING)) {
     tDerniersTracking = t;
 
     float maxLux = luxNord;
@@ -155,17 +159,22 @@ void loop() {
     if (maxLux >= seuilLum) {
       enPositionRepos = false;   // le soleil est là, la prochaine nuit relancera le retour
       ajouterLog("--- Tracking step ---");
+      actionCourante = "TRACKING";
       trackSun(motorEO, fdcES, fdcOU, luxEst,  luxOuest);  // axe Est-Ouest
 
       if (modeAuto && !alerteVent) {
         trackSun(motorIH, fdcIH, fdcIV, luxNord, luxSud);  // axe Inclinaison
       }
+      actionCourante = "REPOS";
     } else {
       // Nuit ou ciel très couvert → position de repos (une seule fois jusqu'au prochain tracking)
       if (!enPositionRepos) {
         ajouterLog("Lum < seuil. Position repos.");
+        actionCourante = "PLAT";
         miseAPlat();
+        actionCourante = "EST";
         retourEst();
+        actionCourante = "REPOS";
         enPositionRepos = true;
       }
     }
