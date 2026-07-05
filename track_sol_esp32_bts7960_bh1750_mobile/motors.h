@@ -9,6 +9,9 @@ extern BTS7960 motorIH;   // moteur Inclinaison
 void setupMoteurs();
 void arreterMoteurs();
 
+// Applique vitMotEO / vitMotIH aux objets moteurs (après modification admin).
+void applyMotorSettings();
+
 // Ramène l'inclinaison à plat (jusqu'au FDC_IH)
 void miseAPlat();
 

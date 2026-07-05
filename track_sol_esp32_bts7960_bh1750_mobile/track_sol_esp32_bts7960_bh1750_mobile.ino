@@ -13,9 +13,10 @@
  *   html_page.h/.cpp — page HTML stockée en flash
  *
  * BIBLIOTHÈQUES REQUISES (Gestionnaire de bibliothèques Arduino IDE) :
- *   - BTS7960  : https://github.com/1337encrypted/BTS7960_Motordriver
- *   - BH1750   : https://github.com/claws/BH1750
- *   - WiFi, WebServer, HTTPClient : incluses dans le core ESP32
+ *   - BTS7960    : https://github.com/1337encrypted/BTS7960_Motordriver
+ *   - BH1750     : https://github.com/claws/BH1750
+ *   - ElegantOTA : https://github.com/ayushsharma82/ElegantOTA (MAJ OTA, mode synchrone)
+ *   - WiFi, WebServer, HTTPClient, Update : inclus dans le core ESP32
  *
  * AVANT DE FLASHER :
  *   1. Ouvrir config.h
@@ -29,23 +30,28 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include "config.h"
+#include "settings.h"
 #include "state.h"
 #include "logger.h"
 #include "sensors.h"
 #include "motors.h"
-#include "webserver.h"
+#include "webserver_routes.h"
 #include "wind.h"
 
 // =====================================================================
 //   DÉFINITION DES VARIABLES D'ÉTAT PARTAGÉES
 //   (déclarées extern dans state.h — un seul endroit de définition)
 // =====================================================================
-bool   modeAuto         = true;
-bool   alerteVent       = false;
-bool   enPositionRepos  = false;
+bool   modeAuto             = false;  // Démarrage en MANUEL — évite tout tracking auto après un reboot
+bool   alerteVent           = false;
+bool   enPositionRepos      = false;
+bool   autoStartPending     = true;   // passage AUTO différé après DELAY_AUTO_START_MS
+bool   modeAutoAvantAlerte  = false;  // mode sauvegardé avant mise en sécurité vent
+bool   otaEnCours           = false;  // MAJ OTA en cours — coupe moteurs et bloque le tracking
 String cmdMoteur        = "STOP";
 unsigned long tDernierCmd = 0;
 String journal     = "";
+String actionCourante    = "REPOS";
 
 // ── Timers internes au loop ───────────────────────────────────────────
 static unsigned long tDerniersCapteurs = 0;
@@ -59,6 +65,17 @@ void setup() {
   Serial.begin(115200);
   Wire.begin();
 
+  // GPIO15 (RpwmEO) et GPIO5 (LpwmIH) sont des strapping pins ESP32 avec
+  // pull-up interne → HIGH au boot → moteurs partent avant begin().
+  // GPIO17 (RpwmIH) et GPIO2 (LpwmEO) flottent ou sont pull-down : risque
+  // plus faible mais on force les 4 PWM à LOW par sécurité.
+  pinMode(RpwmEO, OUTPUT); digitalWrite(RpwmEO, LOW);
+  pinMode(LpwmEO, OUTPUT); digitalWrite(LpwmEO, LOW);
+  pinMode(RpwmIH, OUTPUT); digitalWrite(RpwmIH, LOW);
+  pinMode(LpwmIH, OUTPUT); digitalWrite(LpwmIH, LOW);
+
+  loadSettings();
+  ajouterLog("Firmware " FW_VERSION);
   setupMoteurs();
   setupCapteurs();
 
@@ -89,6 +106,7 @@ void setup() {
 
   setupServeur();
   lireCapteurs();
+  arreterMoteurs();  // filet de sécurité final avant le loop
 
   Serial.println("Demarrage termine.");
 }
@@ -114,6 +132,13 @@ void loop() {
   }
 #endif
 
+  // ── Passage AUTO différé au démarrage ─────────────────────────────
+  if (autoStartPending && !alerteVent && t >= DELAY_AUTO_START_MS) {
+    autoStartPending = false;
+    modeAuto         = true;
+    ajouterLog("Demarrage : passage AUTO apres " + String(DELAY_AUTO_START_MS / 60000UL) + " min.");
+  }
+
   // ── Sécurité moteur manuel : arrêt si plus de commande depuis TIMEOUT
   if (!modeAuto && cmdMoteur != "STOP") {
     if (t - tDernierCmd > TIMEOUT_MOTEUR_MAN) {
@@ -123,7 +148,7 @@ void loop() {
   }
 
   // ── Tracking automatique ───────────────────────────────────────────
-  if (modeAuto && !alerteVent && (t - tDerniersTracking > INTERVAL_TRACKING)) {
+  if (modeAuto && !alerteVent && !otaEnCours && (t - tDerniersTracking > INTERVAL_TRACKING)) {
     tDerniersTracking = t;
 
     float maxLux = luxNord;
@@ -131,20 +156,25 @@ void loop() {
     if (luxEst   > maxLux) maxLux = luxEst;
     if (luxOuest > maxLux) maxLux = luxOuest;
 
-    if (maxLux >= SEUIL_LUM) {
+    if (maxLux >= seuilLum) {
       enPositionRepos = false;   // le soleil est là, la prochaine nuit relancera le retour
       ajouterLog("--- Tracking step ---");
+      actionCourante = "TRACKING";
       trackSun(motorEO, fdcES, fdcOU, luxEst,  luxOuest);  // axe Est-Ouest
 
       if (modeAuto && !alerteVent) {
         trackSun(motorIH, fdcIH, fdcIV, luxNord, luxSud);  // axe Inclinaison
       }
+      actionCourante = "REPOS";
     } else {
       // Nuit ou ciel très couvert → position de repos (une seule fois jusqu'au prochain tracking)
       if (!enPositionRepos) {
         ajouterLog("Lum < seuil. Position repos.");
+        actionCourante = "PLAT";
         miseAPlat();
+        actionCourante = "EST";
         retourEst();
+        actionCourante = "REPOS";
         enPositionRepos = true;
       }
     }

@@ -7,6 +7,7 @@
 #include "state.h"
 #include "logger.h"
 #include "motors.h"
+#include "settings.h"
 #include "wind.h"
 
 int valeurVent = 0;
@@ -14,7 +15,7 @@ int valeurVent = 0;
 void setupVent() {
   pinMode(WIND_PIN, INPUT);
   ajouterLog("[MAITRE] Capteur de vent actif, pin=" + String(WIND_PIN)
-             + ", seuil=" + String(WIND_THRESHOLD_KMH) + " km/h"
+             + ", seuil=" + String(seuilVent) + " km/h"
              + ", fenetre=" + String(WIND_SAMPLE_MS) + "ms");
 }
 
@@ -51,18 +52,31 @@ static int mesurerVitesse() {
 void verifierVent() {
   valeurVent = mesurerVitesse();   // km/h
 
-  if (valeurVent > WIND_THRESHOLD_KMH && !alerteVent) {
-    alerteVent = true;
-    ajouterLog("ALERTE VENT ! " + String(valeurVent)
-               + " km/h > seuil=" + String(WIND_THRESHOLD_KMH) + " km/h");
-    mettreEnSecurite();
-    notifierEsclave(true);
+  static unsigned long tVentCalme = 0;
 
-  } else if (valeurVent <= WIND_THRESHOLD_KMH && alerteVent) {
-    alerteVent = false;
-    modeAuto   = true;
-    ajouterLog("Vent retombe (" + String(valeurVent) + " km/h). Reprise auto.");
-    notifierEsclave(false);
+  if (valeurVent > seuilVent) {
+    tVentCalme = 0;               // toute rafale remet le compteur à zéro
+    if (!alerteVent) {
+      alerteVent = true;
+      ajouterLog("ALERTE VENT ! " + String(valeurVent)
+                 + " km/h > seuil=" + String(seuilVent) + " km/h");
+      notifierEsclave(true);      // esclave prévenu AVANT que le maître bouge
+      mettreEnSecurite();
+    }
+
+  } else if (alerteVent) {
+    if (tVentCalme == 0) {
+      tVentCalme = millis();
+      ajouterLog("Vent retombe (" + String(valeurVent)
+                 + " km/h). Attente stabilisation " + String(delaiRepriseMin) + " min...");
+    } else if (millis() - tVentCalme >= (unsigned long)delaiRepriseMin * 60000UL) {
+      alerteVent = false;
+      modeAuto   = modeAutoAvantAlerte;   // restaure le mode d'avant l'alerte
+      tVentCalme = 0;
+      ajouterLog("Vent stable depuis " + String(delaiRepriseMin) + " min. Reprise mode "
+                 + String(modeAuto ? "AUTO" : "MANUEL") + ".");
+      notifierEsclave(false);
+    }
   }
 }
 

@@ -4,8 +4,9 @@
 #include "state.h"
 #include "logger.h"
 #include "sensors.h"
-#include "webserver.h"  // uniquement pour tickServeur()
+#include "webserver_routes.h"  // uniquement pour tickServeur()
 #include "motors.h"
+#include "settings.h"
 
 // ── Définition des objets moteurs ─────────────────────────────────────
 BTS7960 motorEO(LenEO, RenEO, LpwmEO, RpwmEO);
@@ -13,8 +14,18 @@ BTS7960 motorIH(LenIH, RenIH, LpwmIH, RpwmIH);
 
 // ── Initialisation ────────────────────────────────────────────────────
 void setupMoteurs() {
-  motorEO.begin(); motorEO.enable(); motorEO.pwm = VIT_MOT_EO;
-  motorIH.begin(); motorIH.enable(); motorIH.pwm = VIT_MOT_IH;
+  motorEO.begin(); motorEO.enable(); motorEO.pwm = vitMotEO;
+  motorIH.begin(); motorIH.enable(); motorIH.pwm = vitMotIH;
+  // Stop explicite : GPIO15 (RpwmEO) a un pull-up au boot sur ESP32,
+  // ce qui peut démarrer le moteur EO avant que begin() prenne la main.
+  motorEO.stop();
+  motorIH.stop();
+}
+
+// ── Applique les vitesses runtime aux objets moteurs ─────────────────
+void applyMotorSettings() {
+  motorEO.pwm = vitMotEO;
+  motorIH.pwm = vitMotIH;
 }
 
 // ── Arrêt d'urgence ───────────────────────────────────────────────────
@@ -52,10 +63,13 @@ void retourEst() {
 // Séquence complète : forcer le mode manuel, arrêter, plat, Est
 void mettreEnSecurite() {
   ajouterLog("Mise en securite : arret + plat.");
-  modeAuto = false;
+  modeAutoAvantAlerte = modeAuto;   // mémorise le mode pour restauration après alerte
+  modeAuto            = false;
+  actionCourante       = "SECURITE";
   arreterMoteurs();
   miseAPlat();
   ajouterLog("Position securite atteinte.");
+  actionCourante = "REPOS";
 }
 
 // ── Tracking solaire ──────────────────────────────────────────────────

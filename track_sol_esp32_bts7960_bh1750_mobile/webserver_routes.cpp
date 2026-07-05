@@ -6,8 +6,10 @@
 #include "logger.h"
 #include "sensors.h"
 #include "motors.h"
+#include "settings.h"
 #include "html_page.h"
-#include "webserver.h"
+#include "webserver_routes.h"
+#include <ElegantOTA.h>
 
 #if IS_MASTER
   #include "wind.h"   // pour valeurVent dans handleData()
@@ -31,6 +33,7 @@ static void handleRoot() {
 // =====================================================================
 static void handleData() {
   String json = "{";
+  json += "\"fwVersion\":\"" FW_VERSION "\",";
   json += "\"luxN\":"      + String(luxNord,  1) + ",";
   json += "\"luxS\":"      + String(luxSud,   1) + ",";
   json += "\"luxE\":"      + String(luxEst,   1) + ",";
@@ -41,10 +44,16 @@ static void handleData() {
   json += "\"fdcOU\":"     + String(fdcOU)       + ",";
   json += "\"modeAuto\":"  + String(modeAuto   ? "true" : "false") + ",";
   json += "\"alerteVent\":" + String(alerteVent ? "true" : "false") + ",";
+  json += "\"action\":\""  + actionCourante + "\",";
 #if IS_MASTER
   json += "\"ventVal\":"   + String(valeurVent) + ",";
 #endif
-  json += "\"journal\":\""  + echapperJson(journal) + "\"";
+  json += "\"journal\":\""  + echapperJson(journal) + "\",";
+  json += "\"vitEO\":"     + String(vitMotEO)  + ",";
+  json += "\"vitIH\":"     + String(vitMotIH)  + ",";
+  json += "\"seuilLum\":"        + String(seuilLum)        + ",";
+  json += "\"seuilVent\":"       + String(seuilVent)       + ",";
+  json += "\"delaiRepriseMin\":" + String(delaiRepriseMin);
   json += "}";
 
   server.sendHeader("Cache-Control", "no-cache");
@@ -59,6 +68,7 @@ static void handleMode() {
   if (!server.hasArg("auto")) { server.send(400, "text/plain", "arg manquant"); return; }
 
   bool nouveau = (server.arg("auto") == "1");
+  autoStartPending = false;   // l'utilisateur prend la main, annuler le passage auto différé
   if (nouveau != modeAuto) {
     modeAuto = nouveau;
     if (!modeAuto) arreterMoteurs();
@@ -73,7 +83,7 @@ static void handleMode() {
 //   Ignorée en mode auto ou pendant une alerte vent.
 // =====================================================================
 static void handleMoteur() {
-  if (modeAuto || alerteVent) {
+  if (modeAuto || alerteVent || otaEnCours) {
     server.send(403, "text/plain", "indisponible");
     return;
   }
@@ -113,10 +123,70 @@ static void handleAlerteVent() {
 static void handleResetAlerteVent() {
   if (alerteVent) {
     alerteVent = false;
-    modeAuto   = true;
-    ajouterLog("Alerte vent levee (info du maitre). Reprise auto.");
+    modeAuto   = modeAutoAvantAlerte;   // restaure le mode d'avant l'alerte
+    ajouterLog("Alerte vent levee (info du maitre). Reprise mode "
+               + String(modeAuto ? "AUTO" : "MANUEL") + ".");
   }
   server.send(200, "text/plain", "OK");
+}
+
+// =====================================================================
+//   ROUTE  POST /admin/login?pin=XXXXXXXX
+//   Vérifie le PIN admin. Répond {"ok":true} ou {"ok":false}.
+// =====================================================================
+static void handleAdminLogin() {
+  if (!server.hasArg("pin")) { server.send(400, "text/plain", "arg manquant"); return; }
+  bool ok = (server.arg("pin") == ADMIN_PIN);
+  server.send(200, "application/json", ok ? "{\"ok\":true}" : "{\"ok\":false}");
+}
+
+// =====================================================================
+//   ROUTE  POST /admin/config?pin=XX&vitEO=X&vitIH=X&seuilLum=X&seuilVent=X
+//   Vérifie le PIN, met à jour les paramètres en RAM et les sauvegarde en NVS.
+// =====================================================================
+static void handleAdminConfig() {
+  if (!server.hasArg("pin") || server.arg("pin") != ADMIN_PIN) {
+    server.send(403, "text/plain", "PIN incorrect");
+    return;
+  }
+
+  if (server.hasArg("vitEO"))         vitMotEO        = constrain(server.arg("vitEO").toInt(),         0, 255);
+  if (server.hasArg("vitIH"))         vitMotIH        = constrain(server.arg("vitIH").toInt(),         0, 255);
+  if (server.hasArg("seuilLum"))      seuilLum        = constrain(server.arg("seuilLum").toInt(),      0, 100000);
+  if (server.hasArg("seuilVent"))     seuilVent       = constrain(server.arg("seuilVent").toInt(),     0, 300);
+  if (server.hasArg("delaiReprise"))  delaiRepriseMin = constrain(server.arg("delaiReprise").toInt(),  1, 999);
+
+  applyMotorSettings();
+  saveSettings();
+
+  ajouterLog("Admin: vitEO=" + String(vitMotEO) + " vitIH=" + String(vitMotIH)
+             + " lumSeuil=" + String(seuilLum) + " ventSeuil=" + String(seuilVent)
+             + " delaiReprise=" + String(delaiRepriseMin) + "min");
+
+  server.send(200, "text/plain", "OK");
+}
+
+// =====================================================================
+//   CALLBACKS OTA (ElegantOTA)
+//   Sécurité : couper les moteurs et bloquer le tracking pendant le flash.
+// =====================================================================
+static void onOTAStart() {
+  arreterMoteurs();
+  otaEnCours = true;
+  ajouterLog("OTA: debut MAJ, moteurs coupes");
+}
+
+static void onOTAProgress(size_t current, size_t final) {
+  Serial.printf("OTA: %u / %u octets\n", (unsigned)current, (unsigned)final);
+}
+
+static void onOTAEnd(bool success) {
+  if (success) {
+    ajouterLog("OTA: succes, redemarrage...");
+  } else {
+    otaEnCours = false;
+    ajouterLog("OTA: ECHEC de la MAJ");
+  }
 }
 
 // =====================================================================
@@ -129,9 +199,20 @@ void setupServeur() {
   server.on("/moteur",            HTTP_POST, handleMoteur);
   server.on("/alerte_vent",       HTTP_POST, handleAlerteVent);
   server.on("/reset_alerte_vent", HTTP_POST, handleResetAlerteVent);
+  server.on("/admin/login",       HTTP_POST, handleAdminLogin);
+  server.on("/admin/config",      HTTP_POST, handleAdminConfig);
+
+  // ── OTA (ElegantOTA) — page protégée /update ───────────────────────
+  ElegantOTA.setAuth("admin", ADMIN_PIN);
+  ElegantOTA.begin(&server);            // enregistre les routes /update
+  ElegantOTA.onStart(onOTAStart);
+  ElegantOTA.onProgress(onOTAProgress);
+  ElegantOTA.onEnd(onOTAEnd);
+
   server.begin();
 }
 
 void tickServeur() {
   server.handleClient();
+  ElegantOTA.loop();
 }

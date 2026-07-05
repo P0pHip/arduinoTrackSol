@@ -1,3 +1,10 @@
 /.vscode/
 /.idea/
 track_sol_esp32_bts7960_bh1750_mobile/config.h
+track_sol_esp32_bts7960_bh1750_mobile/config_master.h
+track_sol_esp32_bts7960_bh1750_mobile/config_slave.h
+
+# Artefacts de compilation (arduino-cli compile --output-dir build) — pas le code source
+/build/*.bin
+/build/*.elf
+/build/*.map
