@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="316" class="sch" viewBox="0 0 800 316" role="img" aria-label="Bornier des capteurs de lumière, couleurs côté câble. Code : fil de couleur = SDA, fil bleu de la paire = SCL, marron = +3V3, noir = GND. Armoire métal : 1 blanc SDA N, 2 bleu SCL N, 3 jaune SDA E, 4 bleu SCL E, 5 bleu foncé SDA S, 6 bleu SCL S, 7 rouge SDA O, 8 bleu SCL O, 9 marron +3V3, 10 noir GND. Boîtier gris, lecture photo : 1 bleu, 2 blanc, 3 bleu, 4 jaune, 5 bleu, 6 bleu foncé, 7 bleu, 8 marron, 9 noir, 10 rouge, bornes 7 à 10 à vérifier."><title>Bornier des capteurs de lumière, couleurs côté câble. Code : fil de couleur = SDA, fil bleu de la paire = SCL, marron = +3V3, noir = GND. Armoire métal : 1 blanc SDA N, 2 bleu SCL N, 3 jaune SDA E, 4 bleu SCL E, 5 bleu foncé SDA S, 6 bleu SCL S, 7 rouge SDA O, 8 bleu SCL O, 9 marron +3V3, 10 noir GND. Boîtier gris, lecture photo : 1 bleu, 2 blanc, 3 bleu, 4 jaune, 5 bleu, 6 bleu foncé, 7 bleu, 8 marron, 9 noir, 10 rouge, bornes 7 à 10 à vérifier.</title><style>svg { color: #1c2624; font-family: "Barlow", "Segoe UI", system-ui, sans-serif; }
+.sch text { font-family: "JetBrains Mono", Consolas, "Courier New", monospace; font-size: 12px; fill: #1c2624; }
+.sch .h { font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-weight: 600; font-size: 14px; }
+.sch .m { fill: #5d6b67; font-size: 11px; }
+.sch .pt { fill: #b8322a; font-weight: 500; }
+.sch .ot { fill: #a8740c; font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-weight: 600; font-size: 11px; letter-spacing: .08em; }
+.sch .box { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .chip { fill: #e3ebe7; }
+.sch .w { stroke: currentColor; stroke-width: 1.5; fill: none; }
+.sch .p { stroke: #b8322a; stroke-width: 2; fill: none; }
+.sch .o { stroke: #a8740c; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.sch .dot { fill: currentColor; }
+.sch .pdot { fill: #b8322a; }
+.sch .hole { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .halo { stroke: currentColor; stroke-width: 8; fill: none; stroke-linejoin: round; }
+.sch .fil { stroke-width: 5; fill: none; stroke-linejoin: round; }
+.sch .gaine { fill: currentColor; }
+.sch .unk { stroke: #5d6b67; stroke-width: 5; stroke-dasharray: 4 3; fill: none; }
+.sch .tiny { font-size: 10px; }
+.sch .mu { fill: #5d6b67; opacity: .75; }
+.sch .pin { fill: currentColor; }
+.sch .pinu { fill: #fbfcfa; stroke: #5d6b67; stroke-width: 1; }
+.sch .gap { stroke: #fbfcfa; stroke-width: 6; fill: none; }
+.sch .bw { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.sch .cgap { stroke: #fbfcfa; stroke-width: 9; fill: none; stroke-linejoin: round; }
+.sch .cout { stroke: currentColor; stroke-width: 6.5; fill: none; stroke-linejoin: round; }
+.sch .cfil { stroke-width: 4.5; fill: none; stroke-linejoin: round; }
+.sch .modv { fill: #e3ebe7; stroke: currentColor; stroke-width: 1.5; }
+.sch .modb { fill: #dbe6f5; stroke: currentColor; stroke-width: 1.5; }
+.sch .modr { fill: #f3dcdc; stroke: currentColor; stroke-width: 1.5; }
+.sch .modf { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .conn { fill: #c9d1cd; stroke: currentColor; stroke-width: 1; }
+.sch .screw { fill: #cfe8d2; stroke: currentColor; stroke-width: 1; }
+.sch .gaine { fill: #c9d1cd; stroke: currentColor; stroke-width: 1.5; }
+.sch .gt { font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-size: 12px; }</style><rect x="0" y="0" width="800" height="316" fill="#fbfcfa"/>
+        <!-- groupes -->
+        <text class="h" x="250" y="26" text-anchor="middle">N · canal 0</text>
+        <text class="h" x="370" y="26" text-anchor="middle">E · canal 1</text>
+        <text class="h" x="490" y="26" text-anchor="middle">S · canal 2</text>
+        <text class="h" x="610" y="26" text-anchor="middle">O · canal 3</text>
+        <text class="h" x="730" y="26" text-anchor="middle">alim</text>
+
+        <!-- ===== Armoire métal (référence) ===== -->
+        <text class="h" x="20" y="96">Armoire métal</text>
+        <text class="m" x="20" y="112">référence</text>
+        <rect class="gaine" x="241" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M250 48 L220 76 L220 96"/><path class="fil" stroke="#f2f2ee" d="M250 48 L220 76 L220 96"/>
+        <path class="halo" d="M250 48 L280 76 L280 96"/><path class="fil" stroke="#3fb4dc" d="M250 48 L280 76 L280 96"/>
+        <rect class="gaine" x="361" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M370 48 L340 76 L340 96"/><path class="fil" stroke="#f0c419" d="M370 48 L340 76 L340 96"/>
+        <path class="halo" d="M370 48 L400 76 L400 96"/><path class="fil" stroke="#3fb4dc" d="M370 48 L400 76 L400 96"/>
+        <rect class="gaine" x="481" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M490 48 L460 76 L460 96"/><path class="fil" stroke="#1f4fb8" d="M490 48 L460 76 L460 96"/>
+        <path class="halo" d="M490 48 L520 76 L520 96"/><path class="fil" stroke="#3fb4dc" d="M490 48 L520 76 L520 96"/>
+        <rect class="gaine" x="601" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M610 48 L580 76 L580 96"/><path class="fil" stroke="#d9342b" d="M610 48 L580 76 L580 96"/>
+        <path class="halo" d="M610 48 L640 76 L640 96"/><path class="fil" stroke="#3fb4dc" d="M610 48 L640 76 L640 96"/>
+        <rect class="gaine" x="721" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M730 48 L700 76 L700 96"/><path class="fil" stroke="#8b5a2b" d="M730 48 L700 76 L700 96"/>
+        <path class="halo" d="M730 48 L760 76 L760 96"/><path class="fil" stroke="#161616" d="M730 48 L760 76 L760 96"/>
+        <rect class="box" x="202" y="96" width="36" height="24" rx="3"/><text x="220" y="112" text-anchor="middle">1</text>
+        <rect class="box" x="262" y="96" width="36" height="24" rx="3"/><text x="280" y="112" text-anchor="middle">2</text>
+        <rect class="box" x="322" y="96" width="36" height="24" rx="3"/><text x="340" y="112" text-anchor="middle">3</text>
+        <rect class="box" x="382" y="96" width="36" height="24" rx="3"/><text x="400" y="112" text-anchor="middle">4</text>
+        <rect class="box" x="442" y="96" width="36" height="24" rx="3"/><text x="460" y="112" text-anchor="middle">5</text>
+        <rect class="box" x="502" y="96" width="36" height="24" rx="3"/><text x="520" y="112" text-anchor="middle">6</text>
+        <rect class="box" x="562" y="96" width="36" height="24" rx="3"/><text x="580" y="112" text-anchor="middle">7</text>
+        <rect class="box" x="622" y="96" width="36" height="24" rx="3"/><text x="640" y="112" text-anchor="middle">8</text>
+        <rect class="box" x="682" y="96" width="36" height="24" rx="3"/><text x="700" y="112" text-anchor="middle">9</text>
+        <rect class="box" x="742" y="96" width="36" height="24" rx="3"/><text x="760" y="112" text-anchor="middle">10</text>
+        <text class="m" x="220" y="138" text-anchor="middle">blanc</text>
+        <text class="m" x="280" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="340" y="138" text-anchor="middle">jaune</text>
+        <text class="m" x="400" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="460" y="138" text-anchor="middle">bleu f.</text>
+        <text class="m" x="520" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="580" y="138" text-anchor="middle">rouge</text>
+        <text class="m" x="640" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="700" y="138" text-anchor="middle">marron</text>
+        <text class="m" x="760" y="138" text-anchor="middle">noir</text>
+        <text x="220" y="154" text-anchor="middle">SDA</text>
+        <text x="280" y="154" text-anchor="middle">SCL</text>
+        <text x="340" y="154" text-anchor="middle">SDA</text>
+        <text x="400" y="154" text-anchor="middle">SCL</text>
+        <text x="460" y="154" text-anchor="middle">SDA</text>
+        <text x="520" y="154" text-anchor="middle">SCL</text>
+        <text x="580" y="154" text-anchor="middle">SDA</text>
+        <text x="640" y="154" text-anchor="middle">SCL</text>
+        <text class="pt" x="700" y="154" text-anchor="middle">+3V3</text>
+        <text x="760" y="154" text-anchor="middle">GND</text>
+
+        <!-- ===== Boîtier gris (lecture photo 2) ===== -->
+        <text class="h" x="20" y="246">Boîtier gris</text>
+        <text class="m" x="20" y="262">lecture photo 2</text>
+        <rect class="o" x="556" y="180" width="228" height="128" rx="4"/>
+        <text class="ot" x="670" y="196" text-anchor="middle">À VÉRIFIER</text>
+        <path class="halo" d="M220 206 L220 236"/><path class="fil" stroke="#3fb4dc" d="M220 206 L220 236"/>
+        <path class="halo" d="M280 206 L280 236"/><path class="fil" stroke="#f2f2ee" d="M280 206 L280 236"/>
+        <path class="halo" d="M340 206 L340 236"/><path class="fil" stroke="#3fb4dc" d="M340 206 L340 236"/>
+        <path class="halo" d="M400 206 L400 236"/><path class="fil" stroke="#f0c419" d="M400 206 L400 236"/>
+        <path class="halo" d="M460 206 L460 236"/><path class="fil" stroke="#3fb4dc" d="M460 206 L460 236"/>
+        <path class="halo" d="M520 206 L520 236"/><path class="fil" stroke="#1f4fb8" d="M520 206 L520 236"/>
+        <path class="halo" d="M580 206 L580 236"/><path class="fil" stroke="#3fb4dc" d="M580 206 L580 236"/>
+        <path class="halo" d="M640 206 L640 236"/><path class="fil" stroke="#8b5a2b" d="M640 206 L640 236"/>
+        <path class="halo" d="M700 206 L700 236"/><path class="fil" stroke="#161616" d="M700 206 L700 236"/>
+        <path class="halo" d="M760 206 L760 236"/><path class="fil" stroke="#d9342b" d="M760 206 L760 236"/>
+        <rect class="box" x="202" y="236" width="36" height="24" rx="3"/><text x="220" y="252" text-anchor="middle">1</text>
+        <rect class="box" x="262" y="236" width="36" height="24" rx="3"/><text x="280" y="252" text-anchor="middle">2</text>
+        <rect class="box" x="322" y="236" width="36" height="24" rx="3"/><text x="340" y="252" text-anchor="middle">3</text>
+        <rect class="box" x="382" y="236" width="36" height="24" rx="3"/><text x="400" y="252" text-anchor="middle">4</text>
+        <rect class="box" x="442" y="236" width="36" height="24" rx="3"/><text x="460" y="252" text-anchor="middle">5</text>
+        <rect class="box" x="502" y="236" width="36" height="24" rx="3"/><text x="520" y="252" text-anchor="middle">6</text>
+        <rect class="box" x="562" y="236" width="36" height="24" rx="3"/><text x="580" y="252" text-anchor="middle">7</text>
+        <rect class="box" x="622" y="236" width="36" height="24" rx="3"/><text x="640" y="252" text-anchor="middle">8</text>
+        <rect class="box" x="682" y="236" width="36" height="24" rx="3"/><text x="700" y="252" text-anchor="middle">9</text>
+        <rect class="box" x="742" y="236" width="36" height="24" rx="3"/><text x="760" y="252" text-anchor="middle">10</text>
+        <text class="m" x="220" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="280" y="278" text-anchor="middle">blanc</text>
+        <text class="m" x="340" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="400" y="278" text-anchor="middle">jaune</text>
+        <text class="m" x="460" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="520" y="278" text-anchor="middle">bleu f.</text>
+        <text class="m" x="580" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="640" y="278" text-anchor="middle">marron</text>
+        <text class="m" x="700" y="278" text-anchor="middle">noir</text>
+        <text class="m" x="760" y="278" text-anchor="middle">rouge</text>
+        <text x="220" y="294" text-anchor="middle">SCL N</text>
+        <text x="280" y="294" text-anchor="middle">SDA N</text>
+        <text x="340" y="294" text-anchor="middle">SCL E</text>
+        <text x="400" y="294" text-anchor="middle">SDA E</text>
+        <text x="460" y="294" text-anchor="middle">SCL S</text>
+        <text x="520" y="294" text-anchor="middle">SDA S</text>
+        <text x="580" y="294" text-anchor="middle">SCL O</text>
+        <text class="pt" x="640" y="294" text-anchor="middle">+3V3</text>
+        <text x="700" y="294" text-anchor="middle">GND</text>
+        <text x="760" y="294" text-anchor="middle">SDA O</text>
+      </svg>
