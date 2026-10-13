@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="160" class="sch" viewBox="0 0 760 160" role="img" aria-label="Le maître, seul équipé de l'anémomètre, envoie en Wi-Fi des requêtes HTTP POST à l'esclave pour déclencher puis lever l'alerte vent."><title>Le maître, seul équipé de l'anémomètre, envoie en Wi-Fi des requêtes HTTP POST à l'esclave pour déclencher puis lever l'alerte vent.</title><style>svg { color: #1c2624; font-family: "Barlow", "Segoe UI", system-ui, sans-serif; }
+.sch text { font-family: "JetBrains Mono", Consolas, "Courier New", monospace; font-size: 12px; fill: #1c2624; }
+.sch .h { font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-weight: 600; font-size: 14px; }
+.sch .m { fill: #5d6b67; font-size: 11px; }
+.sch .pt { fill: #b8322a; font-weight: 500; }
+.sch .ot { fill: #a8740c; font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-weight: 600; font-size: 11px; letter-spacing: .08em; }
+.sch .box { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .chip { fill: #e3ebe7; }
+.sch .w { stroke: currentColor; stroke-width: 1.5; fill: none; }
+.sch .p { stroke: #b8322a; stroke-width: 2; fill: none; }
+.sch .o { stroke: #a8740c; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.sch .dot { fill: currentColor; }
+.sch .pdot { fill: #b8322a; }
+.sch .hole { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .halo { stroke: currentColor; stroke-width: 8; fill: none; stroke-linejoin: round; }
+.sch .fil { stroke-width: 5; fill: none; stroke-linejoin: round; }
+.sch .gaine { fill: currentColor; }
+.sch .unk { stroke: #5d6b67; stroke-width: 5; stroke-dasharray: 4 3; fill: none; }
+.sch .tiny { font-size: 10px; }
+.sch .mu { fill: #5d6b67; opacity: .75; }
+.sch .pin { fill: currentColor; }
+.sch .pinu { fill: #fbfcfa; stroke: #5d6b67; stroke-width: 1; }
+.sch .gap { stroke: #fbfcfa; stroke-width: 6; fill: none; }
+.sch .bw { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.sch .cgap { stroke: #fbfcfa; stroke-width: 9; fill: none; stroke-linejoin: round; }
+.sch .cout { stroke: currentColor; stroke-width: 6.5; fill: none; stroke-linejoin: round; }
+.sch .cfil { stroke-width: 4.5; fill: none; stroke-linejoin: round; }
+.sch .modv { fill: #e3ebe7; stroke: currentColor; stroke-width: 1.5; }
+.sch .modb { fill: #dbe6f5; stroke: currentColor; stroke-width: 1.5; }
+.sch .modr { fill: #f3dcdc; stroke: currentColor; stroke-width: 1.5; }
+.sch .modf { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .conn { fill: #c9d1cd; stroke: currentColor; stroke-width: 1; }
+.sch .screw { fill: #cfe8d2; stroke: currentColor; stroke-width: 1; }
+.sch .gaine { fill: #c9d1cd; stroke: currentColor; stroke-width: 1.5; }
+.sch .gt { font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-size: 12px; }</style><rect x="0" y="0" width="760" height="160" fill="#fbfcfa"/>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <rect class="box chip" x="20" y="30" width="220" height="100" rx="6"/>
+        <text class="h" x="130" y="64" text-anchor="middle">Tracker MAÎTRE</text>
+        <text class="m" x="130" y="84" text-anchor="middle">schéma ci-dessus</text>
+        <text class="ot" x="130" y="104" text-anchor="middle">+ ANÉMOMÈTRE</text>
+        <rect class="box chip" x="520" y="30" width="220" height="100" rx="6"/>
+        <text class="h" x="630" y="64" text-anchor="middle">Tracker ESCLAVE</text>
+        <text class="m" x="630" y="84" text-anchor="middle">schéma ci-dessus</text>
+        <text class="m" x="630" y="104" text-anchor="middle">sans anémomètre</text>
+        <line class="w" x1="240" y1="62" x2="518" y2="62" marker-end="url(#arr)"/>
+        <text x="380" y="54" text-anchor="middle">POST /alerte_vent</text>
+        <line class="w" x1="240" y1="104" x2="518" y2="104" marker-end="url(#arr)"/>
+        <text x="380" y="96" text-anchor="middle">POST /reset_alerte_vent</text>
+        <text class="m" x="380" y="124" text-anchor="middle">Wi-Fi, même réseau · aucun fil entre les deux</text>
+      </svg>

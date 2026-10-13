@@ -13,6 +13,9 @@
   --pwr: #b8322a;
   --opt: #a8740c;
   --chip: #e3ebe7;
+  --bts: #dbe6f5;
+  --bh: #f3dcdc;
+  --screw: #cfe8d2;
   --display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --sans: "Barlow", "Segoe UI", system-ui, sans-serif;
   --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
@@ -20,13 +23,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #111614; --sheet: #182020; --ink: #dce5e1; --muted: #8fa09a;
-    --line: #2d3936; --pwr: #ff7d6e; --opt: #e3b14b; --chip: #1f2a29;
+    --line: #2d3936; --pwr: #ff7d6e; --opt: #e3b14b; --chip: #1f2a29; --bts: #1c2838; --bh: #33201f; --screw: #1d3323;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111614; --sheet: #182020; --ink: #dce5e1; --muted: #8fa09a;
-  --line: #2d3936; --pwr: #ff7d6e; --opt: #e3b14b; --chip: #1f2a29;
+  --line: #2d3936; --pwr: #ff7d6e; --opt: #e3b14b; --chip: #1f2a29; --bts: #1c2838; --bh: #33201f; --screw: #1d3323;
   color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.55; }
@@ -55,6 +58,28 @@ figcaption { font-size: 14px; color: var(--muted); max-width: 80ch; }
 .sch .dot { fill: currentColor; }
 .sch .pdot { fill: var(--pwr); }
 .sch .hole { fill: var(--sheet); stroke: currentColor; stroke-width: 1.5; }
+.sch .halo { stroke: currentColor; stroke-width: 8; fill: none; stroke-linejoin: round; }
+.sch .fil { stroke-width: 5; fill: none; stroke-linejoin: round; }
+.sch .gaine { fill: currentColor; }
+.sch .unk { stroke: var(--muted); stroke-width: 5; stroke-dasharray: 4 3; fill: none; }
+.sch .tiny { font-size: 10px; }
+.sch .mu { fill: var(--muted); opacity: .75; }
+.sch .pin { fill: currentColor; }
+.sch .pinu { fill: var(--sheet); stroke: var(--muted); stroke-width: 1; }
+.sch .gap { stroke: var(--sheet); stroke-width: 6; fill: none; }
+.sch .bw { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.sch .cgap { stroke: var(--sheet); stroke-width: 9; fill: none; stroke-linejoin: round; }
+.sch .cout { stroke: currentColor; stroke-width: 6.5; fill: none; stroke-linejoin: round; }
+.sch .cfil { stroke-width: 4.5; fill: none; stroke-linejoin: round; }
+.sch .modv { fill: var(--chip); stroke: currentColor; stroke-width: 1.5; }
+.sch .modb { fill: var(--bts); stroke: currentColor; stroke-width: 1.5; }
+.sch .modr { fill: var(--bh); stroke: currentColor; stroke-width: 1.5; }
+.sch .modf { fill: var(--sheet); stroke: currentColor; stroke-width: 1.5; }
+.sch .conn { fill: var(--line); stroke: currentColor; stroke-width: 1; }
+.sch .screw { fill: var(--screw); stroke: currentColor; stroke-width: 1; }
+.sch .gaine { fill: var(--line); stroke: currentColor; stroke-width: 1.5; }
+.sch .gt { font-family: var(--sans); font-size: 12px; }
+.sheet.wide svg { min-width: 1100px; }
 .cols { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: start; }
 @media (max-width: 860px) { .cols { grid-template-columns: minmax(0, 1fr); } }
 .tbl { overflow-x: auto; }
@@ -211,8 +236,8 @@ strong { font-weight: 600; }
         <text x="110" y="234" text-anchor="middle">BH1750 Est</text>
         <rect class="box" x="40" y="258" width="140" height="34" rx="3"/>
         <text x="110" y="279" text-anchor="middle">BH1750 Ouest</text>
-        <text class="m" x="40" y="310">VCC +3V3 · ADDR → GND</text>
-        <text class="m" x="40" y="324">(tous en 0x23)</text>
+        <text class="m" x="40" y="310">VCC +3V3 (marron) · GND (noir)</text>
+        <text class="m" x="40" y="324">ADDR → GND (tous en 0x23)</text>
 
         <!-- liaisons canal (bus 2 fils SDx + SCx) -->
         <line class="w" x1="180" y1="140" x2="250" y2="140"/>
@@ -241,7 +266,7 @@ strong { font-weight: 600; }
         <circle class="hole" cx="296" cy="360" r="3"/>
         <polyline class="w" points="293,360 270,360 270,366"/>
         <use href="#gnd" x="270" y="366"/>
-        <text x="420" y="353" text-anchor="middle">FDC IH · à plat</text>
+        <text x="420" y="353" text-anchor="middle">FDC Nord · à plat</text>
         <!-- FDC IV -->
         <line class="w" x1="500" y1="400" x2="340" y2="400"/>
         <circle class="hole" cx="336" cy="400" r="3"/>
@@ -249,7 +274,7 @@ strong { font-weight: 600; }
         <circle class="hole" cx="296" cy="400" r="3"/>
         <polyline class="w" points="293,400 270,400 270,406"/>
         <use href="#gnd" x="270" y="406"/>
-        <text x="420" y="393" text-anchor="middle">FDC IV · vertical</text>
+        <text x="420" y="393" text-anchor="middle">FDC Sud · vertical</text>
         <!-- FDC Est -->
         <line class="w" x1="500" y1="440" x2="340" y2="440"/>
         <circle class="hole" cx="336" cy="440" r="3"/>
@@ -290,11 +315,11 @@ strong { font-weight: 600; }
         <text class="h" x="40" y="718">Alimentation</text>
         <rect class="box" x="40" y="735" width="170" height="50" rx="3"/>
         <text class="h" x="125" y="756" text-anchor="middle">Alimentation DC</text>
-        <text class="m" x="125" y="773" text-anchor="middle">V_MOT · à confirmer</text>
+        <text class="m" x="125" y="773" text-anchor="middle">V_MOT = 12 V</text>
         <text class="pt" x="203" y="746" text-anchor="end">+</text>
         <line class="p" x1="210" y1="750" x2="250" y2="750"/>
         <rect class="box" x="250" y="743" width="40" height="14" rx="2"/>
-        <text class="m" x="270" y="736" text-anchor="middle">fusible</text>
+        <text class="m" x="270" y="736" text-anchor="middle">15 A / BTS</text>
         <line class="p" x1="290" y1="750" x2="380" y2="750"/>
         <circle class="pdot" cx="340" cy="750" r="3.5"/>
         <text class="pt" x="340" y="738" text-anchor="middle">+V_MOT</text>
@@ -341,7 +366,584 @@ strong { font-weight: 600; }
         <text class="m" x="1010" y="736">bus 2 fils (SDx + SCx)</text>
       </svg>
     </div>
-    <figcaption>Un tracker complet. Les signaux de commande partent de l'ESP32 vers les deux BTS7960 ; la puissance moteur (rouge) passe uniquement par B+/B− et M+/M− des drivers. Les capteurs de lumière ont tous la même adresse I²C, c'est le TCA9548A qui choisit lequel est lu (canaux 0 à 3).</figcaption>
+    <figcaption>Un tracker complet. Les signaux de commande partent de l'ESP32 vers les deux BTS7960 ; la puissance moteur (rouge) passe uniquement par B+/B− et M+/M− des drivers. Les capteurs de lumière ont tous la même adresse I²C, c'est le TCA9548A qui choisit lequel est lu (canaux 0 à 3). Entre les BH1750 de la tête et le TCA, les liaisons passent par le câble multipaire et le bornier N/E/S/O détaillé ci-dessous.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="sheet small">
+      <svg class="sch" viewBox="0 0 800 316" role="img" aria-label="Bornier des capteurs de lumière, couleurs côté câble. Code : fil de couleur = SDA, fil bleu de la paire = SCL, marron = +3V3, noir = GND. Armoire métal : 1 blanc SDA N, 2 bleu SCL N, 3 jaune SDA E, 4 bleu SCL E, 5 bleu foncé SDA S, 6 bleu SCL S, 7 rouge SDA O, 8 bleu SCL O, 9 marron +3V3, 10 noir GND. Boîtier gris, lecture photo : 1 bleu, 2 blanc, 3 bleu, 4 jaune, 5 bleu, 6 bleu foncé, 7 bleu, 8 marron, 9 noir, 10 rouge, bornes 7 à 10 à vérifier.">
+        <!-- groupes -->
+        <text class="h" x="250" y="26" text-anchor="middle">N · canal 0</text>
+        <text class="h" x="370" y="26" text-anchor="middle">E · canal 1</text>
+        <text class="h" x="490" y="26" text-anchor="middle">S · canal 2</text>
+        <text class="h" x="610" y="26" text-anchor="middle">O · canal 3</text>
+        <text class="h" x="730" y="26" text-anchor="middle">alim</text>
+
+        <!-- ===== Armoire métal (référence) ===== -->
+        <text class="h" x="20" y="96">Armoire métal</text>
+        <text class="m" x="20" y="112">référence</text>
+        <rect class="gaine" x="241" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M250 48 L220 76 L220 96"/><path class="fil" stroke="#f2f2ee" d="M250 48 L220 76 L220 96"/>
+        <path class="halo" d="M250 48 L280 76 L280 96"/><path class="fil" stroke="#3fb4dc" d="M250 48 L280 76 L280 96"/>
+        <rect class="gaine" x="361" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M370 48 L340 76 L340 96"/><path class="fil" stroke="#f0c419" d="M370 48 L340 76 L340 96"/>
+        <path class="halo" d="M370 48 L400 76 L400 96"/><path class="fil" stroke="#3fb4dc" d="M370 48 L400 76 L400 96"/>
+        <rect class="gaine" x="481" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M490 48 L460 76 L460 96"/><path class="fil" stroke="#1f4fb8" d="M490 48 L460 76 L460 96"/>
+        <path class="halo" d="M490 48 L520 76 L520 96"/><path class="fil" stroke="#3fb4dc" d="M490 48 L520 76 L520 96"/>
+        <rect class="gaine" x="601" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M610 48 L580 76 L580 96"/><path class="fil" stroke="#d9342b" d="M610 48 L580 76 L580 96"/>
+        <path class="halo" d="M610 48 L640 76 L640 96"/><path class="fil" stroke="#3fb4dc" d="M610 48 L640 76 L640 96"/>
+        <rect class="gaine" x="721" y="36" width="18" height="12" rx="2"/>
+        <path class="halo" d="M730 48 L700 76 L700 96"/><path class="fil" stroke="#8b5a2b" d="M730 48 L700 76 L700 96"/>
+        <path class="halo" d="M730 48 L760 76 L760 96"/><path class="fil" stroke="#161616" d="M730 48 L760 76 L760 96"/>
+        <rect class="box" x="202" y="96" width="36" height="24" rx="3"/><text x="220" y="112" text-anchor="middle">1</text>
+        <rect class="box" x="262" y="96" width="36" height="24" rx="3"/><text x="280" y="112" text-anchor="middle">2</text>
+        <rect class="box" x="322" y="96" width="36" height="24" rx="3"/><text x="340" y="112" text-anchor="middle">3</text>
+        <rect class="box" x="382" y="96" width="36" height="24" rx="3"/><text x="400" y="112" text-anchor="middle">4</text>
+        <rect class="box" x="442" y="96" width="36" height="24" rx="3"/><text x="460" y="112" text-anchor="middle">5</text>
+        <rect class="box" x="502" y="96" width="36" height="24" rx="3"/><text x="520" y="112" text-anchor="middle">6</text>
+        <rect class="box" x="562" y="96" width="36" height="24" rx="3"/><text x="580" y="112" text-anchor="middle">7</text>
+        <rect class="box" x="622" y="96" width="36" height="24" rx="3"/><text x="640" y="112" text-anchor="middle">8</text>
+        <rect class="box" x="682" y="96" width="36" height="24" rx="3"/><text x="700" y="112" text-anchor="middle">9</text>
+        <rect class="box" x="742" y="96" width="36" height="24" rx="3"/><text x="760" y="112" text-anchor="middle">10</text>
+        <text class="m" x="220" y="138" text-anchor="middle">blanc</text>
+        <text class="m" x="280" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="340" y="138" text-anchor="middle">jaune</text>
+        <text class="m" x="400" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="460" y="138" text-anchor="middle">bleu f.</text>
+        <text class="m" x="520" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="580" y="138" text-anchor="middle">rouge</text>
+        <text class="m" x="640" y="138" text-anchor="middle">bleu</text>
+        <text class="m" x="700" y="138" text-anchor="middle">marron</text>
+        <text class="m" x="760" y="138" text-anchor="middle">noir</text>
+        <text x="220" y="154" text-anchor="middle">SDA</text>
+        <text x="280" y="154" text-anchor="middle">SCL</text>
+        <text x="340" y="154" text-anchor="middle">SDA</text>
+        <text x="400" y="154" text-anchor="middle">SCL</text>
+        <text x="460" y="154" text-anchor="middle">SDA</text>
+        <text x="520" y="154" text-anchor="middle">SCL</text>
+        <text x="580" y="154" text-anchor="middle">SDA</text>
+        <text x="640" y="154" text-anchor="middle">SCL</text>
+        <text class="pt" x="700" y="154" text-anchor="middle">+3V3</text>
+        <text x="760" y="154" text-anchor="middle">GND</text>
+
+        <!-- ===== Boîtier gris (lecture photo 2) ===== -->
+        <text class="h" x="20" y="246">Boîtier gris</text>
+        <text class="m" x="20" y="262">lecture photo 2</text>
+        <rect class="o" x="556" y="180" width="228" height="128" rx="4"/>
+        <text class="ot" x="670" y="196" text-anchor="middle">À VÉRIFIER</text>
+        <path class="halo" d="M220 206 L220 236"/><path class="fil" stroke="#3fb4dc" d="M220 206 L220 236"/>
+        <path class="halo" d="M280 206 L280 236"/><path class="fil" stroke="#f2f2ee" d="M280 206 L280 236"/>
+        <path class="halo" d="M340 206 L340 236"/><path class="fil" stroke="#3fb4dc" d="M340 206 L340 236"/>
+        <path class="halo" d="M400 206 L400 236"/><path class="fil" stroke="#f0c419" d="M400 206 L400 236"/>
+        <path class="halo" d="M460 206 L460 236"/><path class="fil" stroke="#3fb4dc" d="M460 206 L460 236"/>
+        <path class="halo" d="M520 206 L520 236"/><path class="fil" stroke="#1f4fb8" d="M520 206 L520 236"/>
+        <path class="halo" d="M580 206 L580 236"/><path class="fil" stroke="#3fb4dc" d="M580 206 L580 236"/>
+        <path class="halo" d="M640 206 L640 236"/><path class="fil" stroke="#8b5a2b" d="M640 206 L640 236"/>
+        <path class="halo" d="M700 206 L700 236"/><path class="fil" stroke="#161616" d="M700 206 L700 236"/>
+        <path class="halo" d="M760 206 L760 236"/><path class="fil" stroke="#d9342b" d="M760 206 L760 236"/>
+        <rect class="box" x="202" y="236" width="36" height="24" rx="3"/><text x="220" y="252" text-anchor="middle">1</text>
+        <rect class="box" x="262" y="236" width="36" height="24" rx="3"/><text x="280" y="252" text-anchor="middle">2</text>
+        <rect class="box" x="322" y="236" width="36" height="24" rx="3"/><text x="340" y="252" text-anchor="middle">3</text>
+        <rect class="box" x="382" y="236" width="36" height="24" rx="3"/><text x="400" y="252" text-anchor="middle">4</text>
+        <rect class="box" x="442" y="236" width="36" height="24" rx="3"/><text x="460" y="252" text-anchor="middle">5</text>
+        <rect class="box" x="502" y="236" width="36" height="24" rx="3"/><text x="520" y="252" text-anchor="middle">6</text>
+        <rect class="box" x="562" y="236" width="36" height="24" rx="3"/><text x="580" y="252" text-anchor="middle">7</text>
+        <rect class="box" x="622" y="236" width="36" height="24" rx="3"/><text x="640" y="252" text-anchor="middle">8</text>
+        <rect class="box" x="682" y="236" width="36" height="24" rx="3"/><text x="700" y="252" text-anchor="middle">9</text>
+        <rect class="box" x="742" y="236" width="36" height="24" rx="3"/><text x="760" y="252" text-anchor="middle">10</text>
+        <text class="m" x="220" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="280" y="278" text-anchor="middle">blanc</text>
+        <text class="m" x="340" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="400" y="278" text-anchor="middle">jaune</text>
+        <text class="m" x="460" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="520" y="278" text-anchor="middle">bleu f.</text>
+        <text class="m" x="580" y="278" text-anchor="middle">bleu</text>
+        <text class="m" x="640" y="278" text-anchor="middle">marron</text>
+        <text class="m" x="700" y="278" text-anchor="middle">noir</text>
+        <text class="m" x="760" y="278" text-anchor="middle">rouge</text>
+        <text x="220" y="294" text-anchor="middle">SCL N</text>
+        <text x="280" y="294" text-anchor="middle">SDA N</text>
+        <text x="340" y="294" text-anchor="middle">SCL E</text>
+        <text x="400" y="294" text-anchor="middle">SDA E</text>
+        <text x="460" y="294" text-anchor="middle">SCL S</text>
+        <text x="520" y="294" text-anchor="middle">SDA S</text>
+        <text x="580" y="294" text-anchor="middle">SCL O</text>
+        <text class="pt" x="640" y="294" text-anchor="middle">+3V3</text>
+        <text x="700" y="294" text-anchor="middle">GND</text>
+        <text x="760" y="294" text-anchor="middle">SDA O</text>
+      </svg>
+    </div>
+    <figcaption>Bornier « capteurs lumières », couleurs du câble qui monte à la tête. Code du câble : dans chaque paire, le fil de couleur est SDA et le fil bleu est SCL (blanc = Nord, jaune = Est, bleu foncé = Sud, rouge = Ouest) ; marron = +3V3, noir = GND. Les couleurs sont les mêmes dans les deux boîtiers, seule leur place sur le bornier change. Dans le boîtier gris, d'après la photo, la paire Ouest est coupée en deux (bleu en 7, rouge en 10) et l'alimentation est en 8-9.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="sheet wide">
+      <!-- cablage:start --><svg class="sch cab" viewBox="0 0 1320 1420" role="img" aria-label="Vue de câblage d'un tracker : quatre BH1750 en tête reliés par un câble multipaire au bornier capteurs, puis au TCA9548A ; ESP32 38 broches relié aux deux BTS7960, aux quatre fins de course Nord, Sud, Est, Ouest et, sur le maître, à l'anémomètre ; alimentation 12 V, interrupteur et porte-fusibles 6 voies."><text class="h" x="40.0" y="36.0" text-anchor="start">Tête du tracker</text>
+<text class="m" x="40.0" y="54.0" text-anchor="start">connecteur BH1750 : 1 VCC · 2 SCL · 3 DAT (SDA) · 4 GND · 5 ADDR (non relié → 0x23)</text>
+<circle class="modr" cx="100" cy="112" r="46"/>
+<text x="100.0" y="106.0" text-anchor="middle">BH1750</text>
+<text class="h" x="100.0" y="124.0" text-anchor="middle">Nord</text>
+<rect class="conn" x="62" y="162" width="76" height="22" rx="2"/>
+<path class="cgap" d="M72 176 L72 234"/><path class="cout" d="M72 176 L72 234"/><path class="cfil" stroke="#8b5a2b" d="M72 176 L72 234"/>
+<circle class="pin" cx="72" cy="176" r="3.5"/>
+<text class="tiny" x="72.0" y="172.0" text-anchor="middle">1</text>
+<path class="cgap" d="M86 176 L86 234"/><path class="cout" d="M86 176 L86 234"/><path class="cfil" stroke="#3fb4dc" d="M86 176 L86 234"/>
+<circle class="pin" cx="86" cy="176" r="3.5"/>
+<text class="tiny" x="86.0" y="172.0" text-anchor="middle">2</text>
+<path class="cgap" d="M100 176 L100 234"/><path class="cout" d="M100 176 L100 234"/><path class="cfil" stroke="#f2f2ee" d="M100 176 L100 234"/>
+<circle class="pin" cx="100" cy="176" r="3.5"/>
+<text class="tiny" x="100.0" y="172.0" text-anchor="middle">3</text>
+<path class="cgap" d="M114 176 L114 234"/><path class="cout" d="M114 176 L114 234"/><path class="cfil" stroke="#161616" d="M114 176 L114 234"/>
+<circle class="pin" cx="114" cy="176" r="3.5"/>
+<text class="tiny" x="114.0" y="172.0" text-anchor="middle">4</text>
+<circle class="pinu" cx="128" cy="176" r="3.5"/>
+<text class="tiny" x="128.0" y="172.0" text-anchor="middle">5</text>
+<circle class="modr" cx="240" cy="112" r="46"/>
+<text x="240.0" y="106.0" text-anchor="middle">BH1750</text>
+<text class="h" x="240.0" y="124.0" text-anchor="middle">Est</text>
+<rect class="conn" x="202" y="162" width="76" height="22" rx="2"/>
+<path class="cgap" d="M212 176 L212 234"/><path class="cout" d="M212 176 L212 234"/><path class="cfil" stroke="#8b5a2b" d="M212 176 L212 234"/>
+<circle class="pin" cx="212" cy="176" r="3.5"/>
+<text class="tiny" x="212.0" y="172.0" text-anchor="middle">1</text>
+<path class="cgap" d="M226 176 L226 234"/><path class="cout" d="M226 176 L226 234"/><path class="cfil" stroke="#3fb4dc" d="M226 176 L226 234"/>
+<circle class="pin" cx="226" cy="176" r="3.5"/>
+<text class="tiny" x="226.0" y="172.0" text-anchor="middle">2</text>
+<path class="cgap" d="M240 176 L240 234"/><path class="cout" d="M240 176 L240 234"/><path class="cfil" stroke="#f0c419" d="M240 176 L240 234"/>
+<circle class="pin" cx="240" cy="176" r="3.5"/>
+<text class="tiny" x="240.0" y="172.0" text-anchor="middle">3</text>
+<path class="cgap" d="M254 176 L254 234"/><path class="cout" d="M254 176 L254 234"/><path class="cfil" stroke="#161616" d="M254 176 L254 234"/>
+<circle class="pin" cx="254" cy="176" r="3.5"/>
+<text class="tiny" x="254.0" y="172.0" text-anchor="middle">4</text>
+<circle class="pinu" cx="268" cy="176" r="3.5"/>
+<text class="tiny" x="268.0" y="172.0" text-anchor="middle">5</text>
+<circle class="modr" cx="380" cy="112" r="46"/>
+<text x="380.0" y="106.0" text-anchor="middle">BH1750</text>
+<text class="h" x="380.0" y="124.0" text-anchor="middle">Sud</text>
+<rect class="conn" x="342" y="162" width="76" height="22" rx="2"/>
+<path class="cgap" d="M352 176 L352 234"/><path class="cout" d="M352 176 L352 234"/><path class="cfil" stroke="#8b5a2b" d="M352 176 L352 234"/>
+<circle class="pin" cx="352" cy="176" r="3.5"/>
+<text class="tiny" x="352.0" y="172.0" text-anchor="middle">1</text>
+<path class="cgap" d="M366 176 L366 234"/><path class="cout" d="M366 176 L366 234"/><path class="cfil" stroke="#3fb4dc" d="M366 176 L366 234"/>
+<circle class="pin" cx="366" cy="176" r="3.5"/>
+<text class="tiny" x="366.0" y="172.0" text-anchor="middle">2</text>
+<path class="cgap" d="M380 176 L380 234"/><path class="cout" d="M380 176 L380 234"/><path class="cfil" stroke="#1f4fb8" d="M380 176 L380 234"/>
+<circle class="pin" cx="380" cy="176" r="3.5"/>
+<text class="tiny" x="380.0" y="172.0" text-anchor="middle">3</text>
+<path class="cgap" d="M394 176 L394 234"/><path class="cout" d="M394 176 L394 234"/><path class="cfil" stroke="#161616" d="M394 176 L394 234"/>
+<circle class="pin" cx="394" cy="176" r="3.5"/>
+<text class="tiny" x="394.0" y="172.0" text-anchor="middle">4</text>
+<circle class="pinu" cx="408" cy="176" r="3.5"/>
+<text class="tiny" x="408.0" y="172.0" text-anchor="middle">5</text>
+<circle class="modr" cx="520" cy="112" r="46"/>
+<text x="520.0" y="106.0" text-anchor="middle">BH1750</text>
+<text class="h" x="520.0" y="124.0" text-anchor="middle">Ouest</text>
+<rect class="conn" x="482" y="162" width="76" height="22" rx="2"/>
+<path class="cgap" d="M492 176 L492 234"/><path class="cout" d="M492 176 L492 234"/><path class="cfil" stroke="#8b5a2b" d="M492 176 L492 234"/>
+<circle class="pin" cx="492" cy="176" r="3.5"/>
+<text class="tiny" x="492.0" y="172.0" text-anchor="middle">1</text>
+<path class="cgap" d="M506 176 L506 234"/><path class="cout" d="M506 176 L506 234"/><path class="cfil" stroke="#3fb4dc" d="M506 176 L506 234"/>
+<circle class="pin" cx="506" cy="176" r="3.5"/>
+<text class="tiny" x="506.0" y="172.0" text-anchor="middle">2</text>
+<path class="cgap" d="M520 176 L520 234"/><path class="cout" d="M520 176 L520 234"/><path class="cfil" stroke="#d9342b" d="M520 176 L520 234"/>
+<circle class="pin" cx="520" cy="176" r="3.5"/>
+<text class="tiny" x="520.0" y="172.0" text-anchor="middle">3</text>
+<path class="cgap" d="M534 176 L534 234"/><path class="cout" d="M534 176 L534 234"/><path class="cfil" stroke="#161616" d="M534 176 L534 234"/>
+<circle class="pin" cx="534" cy="176" r="3.5"/>
+<text class="tiny" x="534.0" y="172.0" text-anchor="middle">4</text>
+<circle class="pinu" cx="548" cy="176" r="3.5"/>
+<text class="tiny" x="548.0" y="172.0" text-anchor="middle">5</text>
+<rect class="gaine" x="60" y="232" width="584" height="28" rx="14"/>
+<text class="gt" x="352.0" y="250.0" text-anchor="middle">câble multipaire · + et GND des 4 capteurs reliés en tête</text>
+<path class="cgap" d="M640 256.0 L680 282.0 L700 282.0 L700 292"/><path class="cout" d="M640 256.0 L680 282.0 L700 282.0 L700 292"/><path class="cfil" stroke="#f2f2ee" d="M640 256.0 L680 282.0 L700 282.0 L700 292"/>
+<path class="cgap" d="M640 253.8 L680 275.5 L732 275.5 L732 292"/><path class="cout" d="M640 253.8 L680 275.5 L732 275.5 L732 292"/><path class="cfil" stroke="#3fb4dc" d="M640 253.8 L680 275.5 L732 275.5 L732 292"/>
+<path class="cgap" d="M640 251.6 L680 269.0 L764 269.0 L764 292"/><path class="cout" d="M640 251.6 L680 269.0 L764 269.0 L764 292"/><path class="cfil" stroke="#f0c419" d="M640 251.6 L680 269.0 L764 269.0 L764 292"/>
+<path class="cgap" d="M640 249.4 L680 262.5 L796 262.5 L796 292"/><path class="cout" d="M640 249.4 L680 262.5 L796 262.5 L796 292"/><path class="cfil" stroke="#3fb4dc" d="M640 249.4 L680 262.5 L796 262.5 L796 292"/>
+<path class="cgap" d="M640 247.2 L680 256.0 L828 256.0 L828 292"/><path class="cout" d="M640 247.2 L680 256.0 L828 256.0 L828 292"/><path class="cfil" stroke="#1f4fb8" d="M640 247.2 L680 256.0 L828 256.0 L828 292"/>
+<path class="cgap" d="M640 245.0 L680 249.5 L860 249.5 L860 292"/><path class="cout" d="M640 245.0 L680 249.5 L860 249.5 L860 292"/><path class="cfil" stroke="#3fb4dc" d="M640 245.0 L680 249.5 L860 249.5 L860 292"/>
+<path class="cgap" d="M640 242.8 L680 243.0 L892 243.0 L892 292"/><path class="cout" d="M640 242.8 L680 243.0 L892 243.0 L892 292"/><path class="cfil" stroke="#d9342b" d="M640 242.8 L680 243.0 L892 243.0 L892 292"/>
+<path class="cgap" d="M640 240.6 L680 236.5 L924 236.5 L924 292"/><path class="cout" d="M640 240.6 L680 236.5 L924 236.5 L924 292"/><path class="cfil" stroke="#3fb4dc" d="M640 240.6 L680 236.5 L924 236.5 L924 292"/>
+<path class="cgap" d="M640 238.4 L680 230.0 L956 230.0 L956 292"/><path class="cout" d="M640 238.4 L680 230.0 L956 230.0 L956 292"/><path class="cfil" stroke="#8b5a2b" d="M640 238.4 L680 230.0 L956 230.0 L956 292"/>
+<path class="cgap" d="M640 236.2 L680 223.5 L988 223.5 L988 292"/><path class="cout" d="M640 236.2 L680 223.5 L988 223.5 L988 292"/><path class="cfil" stroke="#161616" d="M640 236.2 L680 223.5 L988 223.5 L988 292"/>
+<rect class="box" x="687" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="700.0" y="305.0" text-anchor="middle">1</text>
+<text class="tiny mu" x="700.0" y="322.0" text-anchor="middle">N</text>
+<line class="w" x1="700" y1="330" x2="700" y2="344"/>
+<text class="tiny" x="700.0" y="357.0" text-anchor="middle">SD0</text>
+<rect class="box" x="719" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="732.0" y="305.0" text-anchor="middle">2</text>
+<text class="tiny mu" x="732.0" y="322.0" text-anchor="middle">N</text>
+<line class="w" x1="732" y1="330" x2="732" y2="344"/>
+<text class="tiny" x="732.0" y="357.0" text-anchor="middle">SC0</text>
+<rect class="box" x="751" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="764.0" y="305.0" text-anchor="middle">3</text>
+<text class="tiny mu" x="764.0" y="322.0" text-anchor="middle">E</text>
+<line class="w" x1="764" y1="330" x2="764" y2="344"/>
+<text class="tiny" x="764.0" y="357.0" text-anchor="middle">SD1</text>
+<rect class="box" x="783" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="796.0" y="305.0" text-anchor="middle">4</text>
+<text class="tiny mu" x="796.0" y="322.0" text-anchor="middle">E</text>
+<line class="w" x1="796" y1="330" x2="796" y2="344"/>
+<text class="tiny" x="796.0" y="357.0" text-anchor="middle">SC1</text>
+<rect class="box" x="815" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="828.0" y="305.0" text-anchor="middle">5</text>
+<text class="tiny mu" x="828.0" y="322.0" text-anchor="middle">S</text>
+<line class="w" x1="828" y1="330" x2="828" y2="344"/>
+<text class="tiny" x="828.0" y="357.0" text-anchor="middle">SD2</text>
+<rect class="box" x="847" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="860.0" y="305.0" text-anchor="middle">6</text>
+<text class="tiny mu" x="860.0" y="322.0" text-anchor="middle">S</text>
+<line class="w" x1="860" y1="330" x2="860" y2="344"/>
+<text class="tiny" x="860.0" y="357.0" text-anchor="middle">SC2</text>
+<rect class="box" x="879" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="892.0" y="305.0" text-anchor="middle">7</text>
+<text class="tiny mu" x="892.0" y="322.0" text-anchor="middle">O</text>
+<line class="w" x1="892" y1="330" x2="892" y2="344"/>
+<text class="tiny" x="892.0" y="357.0" text-anchor="middle">SD3</text>
+<rect class="box" x="911" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="924.0" y="305.0" text-anchor="middle">8</text>
+<text class="tiny mu" x="924.0" y="322.0" text-anchor="middle">O</text>
+<line class="w" x1="924" y1="330" x2="924" y2="344"/>
+<text class="tiny" x="924.0" y="357.0" text-anchor="middle">SC3</text>
+<rect class="box" x="943" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="956.0" y="305.0" text-anchor="middle">9</text>
+<text class="tiny mu" x="956.0" y="322.0" text-anchor="middle">+</text>
+<line class="p" x1="956" y1="330" x2="956" y2="344"/>
+<text class="tiny pt" x="956.0" y="357.0" text-anchor="middle">+3V3</text>
+<rect class="box" x="975" y="290" width="26" height="40" rx="3"/>
+<text class="tiny" x="988.0" y="305.0" text-anchor="middle">10</text>
+<text class="tiny mu" x="988.0" y="322.0" text-anchor="middle">−</text>
+<line class="w" x1="988" y1="330" x2="988" y2="344"/>
+<text class="tiny" x="988.0" y="357.0" text-anchor="middle">GND</text>
+<text class="tiny mu" x="844.0" y="374.0" text-anchor="middle">côté carte → broches du TCA9548A</text>
+<text class="m" x="844.0" y="214.0" text-anchor="middle">bornier « capteurs lumières »</text>
+<rect class="modv" x="918" y="398" width="300" height="84" rx="4"/>
+<text class="h" x="1068.0" y="392.0" text-anchor="middle">TCA9548A · 0x70</text>
+<text class="m" x="1068.0" y="444.0" text-anchor="middle">TCA9548A</text>
+<text class="tiny mu" x="936.0" y="428.0" text-anchor="middle">SC7</text>
+<text class="tiny" x="936.0" y="458.0" text-anchor="middle">VIN</text>
+<text class="tiny mu" x="960.0" y="428.0" text-anchor="middle">SD7</text>
+<text class="tiny" x="960.0" y="458.0" text-anchor="middle">GND</text>
+<text class="tiny mu" x="984.0" y="428.0" text-anchor="middle">SC6</text>
+<text class="tiny" x="984.0" y="458.0" text-anchor="middle">SDA</text>
+<text class="tiny mu" x="1008.0" y="428.0" text-anchor="middle">SD6</text>
+<text class="tiny" x="1008.0" y="458.0" text-anchor="middle">SCL</text>
+<text class="tiny mu" x="1032.0" y="428.0" text-anchor="middle">SC5</text>
+<text class="tiny mu" x="1032.0" y="458.0" text-anchor="middle">RST</text>
+<text class="tiny mu" x="1056.0" y="428.0" text-anchor="middle">SD5</text>
+<text class="tiny mu" x="1056.0" y="458.0" text-anchor="middle">A0</text>
+<text class="tiny mu" x="1080.0" y="428.0" text-anchor="middle">SC4</text>
+<text class="tiny mu" x="1080.0" y="458.0" text-anchor="middle">A1</text>
+<text class="tiny mu" x="1104.0" y="428.0" text-anchor="middle">SD4</text>
+<text class="tiny mu" x="1104.0" y="458.0" text-anchor="middle">A2</text>
+<text class="tiny" x="1128.0" y="428.0" text-anchor="middle">SC3</text>
+<text class="tiny" x="1128.0" y="458.0" text-anchor="middle">SD0</text>
+<text class="tiny" x="1152.0" y="428.0" text-anchor="middle">SD3</text>
+<text class="tiny" x="1152.0" y="458.0" text-anchor="middle">SC0</text>
+<text class="tiny" x="1176.0" y="428.0" text-anchor="middle">SC2</text>
+<text class="tiny" x="1176.0" y="458.0" text-anchor="middle">SD1</text>
+<text class="tiny" x="1200.0" y="428.0" text-anchor="middle">SD2</text>
+<text class="tiny" x="1200.0" y="458.0" text-anchor="middle">SC1</text>
+<line class="w" x1="1128" y1="468" x2="1128" y2="482"/>
+<text class="tiny" x="1128.0" y="495.0" text-anchor="middle">N</text>
+<line class="w" x1="1152" y1="468" x2="1152" y2="482"/>
+<text class="tiny" x="1152.0" y="495.0" text-anchor="middle">N</text>
+<line class="w" x1="1176" y1="468" x2="1176" y2="482"/>
+<text class="tiny" x="1176.0" y="495.0" text-anchor="middle">E</text>
+<line class="w" x1="1200" y1="468" x2="1200" y2="482"/>
+<text class="tiny" x="1200.0" y="495.0" text-anchor="middle">E</text>
+<line class="w" x1="1200" y1="412" x2="1200" y2="398"/>
+<text class="tiny" x="1200.0" y="393.0" text-anchor="middle">S</text>
+<line class="w" x1="1176" y1="412" x2="1176" y2="398"/>
+<text class="tiny" x="1176.0" y="393.0" text-anchor="middle">S</text>
+<line class="w" x1="1152" y1="412" x2="1152" y2="398"/>
+<text class="tiny" x="1152.0" y="393.0" text-anchor="middle">O</text>
+<line class="w" x1="1128" y1="412" x2="1128" y2="398"/>
+<text class="tiny" x="1128.0" y="393.0" text-anchor="middle">O</text>
+<line class="p" x1="936" y1="468" x2="922" y2="468"/>
+<text class="pt" x="918.0" y="472.0" text-anchor="end">+3V3</text>
+<line class="w" x1="960" y1="468" x2="960" y2="500"/>
+<text x="960.0" y="512.0" text-anchor="middle">GND</text>
+<text class="tiny mu" x="1068.0" y="528.0" text-anchor="middle">A0–A2 non câblées</text>
+<rect class="modv" x="520" y="600" width="180" height="470" rx="6"/>
+<rect class="box" x="570" y="612" width="80" height="70" rx="2"/>
+<text class="tiny" x="610.0" y="644.0" text-anchor="middle">ESP-</text>
+<text class="tiny" x="610.0" y="656.0" text-anchor="middle">WROOM-32</text>
+<rect class="box" x="590" y="1058" width="40" height="18" rx="2"/>
+<text class="h" x="610.0" y="592.0" text-anchor="middle">ESP32 DevKit (38 broches)</text>
+<circle class="pin" cx="536" cy="630" r="3.5"/>
+<circle class="pinu" cx="684" cy="630" r="3.5"/>
+<text class="tiny" x="546.0" y="634.0" text-anchor="start">3V3</text>
+<text class="tiny mu" x="674.0" y="634.0" text-anchor="end">GND</text>
+<circle class="pinu" cx="536" cy="652" r="3.5"/>
+<circle class="pin" cx="684" cy="652" r="3.5"/>
+<text class="tiny mu" x="546.0" y="656.0" text-anchor="start">EN</text>
+<text class="tiny" x="674.0" y="656.0" text-anchor="end">23</text>
+<circle class="pinu" cx="536" cy="674" r="3.5"/>
+<circle class="pin" cx="684" cy="674" r="3.5"/>
+<text class="tiny mu" x="546.0" y="678.0" text-anchor="start">36</text>
+<text class="tiny" x="674.0" y="678.0" text-anchor="end">22</text>
+<circle class="pinu" cx="536" cy="696" r="3.5"/>
+<circle class="pinu" cx="684" cy="696" r="3.5"/>
+<text class="tiny mu" x="546.0" y="700.0" text-anchor="start">39</text>
+<text class="tiny mu" x="674.0" y="700.0" text-anchor="end">TX</text>
+<circle class="pin" cx="536" cy="718" r="3.5"/>
+<circle class="pinu" cx="684" cy="718" r="3.5"/>
+<text class="tiny" x="546.0" y="722.0" text-anchor="start">34</text>
+<text class="tiny mu" x="674.0" y="722.0" text-anchor="end">RX</text>
+<circle class="pinu" cx="536" cy="740" r="3.5"/>
+<circle class="pin" cx="684" cy="740" r="3.5"/>
+<text class="tiny mu" x="546.0" y="744.0" text-anchor="start">35</text>
+<text class="tiny" x="674.0" y="744.0" text-anchor="end">21</text>
+<circle class="pin" cx="536" cy="762" r="3.5"/>
+<circle class="pinu" cx="684" cy="762" r="3.5"/>
+<text class="tiny" x="546.0" y="766.0" text-anchor="start">32</text>
+<text class="tiny mu" x="674.0" y="766.0" text-anchor="end">GND</text>
+<circle class="pin" cx="536" cy="784" r="3.5"/>
+<circle class="pin" cx="684" cy="784" r="3.5"/>
+<text class="tiny" x="546.0" y="788.0" text-anchor="start">33</text>
+<text class="tiny" x="674.0" y="788.0" text-anchor="end">19</text>
+<circle class="pinu" cx="536" cy="806" r="3.5"/>
+<circle class="pin" cx="684" cy="806" r="3.5"/>
+<text class="tiny mu" x="546.0" y="810.0" text-anchor="start">25</text>
+<text class="tiny" x="674.0" y="810.0" text-anchor="end">18</text>
+<circle class="pinu" cx="536" cy="828" r="3.5"/>
+<circle class="pin" cx="684" cy="828" r="3.5"/>
+<text class="tiny mu" x="546.0" y="832.0" text-anchor="start">26</text>
+<text class="tiny" x="674.0" y="832.0" text-anchor="end">5</text>
+<circle class="pinu" cx="536" cy="850" r="3.5"/>
+<circle class="pin" cx="684" cy="850" r="3.5"/>
+<text class="tiny mu" x="546.0" y="854.0" text-anchor="start">27</text>
+<text class="tiny" x="674.0" y="854.0" text-anchor="end">17</text>
+<circle class="pinu" cx="536" cy="872" r="3.5"/>
+<circle class="pin" cx="684" cy="872" r="3.5"/>
+<text class="tiny mu" x="546.0" y="876.0" text-anchor="start">14</text>
+<text class="tiny" x="674.0" y="876.0" text-anchor="end">16</text>
+<circle class="pinu" cx="536" cy="894" r="3.5"/>
+<circle class="pin" cx="684" cy="894" r="3.5"/>
+<text class="tiny mu" x="546.0" y="898.0" text-anchor="start">12</text>
+<text class="tiny" x="674.0" y="898.0" text-anchor="end">4</text>
+<circle class="pin" cx="536" cy="916" r="3.5"/>
+<circle class="pinu" cx="684" cy="916" r="3.5"/>
+<text class="tiny" x="546.0" y="920.0" text-anchor="start">GND</text>
+<text class="tiny mu" x="674.0" y="920.0" text-anchor="end">0</text>
+<circle class="pin" cx="536" cy="938" r="3.5"/>
+<circle class="pin" cx="684" cy="938" r="3.5"/>
+<text class="tiny" x="546.0" y="942.0" text-anchor="start">13</text>
+<text class="tiny" x="674.0" y="942.0" text-anchor="end">2</text>
+<circle class="pinu" cx="536" cy="960" r="3.5"/>
+<circle class="pin" cx="684" cy="960" r="3.5"/>
+<text class="tiny mu" x="546.0" y="964.0" text-anchor="start">SD2</text>
+<text class="tiny" x="674.0" y="964.0" text-anchor="end">15</text>
+<circle class="pinu" cx="536" cy="982" r="3.5"/>
+<circle class="pinu" cx="684" cy="982" r="3.5"/>
+<text class="tiny mu" x="546.0" y="986.0" text-anchor="start">SD3</text>
+<text class="tiny mu" x="674.0" y="986.0" text-anchor="end">SD1</text>
+<circle class="pinu" cx="536" cy="1004" r="3.5"/>
+<circle class="pinu" cx="684" cy="1004" r="3.5"/>
+<text class="tiny mu" x="546.0" y="1008.0" text-anchor="start">CMD</text>
+<text class="tiny mu" x="674.0" y="1008.0" text-anchor="end">SD0</text>
+<circle class="pin" cx="536" cy="1026" r="3.5"/>
+<circle class="pinu" cx="684" cy="1026" r="3.5"/>
+<text class="tiny" x="546.0" y="1030.0" text-anchor="start">5V</text>
+<text class="tiny mu" x="674.0" y="1030.0" text-anchor="end">CLK</text>
+<line class="p" x1="536" y1="630" x2="522" y2="630"/>
+<text class="pt" x="518.0" y="634.0" text-anchor="end">+3V3</text>
+<line class="w" x1="536" y1="916" x2="522" y2="916"/>
+<text x="518.0" y="920.0" text-anchor="end">GND</text>
+<line class="p" x1="536" y1="1026" x2="522" y2="1026"/>
+<text class="pt" x="518.0" y="1030.0" text-anchor="end">+5V</text>
+<rect class="modb" x="900" y="620" width="200" height="180" rx="4"/>
+<text class="h" x="1000.0" y="612.0" text-anchor="middle">BTS7960 · Est-Ouest (rotation)</text>
+<rect class="conn" x="906" y="628" width="20" height="164" rx="2"/>
+<circle class="pin" cx="916" cy="640" r="3.5"/>
+<text class="tiny" x="934.0" y="644.0" text-anchor="start">RPWM</text>
+<circle class="pin" cx="916" cy="660" r="3.5"/>
+<text class="tiny" x="934.0" y="664.0" text-anchor="start">LPWM</text>
+<circle class="pin" cx="916" cy="680" r="3.5"/>
+<text class="tiny" x="934.0" y="684.0" text-anchor="start">R_EN</text>
+<circle class="pin" cx="916" cy="700" r="3.5"/>
+<text class="tiny" x="934.0" y="704.0" text-anchor="start">L_EN</text>
+<circle class="pinu" cx="916" cy="720" r="3.5"/>
+<text class="tiny mu" x="934.0" y="724.0" text-anchor="start">R_IS</text>
+<circle class="pinu" cx="916" cy="740" r="3.5"/>
+<text class="tiny mu" x="934.0" y="744.0" text-anchor="start">L_IS</text>
+<circle class="pin" cx="916" cy="760" r="3.5"/>
+<text class="tiny" x="934.0" y="764.0" text-anchor="start">VCC</text>
+<circle class="pin" cx="916" cy="780" r="3.5"/>
+<text class="tiny" x="934.0" y="784.0" text-anchor="start">GND</text>
+<line class="p" x1="916" y1="760" x2="902" y2="760"/>
+<text class="pt" x="898.0" y="764.0" text-anchor="end">+5V</text>
+<line class="w" x1="916" y1="780" x2="902" y2="780"/>
+<text class="tiny" x="898.0" y="784.0" text-anchor="end">GND</text>
+<rect class="screw" x="1068" y="644" width="32" height="132" rx="2"/>
+<circle class="pin" cx="1084" cy="660" r="3.5"/>
+<text class="tiny" x="1062.0" y="664.0" text-anchor="end">B−</text>
+<circle class="pin" cx="1084" cy="690" r="3.5"/>
+<text class="tiny" x="1062.0" y="694.0" text-anchor="end">B+</text>
+<circle class="pin" cx="1084" cy="720" r="3.5"/>
+<text class="tiny" x="1062.0" y="724.0" text-anchor="end">M+</text>
+<circle class="pin" cx="1084" cy="750" r="3.5"/>
+<text class="tiny" x="1062.0" y="754.0" text-anchor="end">M−</text>
+<line class="p" x1="1084" y1="690" x2="1124" y2="690"/>
+<text class="pt" x="1128.0" y="694.0" text-anchor="start">+12 V · fusible 15 A</text>
+<line class="w" x1="1084" y1="660" x2="1124" y2="660"/>
+<text x="1128.0" y="664.0" text-anchor="start">GND (−12 V)</text>
+<line class="w" x1="1084" y1="720" x2="1206.8" y2="720"/>
+<line class="w" x1="1084" y1="750" x2="1206.8" y2="750"/>
+<circle class="box" cx="1228" cy="735" r="26"/>
+<text class="h" x="1228.0" y="740.0" text-anchor="middle">M</text>
+<text class="m" x="1228.0" y="781.0" text-anchor="middle">moteur rotation 12 V</text>
+<rect class="modb" x="900" y="850" width="200" height="180" rx="4"/>
+<text class="h" x="1000.0" y="842.0" text-anchor="middle">BTS7960 · inclinaison</text>
+<rect class="conn" x="906" y="858" width="20" height="164" rx="2"/>
+<circle class="pin" cx="916" cy="870" r="3.5"/>
+<text class="tiny" x="934.0" y="874.0" text-anchor="start">RPWM</text>
+<circle class="pin" cx="916" cy="890" r="3.5"/>
+<text class="tiny" x="934.0" y="894.0" text-anchor="start">LPWM</text>
+<circle class="pin" cx="916" cy="910" r="3.5"/>
+<text class="tiny" x="934.0" y="914.0" text-anchor="start">R_EN</text>
+<circle class="pin" cx="916" cy="930" r="3.5"/>
+<text class="tiny" x="934.0" y="934.0" text-anchor="start">L_EN</text>
+<circle class="pinu" cx="916" cy="950" r="3.5"/>
+<text class="tiny mu" x="934.0" y="954.0" text-anchor="start">R_IS</text>
+<circle class="pinu" cx="916" cy="970" r="3.5"/>
+<text class="tiny mu" x="934.0" y="974.0" text-anchor="start">L_IS</text>
+<circle class="pin" cx="916" cy="990" r="3.5"/>
+<text class="tiny" x="934.0" y="994.0" text-anchor="start">VCC</text>
+<circle class="pin" cx="916" cy="1010" r="3.5"/>
+<text class="tiny" x="934.0" y="1014.0" text-anchor="start">GND</text>
+<line class="p" x1="916" y1="990" x2="902" y2="990"/>
+<text class="pt" x="898.0" y="994.0" text-anchor="end">+5V</text>
+<line class="w" x1="916" y1="1010" x2="902" y2="1010"/>
+<text class="tiny" x="898.0" y="1014.0" text-anchor="end">GND</text>
+<rect class="screw" x="1068" y="874" width="32" height="132" rx="2"/>
+<circle class="pin" cx="1084" cy="890" r="3.5"/>
+<text class="tiny" x="1062.0" y="894.0" text-anchor="end">B−</text>
+<circle class="pin" cx="1084" cy="920" r="3.5"/>
+<text class="tiny" x="1062.0" y="924.0" text-anchor="end">B+</text>
+<circle class="pin" cx="1084" cy="950" r="3.5"/>
+<text class="tiny" x="1062.0" y="954.0" text-anchor="end">M+</text>
+<circle class="pin" cx="1084" cy="980" r="3.5"/>
+<text class="tiny" x="1062.0" y="984.0" text-anchor="end">M−</text>
+<line class="p" x1="1084" y1="920" x2="1124" y2="920"/>
+<text class="pt" x="1128.0" y="924.0" text-anchor="start">+12 V · fusible 15 A</text>
+<line class="w" x1="1084" y1="890" x2="1124" y2="890"/>
+<text x="1128.0" y="894.0" text-anchor="start">GND (−12 V)</text>
+<line class="w" x1="1084" y1="950" x2="1206.8" y2="950"/>
+<line class="w" x1="1084" y1="980" x2="1206.8" y2="980"/>
+<circle class="box" cx="1228" cy="965" r="26"/>
+<text class="h" x="1228.0" y="970.0" text-anchor="middle">M</text>
+<text class="m" x="1228.0" y="1011.0" text-anchor="middle">moteur inclinaison 12 V</text>
+<rect class="modf" x="40" y="1150" width="160" height="62" rx="4"/>
+<text x="120.0" y="1184.0" text-anchor="middle">Fin de course Nord</text>
+<text class="tiny mu" x="120.0" y="1200.0" text-anchor="middle">GPIO32 · à plat (FDC_IH)</text>
+<circle class="pin" cx="90" cy="1150" r="3.5"/>
+<text class="tiny" x="90.0" y="1166.0" text-anchor="middle">NO</text>
+<circle class="pin" cx="200" cy="1181" r="3.5"/>
+<text class="tiny" x="192.0" y="1170.0" text-anchor="end">C</text>
+<line class="w" x1="200" y1="1181" x2="214" y2="1181"/>
+<text class="tiny" x="218.0" y="1185.0" text-anchor="start">GND</text>
+<rect class="modf" x="260" y="1150" width="160" height="62" rx="4"/>
+<text x="340.0" y="1184.0" text-anchor="middle">Fin de course Sud</text>
+<text class="tiny mu" x="340.0" y="1200.0" text-anchor="middle">GPIO33 · vertical (FDC_IV)</text>
+<circle class="pin" cx="310" cy="1150" r="3.5"/>
+<text class="tiny" x="310.0" y="1166.0" text-anchor="middle">NO</text>
+<circle class="pin" cx="420" cy="1181" r="3.5"/>
+<text class="tiny" x="412.0" y="1170.0" text-anchor="end">C</text>
+<line class="w" x1="420" y1="1181" x2="434" y2="1181"/>
+<text class="tiny" x="438.0" y="1185.0" text-anchor="start">GND</text>
+<rect class="modf" x="520" y="1150" width="160" height="62" rx="4"/>
+<text x="600.0" y="1184.0" text-anchor="middle">Fin de course Est</text>
+<text class="tiny mu" x="600.0" y="1200.0" text-anchor="middle">GPIO16 · FDC_EST</text>
+<circle class="pin" cx="570" cy="1150" r="3.5"/>
+<text class="tiny" x="570.0" y="1166.0" text-anchor="middle">NO</text>
+<circle class="pin" cx="680" cy="1181" r="3.5"/>
+<text class="tiny" x="672.0" y="1170.0" text-anchor="end">C</text>
+<line class="w" x1="680" y1="1181" x2="694" y2="1181"/>
+<text class="tiny" x="698.0" y="1185.0" text-anchor="start">GND</text>
+<rect class="modf" x="760" y="1150" width="160" height="62" rx="4"/>
+<text x="840.0" y="1184.0" text-anchor="middle">Fin de course Ouest</text>
+<text class="tiny mu" x="840.0" y="1200.0" text-anchor="middle">GPIO23 · FDC_OUEST</text>
+<circle class="pin" cx="810" cy="1150" r="3.5"/>
+<text class="tiny" x="810.0" y="1166.0" text-anchor="middle">NO</text>
+<circle class="pin" cx="920" cy="1181" r="3.5"/>
+<text class="tiny" x="912.0" y="1170.0" text-anchor="end">C</text>
+<line class="w" x1="920" y1="1181" x2="934" y2="1181"/>
+<text class="tiny" x="938.0" y="1185.0" text-anchor="start">GND</text>
+<rect class="o" x="40" y="650" width="400" height="140" rx="4"/>
+<text class="ot" x="52.0" y="670.0" text-anchor="start">MAÎTRE UNIQUEMENT</text>
+<rect class="modf" x="60" y="690" width="150" height="76" rx="4"/>
+<text x="135.0" y="722.0" text-anchor="middle">Anémomètre</text>
+<text class="tiny mu" x="135.0" y="738.0" text-anchor="middle">contact reed</text>
+<circle class="pin" cx="210" cy="718" r="3.5"/>
+<circle class="pin" cx="210" cy="750" r="3.5"/>
+<line class="w" x1="210" y1="750" x2="224" y2="750"/>
+<text x="228.0" y="754.0" text-anchor="start">GND</text>
+<path class="gap" d="M210 718 L536 718"/><path class="bw" d="M210 718 L536 718"/>
+<circle class="dot" cx="400" cy="718" r="3"/>
+<line class="w" x1="400" y1="718" x2="400" y2="706"/>
+<rect class="box" x="393" y="676" width="14" height="30"/>
+<text class="tiny" x="380.0" y="696.0" text-anchor="end">10 kΩ</text>
+<line class="p" x1="400" y1="676" x2="400" y2="662"/>
+<text class="pt" x="400.0" y="657.0" text-anchor="middle">+3V3</text>
+<path class="gap" d="M684.0 674.0 C754.0 674.0 1008.0 538.0 1008.0 468.0"/><path class="bw" d="M684.0 674.0 C754.0 674.0 1008.0 538.0 1008.0 468.0"/>
+<path class="gap" d="M684.0 740.0 C774.0 740.0 984.0 558.0 984.0 468.0"/><path class="bw" d="M684.0 740.0 C774.0 740.0 984.0 558.0 984.0 468.0"/>
+<path class="gap" d="M684.0 850.0 C774.0 850.0 826.0 870.0 916.0 870.0"/><path class="bw" d="M684.0 850.0 C774.0 850.0 826.0 870.0 916.0 870.0"/>
+<path class="gap" d="M684.0 828.0 C774.0 828.0 826.0 890.0 916.0 890.0"/><path class="bw" d="M684.0 828.0 C774.0 828.0 826.0 890.0 916.0 890.0"/>
+<path class="gap" d="M684.0 784.0 C774.0 784.0 826.0 910.0 916.0 910.0"/><path class="bw" d="M684.0 784.0 C774.0 784.0 826.0 910.0 916.0 910.0"/>
+<path class="gap" d="M684.0 806.0 C774.0 806.0 826.0 930.0 916.0 930.0"/><path class="bw" d="M684.0 806.0 C774.0 806.0 826.0 930.0 916.0 930.0"/>
+<path class="gap" d="M684.0 960.0 C794.0 960.0 806.0 640.0 916.0 640.0"/><path class="bw" d="M684.0 960.0 C794.0 960.0 806.0 640.0 916.0 640.0"/>
+<path class="gap" d="M684.0 938.0 C794.0 938.0 806.0 660.0 916.0 660.0"/><path class="bw" d="M684.0 938.0 C794.0 938.0 806.0 660.0 916.0 660.0"/>
+<path class="gap" d="M684.0 894.0 C794.0 894.0 806.0 680.0 916.0 680.0"/><path class="bw" d="M684.0 894.0 C794.0 894.0 806.0 680.0 916.0 680.0"/>
+<path class="gap" d="M536 938 L470 938 Q455 938 455 953 L455 1095 Q455 1110 470 1110 L835 1110 Q850 1110 850 1095 L850 715 Q850 700 865 700 L916 700"/><path class="bw" d="M536 938 L470 938 Q455 938 455 953 L455 1095 Q455 1110 470 1110 L835 1110 Q850 1110 850 1095 L850 715 Q850 700 865 700 L916 700"/>
+<path class="gap" d="M536.0 762.0 C386.0 762.0 90.0 1000.0 90.0 1150.0"/><path class="bw" d="M536.0 762.0 C386.0 762.0 90.0 1000.0 90.0 1150.0"/>
+<path class="gap" d="M536.0 784.0 C406.0 784.0 310.0 1020.0 310.0 1150.0"/><path class="bw" d="M536.0 784.0 C406.0 784.0 310.0 1020.0 310.0 1150.0"/>
+<path class="gap" d="M684.0 872.0 C804.0 872.0 570.0 1030.0 570.0 1150.0"/><path class="bw" d="M684.0 872.0 C804.0 872.0 570.0 1030.0 570.0 1150.0"/>
+<path class="gap" d="M684.0 652.0 C844.0 652.0 810.0 990.0 810.0 1150.0"/><path class="bw" d="M684.0 652.0 C844.0 652.0 810.0 990.0 810.0 1150.0"/>
+<text class="h" x="40.0" y="1270.0" text-anchor="start">Alimentation 12 V</text>
+<rect class="box" x="40" y="1290" width="150" height="50" rx="3"/>
+<text x="115.0" y="1312.0" text-anchor="middle">Alimentation</text>
+<text class="pt" x="115.0" y="1328.0" text-anchor="middle">12 V</text>
+<line class="p" x1="190" y1="1305" x2="232" y2="1305"/>
+<circle class="hole" cx="236" cy="1305" r="3"/><line class="w" x1="239" y1="1305" x2="268" y2="1292"/><circle class="hole" cx="272" cy="1305" r="3"/>
+<text class="tiny" x="254.0" y="1328.0" text-anchor="middle">inter. I/O</text>
+<line class="p" x1="275" y1="1305" x2="340" y2="1305"/>
+<rect class="modf" x="340" y="1280" width="700" height="60" rx="4"/>
+<text class="m" x="690.0" y="1274.0" text-anchor="middle">porte-fusibles 6 voies</text>
+<rect x="368" y="1298" width="64" height="22" rx="4" fill="#e0a030" stroke="currentColor" stroke-width="1"/>
+<text x="400" y="1314" text-anchor="middle" style="fill:#1c2624;font-weight:600">5 A</text>
+<rect x="484" y="1298" width="64" height="22" rx="4" fill="#d9342b" stroke="currentColor" stroke-width="1"/>
+<text x="516" y="1314" text-anchor="middle" style="fill:#ffffff;font-weight:600">10 A</text>
+<rect x="600" y="1298" width="64" height="22" rx="4" fill="#e0a030" stroke="currentColor" stroke-width="1"/>
+<text x="632" y="1314" text-anchor="middle" style="fill:#1c2624;font-weight:600">5 A</text>
+<rect x="716" y="1298" width="64" height="22" rx="4" fill="#d9342b" stroke="currentColor" stroke-width="1"/>
+<text x="748" y="1314" text-anchor="middle" style="fill:#ffffff;font-weight:600">10 A</text>
+<rect x="832" y="1298" width="64" height="22" rx="4" fill="#2f6fd6" stroke="currentColor" stroke-width="1"/>
+<text x="864" y="1314" text-anchor="middle" style="fill:#ffffff;font-weight:600">15 A</text>
+<rect x="948" y="1298" width="64" height="22" rx="4" fill="#2f6fd6" stroke="currentColor" stroke-width="1"/>
+<text x="980" y="1314" text-anchor="middle" style="fill:#ffffff;font-weight:600">15 A</text>
+<polyline class="w" points="368,1348 368,1354 548,1354 548,1348"/>
+<text x="458.0" y="1370.0" text-anchor="middle">INCLINAISON</text>
+<text class="tiny mu" x="458.0" y="1384.0" text-anchor="middle">rôle à confirmer</text>
+<polyline class="w" points="600,1348 600,1354 780,1354 780,1348"/>
+<text x="690.0" y="1370.0" text-anchor="middle">ROTATION</text>
+<text class="tiny mu" x="690.0" y="1384.0" text-anchor="middle">rôle à confirmer</text>
+<polyline class="w" points="832,1348 832,1354 1012,1354 1012,1348"/>
+<text x="922.0" y="1370.0" text-anchor="middle">BTS7960 ×2</text>
+<text class="tiny mu" x="922.0" y="1384.0" text-anchor="middle">→ B+ de chaque BTS</text>
+<text class="h" x="1060.0" y="40.0" text-anchor="start">Légende</text>
+<path class="cgap" d="M1060 62 L1100 62"/><path class="cout" d="M1060 62 L1100 62"/><path class="cfil" stroke="#f0c419" d="M1060 62 L1100 62"/>
+<text class="tiny" x="1110.0" y="66.0" text-anchor="start">câble : vraie couleur</text>
+<path class="gap" d="M1060 84 L1100 84"/><path class="bw" d="M1060 84 L1100 84"/>
+<text class="tiny" x="1110.0" y="88.0" text-anchor="start">fil côté carte</text>
+<line class="p" x1="1060" y1="106" x2="1100" y2="106"/>
+<text class="tiny" x="1110.0" y="110.0" text-anchor="start">alimentation</text>
+<line class="o" x1="1060" y1="128" x2="1100" y2="128"/>
+<text class="tiny" x="1110.0" y="132.0" text-anchor="start">maître uniquement</text></svg><!-- cablage:end -->
+    </div>
+    <figcaption>Vue de câblage : chaque module est dessiné avec ses broches dans l'ordre réel (ESP32 38 broches, connecteur 8 broches des BTS7960, TCA9548A HW-617, connecteur 5 broches des BH1750). Le câble qui monte à la tête est en vraies couleurs ; les fils côté carte sont en trait fin, leur couleur n'a pas d'importance.</figcaption>
   </figure>
 
   <figure>
@@ -392,8 +994,8 @@ strong { font-weight: 600; }
             <tr><td class="g">GPIO22</td><td class="g">TCA SCL</td><td>horloge</td></tr>
             <tr><td class="g">—</td><td class="g">canal 0 / 1 / 2 / 3</td><td>BH1750 Nord / Sud / Est / Ouest</td></tr>
             <tr class="grp"><td colspan="3">Fins de course (autre borne → GND)</td></tr>
-            <tr><td class="g">GPIO32</td><td class="g">FDC IH</td><td>inclinaison à plat (position sécurité)</td></tr>
-            <tr><td class="g">GPIO33</td><td class="g">FDC IV</td><td>inclinaison verticale</td></tr>
+            <tr><td class="g">GPIO32</td><td class="g">FDC Nord</td><td>inclinaison à plat, position sécurité (<code>FDC_IH</code>)</td></tr>
+            <tr><td class="g">GPIO33</td><td class="g">FDC Sud</td><td>inclinaison verticale (<code>FDC_IV</code>)</td></tr>
             <tr><td class="g">GPIO16</td><td class="g">FDC Est</td><td>butée Est (matin)</td></tr>
             <tr><td class="g">GPIO23</td><td class="g">FDC Ouest</td><td>butée Ouest</td></tr>
             <tr class="grp"><td colspan="3">Vent <span class="tag">maître</span></td></tr>
@@ -418,8 +1020,9 @@ strong { font-weight: 600; }
 
       <h2 style="margin-top:32px">À confirmer</h2>
       <ul>
-        <li>Tension des moteurs (V_MOT) et calibre du fusible : absents du dépôt.</li>
+        <li>Moteurs en 12 V, 15 A par BTS. Rôle des fusibles 5 A et 10 A du porte-fusibles (étiquettes INCLINAISON / ROTATION) et de l'interrupteur I/O.</li>
         <li>Modèle du convertisseur 5 V, ou si l'ESP32 est alimenté autrement (USB, alim séparée).</li>
+        <li>Bornier capteurs du boîtier gris : place réelle des fils rouge, marron et noir (bornes 7 à 10).</li>
         <li>Sens de câblage M+/M− : <code>back()</code> doit amener l'axe EO vers l'Est et l'inclinaison vers « à plat ». Si c'est l'inverse, permuter M+ et M− sur le BTS concerné.</li>
       </ul>
     </section>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="870" class="sch" viewBox="0 0 1240 870" role="img" aria-label="Schéma d'un tracker : l'ESP32 pilote deux drivers BTS7960 reliés aux moteurs Est-Ouest et inclinaison, lit quatre BH1750 via un multiplexeur TCA9548A sur l'I2C, quatre fins de course câblées vers la masse, et sur le maître un anémomètre à contact reed sur GPIO34 avec pull-up 10 kΩ. Alimentation : V_MOT fusible vers les BTS, convertisseur 5 V vers ESP32 et logique BTS, 3,3 V vers les capteurs."><title>Schéma d'un tracker : l'ESP32 pilote deux drivers BTS7960 reliés aux moteurs Est-Ouest et inclinaison, lit quatre BH1750 via un multiplexeur TCA9548A sur l'I2C, quatre fins de course câblées vers la masse, et sur le maître un anémomètre à contact reed sur GPIO34 avec pull-up 10 kΩ. Alimentation : V_MOT fusible vers les BTS, convertisseur 5 V vers ESP32 et logique BTS, 3,3 V vers les capteurs.</title><style>svg { color: #1c2624; font-family: "Barlow", "Segoe UI", system-ui, sans-serif; }
+.sch text { font-family: "JetBrains Mono", Consolas, "Courier New", monospace; font-size: 12px; fill: #1c2624; }
+.sch .h { font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-weight: 600; font-size: 14px; }
+.sch .m { fill: #5d6b67; font-size: 11px; }
+.sch .pt { fill: #b8322a; font-weight: 500; }
+.sch .ot { fill: #a8740c; font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-weight: 600; font-size: 11px; letter-spacing: .08em; }
+.sch .box { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .chip { fill: #e3ebe7; }
+.sch .w { stroke: currentColor; stroke-width: 1.5; fill: none; }
+.sch .p { stroke: #b8322a; stroke-width: 2; fill: none; }
+.sch .o { stroke: #a8740c; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+.sch .dot { fill: currentColor; }
+.sch .pdot { fill: #b8322a; }
+.sch .hole { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .halo { stroke: currentColor; stroke-width: 8; fill: none; stroke-linejoin: round; }
+.sch .fil { stroke-width: 5; fill: none; stroke-linejoin: round; }
+.sch .gaine { fill: currentColor; }
+.sch .unk { stroke: #5d6b67; stroke-width: 5; stroke-dasharray: 4 3; fill: none; }
+.sch .tiny { font-size: 10px; }
+.sch .mu { fill: #5d6b67; opacity: .75; }
+.sch .pin { fill: currentColor; }
+.sch .pinu { fill: #fbfcfa; stroke: #5d6b67; stroke-width: 1; }
+.sch .gap { stroke: #fbfcfa; stroke-width: 6; fill: none; }
+.sch .bw { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.sch .cgap { stroke: #fbfcfa; stroke-width: 9; fill: none; stroke-linejoin: round; }
+.sch .cout { stroke: currentColor; stroke-width: 6.5; fill: none; stroke-linejoin: round; }
+.sch .cfil { stroke-width: 4.5; fill: none; stroke-linejoin: round; }
+.sch .modv { fill: #e3ebe7; stroke: currentColor; stroke-width: 1.5; }
+.sch .modb { fill: #dbe6f5; stroke: currentColor; stroke-width: 1.5; }
+.sch .modr { fill: #f3dcdc; stroke: currentColor; stroke-width: 1.5; }
+.sch .modf { fill: #fbfcfa; stroke: currentColor; stroke-width: 1.5; }
+.sch .conn { fill: #c9d1cd; stroke: currentColor; stroke-width: 1; }
+.sch .screw { fill: #cfe8d2; stroke: currentColor; stroke-width: 1; }
+.sch .gaine { fill: #c9d1cd; stroke: currentColor; stroke-width: 1.5; }
+.sch .gt { font-family: "Barlow", "Segoe UI", system-ui, sans-serif; font-size: 12px; }</style><rect x="0" y="0" width="1240" height="870" fill="#fbfcfa"/>
+        <defs>
+          <g id="gnd" stroke="currentColor" stroke-width="1.5">
+            <line x1="-8" y1="0" x2="8" y2="0"/>
+            <line x1="-5" y1="4" x2="5" y2="4"/>
+            <line x1="-2" y1="8" x2="2" y2="8"/>
+          </g>
+        </defs>
+
+        <!-- ===================== ESP32 ===================== -->
+        <rect class="box chip" x="500" y="90" width="220" height="560" rx="6"/>
+        <text class="h" x="610" y="116" text-anchor="middle">ESP32 DevKit</text>
+        <text class="m" x="610" y="133" text-anchor="middle">logique 3,3 V</text>
+        <!-- broches gauche -->
+        <text x="510" y="154">GPIO21 SDA</text>
+        <text x="510" y="184">GPIO22 SCL</text>
+        <text x="510" y="364">GPIO32</text>
+        <text x="510" y="404">GPIO33</text>
+        <text x="510" y="444">GPIO16</text>
+        <text x="510" y="484">GPIO23</text>
+        <text x="510" y="594">GPIO34</text>
+        <text class="m" x="510" y="609">entrée seule</text>
+        <!-- broches droite -->
+        <text x="710" y="144" text-anchor="end">GPIO15</text>
+        <text x="710" y="174" text-anchor="end">GPIO2</text>
+        <text x="710" y="204" text-anchor="end">GPIO4</text>
+        <text x="710" y="234" text-anchor="end">GPIO13</text>
+        <text x="710" y="384" text-anchor="end">GPIO17</text>
+        <text x="710" y="414" text-anchor="end">GPIO5</text>
+        <text x="710" y="444" text-anchor="end">GPIO19</text>
+        <text x="710" y="474" text-anchor="end">GPIO18</text>
+        <!-- alimentation ESP32 -->
+        <text x="545" y="640" text-anchor="middle">VIN</text>
+        <text x="610" y="640" text-anchor="middle">3V3</text>
+        <text x="675" y="640" text-anchor="middle">GND</text>
+        <line class="p" x1="545" y1="650" x2="545" y2="680"/>
+        <text class="pt" x="545" y="696" text-anchor="middle">+5V</text>
+        <line class="p" x1="610" y1="650" x2="610" y2="680"/>
+        <text class="pt" x="610" y="696" text-anchor="middle">+3V3 (sortie)</text>
+        <line class="w" x1="675" y1="650" x2="675" y2="680"/>
+        <use href="#gnd" x="675" y="680"/>
+
+        <!-- ===================== BTS7960 EO ===================== -->
+        <text class="h" x="925" y="97" text-anchor="middle">BTS7960 · axe Est-Ouest</text>
+        <rect class="box" x="840" y="105" width="170" height="165" rx="3"/>
+        <text x="848" y="144">RPWM</text>
+        <text x="848" y="174">LPWM</text>
+        <text x="848" y="204">R_EN</text>
+        <text x="848" y="234">L_EN</text>
+        <text x="1002" y="144" text-anchor="end">B+</text>
+        <text x="1002" y="169" text-anchor="end">B−</text>
+        <text x="1002" y="204" text-anchor="end">M+</text>
+        <text x="1002" y="254" text-anchor="end">M−</text>
+        <text x="880" y="262" text-anchor="middle">VCC</text>
+        <text x="960" y="262" text-anchor="middle">GND</text>
+        <!-- signaux ESP32 → BTS EO -->
+        <line class="w" x1="720" y1="140" x2="840" y2="140"/>
+        <line class="w" x1="720" y1="170" x2="840" y2="170"/>
+        <line class="w" x1="720" y1="200" x2="840" y2="200"/>
+        <line class="w" x1="720" y1="230" x2="840" y2="230"/>
+        <!-- puissance -->
+        <line class="p" x1="1010" y1="140" x2="1070" y2="140"/>
+        <text class="pt" x="1076" y="144">+V_MOT</text>
+        <polyline class="w" points="1010,165 1050,165 1050,174"/>
+        <use href="#gnd" x="1050" y="174"/>
+        <polyline class="w" points="1010,200 1150,200 1150,203"/>
+        <polyline class="w" points="1010,250 1150,250 1150,247"/>
+        <circle class="box" cx="1150" cy="225" r="22"/>
+        <text class="h" x="1150" y="230" text-anchor="middle">M</text>
+        <text class="h" x="1180" y="222">Moteur</text>
+        <text class="m" x="1180" y="238">EO</text>
+        <!-- logique BTS EO -->
+        <line class="p" x1="880" y1="270" x2="880" y2="284"/>
+        <text class="pt" x="880" y="298" text-anchor="middle">+5V</text>
+        <line class="w" x1="960" y1="270" x2="960" y2="282"/>
+        <use href="#gnd" x="960" y="282"/>
+
+        <!-- ===================== BTS7960 IH ===================== -->
+        <text class="h" x="925" y="337" text-anchor="middle">BTS7960 · axe inclinaison</text>
+        <rect class="box" x="840" y="345" width="170" height="165" rx="3"/>
+        <text x="848" y="384">RPWM</text>
+        <text x="848" y="414">LPWM</text>
+        <text x="848" y="444">R_EN</text>
+        <text x="848" y="474">L_EN</text>
+        <text x="1002" y="384" text-anchor="end">B+</text>
+        <text x="1002" y="409" text-anchor="end">B−</text>
+        <text x="1002" y="444" text-anchor="end">M+</text>
+        <text x="1002" y="494" text-anchor="end">M−</text>
+        <text x="880" y="502" text-anchor="middle">VCC</text>
+        <text x="960" y="502" text-anchor="middle">GND</text>
+        <line class="w" x1="720" y1="380" x2="840" y2="380"/>
+        <line class="w" x1="720" y1="410" x2="840" y2="410"/>
+        <line class="w" x1="720" y1="440" x2="840" y2="440"/>
+        <line class="w" x1="720" y1="470" x2="840" y2="470"/>
+        <line class="p" x1="1010" y1="380" x2="1070" y2="380"/>
+        <text class="pt" x="1076" y="384">+V_MOT</text>
+        <polyline class="w" points="1010,405 1050,405 1050,414"/>
+        <use href="#gnd" x="1050" y="414"/>
+        <polyline class="w" points="1010,440 1150,440 1150,443"/>
+        <polyline class="w" points="1010,490 1150,490 1150,487"/>
+        <circle class="box" cx="1150" cy="465" r="22"/>
+        <text class="h" x="1150" y="470" text-anchor="middle">M</text>
+        <text class="h" x="1180" y="462">Moteur</text>
+        <text class="m" x="1180" y="478">IH</text>
+        <line class="p" x1="880" y1="510" x2="880" y2="524"/>
+        <text class="pt" x="880" y="538" text-anchor="middle">+5V</text>
+        <line class="w" x1="960" y1="510" x2="960" y2="522"/>
+        <use href="#gnd" x="960" y="522"/>
+
+        <!-- ===================== TCA9548A + BH1750 ===================== -->
+        <text class="h" x="40" y="102">4 × BH1750</text>
+        <text class="h" x="325" y="102" text-anchor="middle">TCA9548A · 0x70</text>
+        <rect class="box" x="250" y="110" width="150" height="190" rx="3"/>
+        <text x="258" y="144">SD0/SC0</text>
+        <text x="258" y="189">SD1/SC1</text>
+        <text x="258" y="234">SD2/SC2</text>
+        <text x="258" y="279">SD3/SC3</text>
+        <text x="392" y="154" text-anchor="end">SDA</text>
+        <text x="392" y="184" text-anchor="end">SCL</text>
+        <line class="w" x1="400" y1="150" x2="500" y2="150"/>
+        <line class="w" x1="400" y1="180" x2="500" y2="180"/>
+        <text class="m" x="250" y="318">VIN +3V3 · GND · A0–A2 → GND</text>
+
+        <rect class="box" x="40" y="123" width="140" height="34" rx="3"/>
+        <text x="110" y="144" text-anchor="middle">BH1750 Nord</text>
+        <rect class="box" x="40" y="168" width="140" height="34" rx="3"/>
+        <text x="110" y="189" text-anchor="middle">BH1750 Sud</text>
+        <rect class="box" x="40" y="213" width="140" height="34" rx="3"/>
+        <text x="110" y="234" text-anchor="middle">BH1750 Est</text>
+        <rect class="box" x="40" y="258" width="140" height="34" rx="3"/>
+        <text x="110" y="279" text-anchor="middle">BH1750 Ouest</text>
+        <text class="m" x="40" y="310">VCC +3V3 (marron) · GND (noir)</text>
+        <text class="m" x="40" y="324">ADDR → GND (tous en 0x23)</text>
+
+        <!-- liaisons canal (bus 2 fils SDx + SCx) -->
+        <line class="w" x1="180" y1="140" x2="250" y2="140"/>
+        <line class="w" x1="209" y1="146" x2="221" y2="134"/>
+        <text class="m" x="224" y="132">2</text>
+        <line class="w" x1="180" y1="185" x2="250" y2="185"/>
+        <line class="w" x1="209" y1="191" x2="221" y2="179"/>
+        <text class="m" x="224" y="177">2</text>
+        <line class="w" x1="180" y1="230" x2="250" y2="230"/>
+        <line class="w" x1="209" y1="236" x2="221" y2="224"/>
+        <text class="m" x="224" y="222">2</text>
+        <line class="w" x1="180" y1="275" x2="250" y2="275"/>
+        <line class="w" x1="209" y1="281" x2="221" y2="269"/>
+        <text class="m" x="224" y="267">2</text>
+
+        <!-- ===================== Fins de course ===================== -->
+        <text class="h" x="40" y="364">Fins de course</text>
+        <text class="m" x="40" y="382">contact NO vers GND</text>
+        <text class="m" x="40" y="397">pull-up interne ESP32</text>
+        <text class="m" x="40" y="412">atteint = LOW</text>
+
+        <!-- FDC IH -->
+        <line class="w" x1="500" y1="360" x2="340" y2="360"/>
+        <circle class="hole" cx="336" cy="360" r="3"/>
+        <line class="w" x1="333" y1="360" x2="300" y2="348"/>
+        <circle class="hole" cx="296" cy="360" r="3"/>
+        <polyline class="w" points="293,360 270,360 270,366"/>
+        <use href="#gnd" x="270" y="366"/>
+        <text x="420" y="353" text-anchor="middle">FDC Nord · à plat</text>
+        <!-- FDC IV -->
+        <line class="w" x1="500" y1="400" x2="340" y2="400"/>
+        <circle class="hole" cx="336" cy="400" r="3"/>
+        <line class="w" x1="333" y1="400" x2="300" y2="388"/>
+        <circle class="hole" cx="296" cy="400" r="3"/>
+        <polyline class="w" points="293,400 270,400 270,406"/>
+        <use href="#gnd" x="270" y="406"/>
+        <text x="420" y="393" text-anchor="middle">FDC Sud · vertical</text>
+        <!-- FDC Est -->
+        <line class="w" x1="500" y1="440" x2="340" y2="440"/>
+        <circle class="hole" cx="336" cy="440" r="3"/>
+        <line class="w" x1="333" y1="440" x2="300" y2="428"/>
+        <circle class="hole" cx="296" cy="440" r="3"/>
+        <polyline class="w" points="293,440 270,440 270,446"/>
+        <use href="#gnd" x="270" y="446"/>
+        <text x="420" y="433" text-anchor="middle">FDC Est</text>
+        <!-- FDC Ouest -->
+        <line class="w" x1="500" y1="480" x2="340" y2="480"/>
+        <circle class="hole" cx="336" cy="480" r="3"/>
+        <line class="w" x1="333" y1="480" x2="300" y2="468"/>
+        <circle class="hole" cx="296" cy="480" r="3"/>
+        <polyline class="w" points="293,480 270,480 270,486"/>
+        <use href="#gnd" x="270" y="486"/>
+        <text x="420" y="473" text-anchor="middle">FDC Ouest</text>
+
+        <!-- ===================== Anémomètre (maître) ===================== -->
+        <rect class="o" x="30" y="510" width="460" height="122" rx="4"/>
+        <text class="ot" x="40" y="532">MAÎTRE UNIQUEMENT</text>
+        <text class="h" x="40" y="554">Anémomètre</text>
+        <text class="m" x="40" y="571">contact reed</text>
+        <text class="m" x="40" y="586">1 impulsion / tour</text>
+        <line class="w" x1="500" y1="590" x2="340" y2="590"/>
+        <circle class="hole" cx="336" cy="590" r="3"/>
+        <line class="w" x1="333" y1="590" x2="300" y2="578"/>
+        <circle class="hole" cx="296" cy="590" r="3"/>
+        <polyline class="w" points="293,590 270,590 270,596"/>
+        <use href="#gnd" x="270" y="596"/>
+        <circle class="dot" cx="420" cy="590" r="3"/>
+        <line class="w" x1="420" y1="590" x2="420" y2="575"/>
+        <rect class="box" x="413" y="545" width="14" height="30"/>
+        <line class="p" x1="420" y1="545" x2="420" y2="532"/>
+        <text class="pt" x="420" y="526" text-anchor="middle">+3V3</text>
+        <text x="434" y="564">10 kΩ</text>
+
+        <!-- ===================== Alimentation ===================== -->
+        <text class="h" x="40" y="718">Alimentation</text>
+        <rect class="box" x="40" y="735" width="170" height="50" rx="3"/>
+        <text class="h" x="125" y="756" text-anchor="middle">Alimentation DC</text>
+        <text class="m" x="125" y="773" text-anchor="middle">V_MOT = 12 V</text>
+        <text class="pt" x="203" y="746" text-anchor="end">+</text>
+        <line class="p" x1="210" y1="750" x2="250" y2="750"/>
+        <rect class="box" x="250" y="743" width="40" height="14" rx="2"/>
+        <text class="m" x="270" y="736" text-anchor="middle">15 A / BTS</text>
+        <line class="p" x1="290" y1="750" x2="380" y2="750"/>
+        <circle class="pdot" cx="340" cy="750" r="3.5"/>
+        <text class="pt" x="340" y="738" text-anchor="middle">+V_MOT</text>
+        <line class="p" x1="340" y1="750" x2="340" y2="788"/>
+        <text class="pt" x="340" y="802" text-anchor="middle">B+ des 2 BTS</text>
+
+        <rect class="box" x="380" y="735" width="170" height="50" rx="3"/>
+        <text class="h" x="465" y="756" text-anchor="middle">Convertisseur DC-DC</text>
+        <text class="m" x="465" y="773" text-anchor="middle">abaisseur → 5 V</text>
+        <line class="p" x1="550" y1="750" x2="620" y2="750"/>
+        <circle class="pdot" cx="585" cy="750" r="3.5"/>
+        <text class="pt" x="585" y="738" text-anchor="middle">+5V</text>
+        <line class="p" x1="585" y1="750" x2="585" y2="788"/>
+        <text class="pt" x="585" y="802" text-anchor="middle">VIN ESP32 · VCC BTS ×2</text>
+
+        <rect class="box" x="620" y="735" width="170" height="50" rx="3"/>
+        <text class="h" x="705" y="756" text-anchor="middle">Régulateur 3,3 V</text>
+        <text class="m" x="705" y="773" text-anchor="middle">intégré à la carte ESP32</text>
+        <line class="p" x1="790" y1="750" x2="840" y2="750"/>
+        <circle class="pdot" cx="840" cy="750" r="3.5"/>
+        <text class="pt" x="840" y="738" text-anchor="middle">+3V3</text>
+        <line class="p" x1="840" y1="750" x2="840" y2="788"/>
+        <text class="pt" x="840" y="802" text-anchor="middle">TCA · BH1750 ×4 · pull-up vent</text>
+
+        <!-- masse commune -->
+        <line class="w" x1="125" y1="785" x2="125" y2="830"/>
+        <line class="w" x1="465" y1="785" x2="465" y2="830"/>
+        <line class="w" x1="705" y1="785" x2="705" y2="830"/>
+        <line class="w" x1="125" y1="830" x2="1000" y2="830"/>
+        <circle class="dot" cx="465" cy="830" r="3"/>
+        <circle class="dot" cx="705" cy="830" r="3"/>
+        <use href="#gnd" x="1000" y="830"/>
+        <text class="m" x="140" y="852">GND commun : alim −, B− et GND des BTS, ESP32, TCA, BH1750, fins de course, anémomètre</text>
+
+        <!-- légende -->
+        <line class="w" x1="960" y1="660" x2="1000" y2="660"/>
+        <text class="m" x="1010" y="664">signal 3,3 V</text>
+        <line class="p" x1="960" y1="684" x2="1000" y2="684"/>
+        <text class="m" x="1010" y="688">alimentation</text>
+        <line class="o" x1="960" y1="708" x2="1000" y2="708"/>
+        <text class="m" x="1010" y="712">maître uniquement</text>
+        <line class="w" x1="960" y1="732" x2="1000" y2="732"/>
+        <line class="w" x1="974" y1="738" x2="986" y2="726"/>
+        <text class="m" x="1010" y="736">bus 2 fils (SDx + SCx)</text>
+      </svg>
